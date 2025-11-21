@@ -20,8 +20,32 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Settings2, Check } from 'lucide-react';
 import { InfoButton } from './InfoButton';
 import { getMechanismContent } from '@/game/data/educationalContent';
+import {useTranslations} from 'next-intl';
+
+// Helper component to display translated mechanism name
+function MechanismNameDisplay({ mechanismId, fallbackName, className = "font-bold text-white" }: { mechanismId: string; fallbackName: string; className?: string }) {
+  const t = useTranslations('GameData.Mechanisms');
+  try {
+    const name = t(`${mechanismId}.name` as never);
+    return <h3 className={className}>{name}</h3>;
+  } catch {
+    return <h3 className={className}>{fallbackName}</h3>;
+  }
+}
+
+// Helper component to display translated mechanism description
+function MechanismDescriptionDisplay({ mechanismId, fallbackDescription, className = "text-sm text-gray-400 mb-3 line-clamp-2" }: { mechanismId: string; fallbackDescription: string; className?: string }) {
+  const t = useTranslations('GameData.Mechanisms');
+  try {
+    const description = t(`${mechanismId}.description` as never);
+    return <p className={className}>{description}</p>;
+  } catch {
+    return <p className={className}>{fallbackDescription}</p>;
+  }
+}
 
 export function MechanismPanel() {
+  const t = useTranslations('Game.MechanismPanel');
   const role = useGameStore((state) => state.role);
   const gameStatus = useGameStore((state) => state.gameStatus);
   const realCaseMode = useGameStore((state) => state.realCaseMode);
@@ -53,14 +77,14 @@ export function MechanismPanel() {
 
   return (
     <Card className="bg-game-background-dark border-gray-800 p-4">
-      <h2 className="text-xl font-bold mb-4 text-white">Mecanismos</h2>
+      <h2 className="text-xl font-bold mb-4 text-white">{t('title')}</h2>
       
       {/* Currently Selected Mechanism */}
       {selectedMechanismData ? (
         <div className="mb-4">
           <Card className="bg-game-background-darker border-primary-500 border-2 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="font-bold text-white">{selectedMechanismData.name}</h3>
+              <MechanismNameDisplay mechanismId={selectedMechanismData.id} fallbackName={selectedMechanismData.name} />
               {(() => {
                 const mechanismContent = getMechanismContent(selectedMechanismData.id);
                 return mechanismContent ? (
@@ -68,26 +92,26 @@ export function MechanismPanel() {
                 ) : null;
               })()}
             </div>
-            <p className="text-sm text-gray-400 mb-3 line-clamp-2">{selectedMechanismData.description}</p>
+            <MechanismDescriptionDisplay mechanismId={selectedMechanismData.id} fallbackDescription={selectedMechanismData.description} />
             <div className="flex flex-wrap gap-2">
               <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                Setup: ${selectedMechanismData.baseCost.toLocaleString()}
+                {t('badges.setup')} ${selectedMechanismData.baseCost.toLocaleString()}
               </Badge>
               <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                {Math.round(selectedMechanismData.successRateLow * 100)}% éxito
+                {Math.round(selectedMechanismData.successRateLow * 100)}{t('badges.success')}
               </Badge>
               <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                Heat: +{selectedMechanismData.heatGeneration}%
+                {t('badges.heat')} +{selectedMechanismData.heatGeneration}%
               </Badge>
               <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                Capacidad: ${(selectedMechanismData.launderCapacity / 1000000).toFixed(0)}M/año
+                {t('badges.capacity')} ${(selectedMechanismData.launderCapacity / 1000000).toFixed(0)}M/año
               </Badge>
             </div>
           </Card>
         </div>
       ) : (
         <div className="mb-4 text-sm text-gray-400 text-center py-4">
-          No hay mecanismo seleccionado
+          {t('noMechanismSelected')}
         </div>
       )}
 
@@ -99,14 +123,14 @@ export function MechanismPanel() {
             data-tutorial-target="mechanism-selector-button"
           >
             <Settings2 className="w-4 h-4 mr-2" />
-            {selectedMechanismData ? 'Cambiar Mecanismo' : 'Seleccionar Mecanismo'}
+            {selectedMechanismData ? t('change') : t('select')}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-[95vw] md:max-w-[90vw] lg:max-w-6xl max-h-[90vh] overflow-y-auto bg-game-background-darker border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-white">Seleccionar Mecanismo</DialogTitle>
+            <DialogTitle className="text-white">{t('dialog.title')}</DialogTitle>
             <DialogDescription className="text-gray-400">
-              Elige un mecanismo de lavado de dinero. Cada uno tiene diferentes costos, capacidades y niveles de riesgo.
+              {t('dialog.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-3 mt-4">
@@ -129,10 +153,10 @@ export function MechanismPanel() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-bold text-white text-lg">{mechanism.name}</h3>
+                          <MechanismNameDisplay mechanismId={mechanism.id} fallbackName={mechanism.name} className="font-bold text-white text-lg" />
                           {realCaseMode && coreMechanisms.includes(mechanism.id) && (
                             <Badge className="bg-primary-500 text-white text-xs">
-                              Históricamente usado
+                              {t('dialog.historicallyUsed')}
                             </Badge>
                           )}
                           {(() => {
@@ -147,20 +171,20 @@ export function MechanismPanel() {
                             <Check className="w-5 h-5 text-primary-500" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-400 mb-3">{mechanism.description}</p>
+                        <MechanismDescriptionDisplay mechanismId={mechanism.id} fallbackDescription={mechanism.description} className="text-sm text-gray-400 mb-3" />
                         
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                            Setup: ${mechanism.baseCost.toLocaleString()}
+                            {t('badges.setup')} ${mechanism.baseCost.toLocaleString()}
                           </Badge>
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                            {Math.round(mechanism.successRateLow * 100)}% éxito (bajo escrutinio)
+                            {Math.round(mechanism.successRateLow * 100)}{t('badges.success')} (bajo escrutinio)
                           </Badge>
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                            Heat: +{mechanism.heatGeneration}% por $1M
+                            {t('badges.heat')} +{mechanism.heatGeneration}% por $1M
                           </Badge>
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                            Capacidad: ${(mechanism.launderCapacity / 1000000).toFixed(0)}M/año
+                            {t('badges.capacity')} ${(mechanism.launderCapacity / 1000000).toFixed(0)}M/año
                           </Badge>
                         </div>
                         

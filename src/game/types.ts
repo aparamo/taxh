@@ -44,7 +44,7 @@ export interface Transaction {
 
 export interface Asset {
   id: string;
-  type: 'yacht' | 'mansion' | 'art' | 'luxury_car' | 'rolex' | 'politician' | 'judge' | 'police' | 'bank_relationship';
+  type: 'yacht' | 'mansion' | 'art' | 'luxury_car' | 'rolex' | 'politician' | 'judge' | 'police' | 'bank_relationship' | 'corporate_office' | 'patent_portfolio' | 'offshore_subsidiary' | 'distribution_network' | 'data_center';
   name: string;
   cost: number;
   heatReduction: number; // percentage reduction
@@ -94,6 +94,7 @@ export interface GameState {
   // Player inventory
   activeCountries: string[];
   activeMechanisms: string[];
+  activeEnhancements: string[]; // Support mechanisms like Nominee Director
   transactions: Transaction[];
   assets: Asset[];
 

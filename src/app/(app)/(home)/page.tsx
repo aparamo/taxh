@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
 import { HomeGlobe } from '@/components/home/HomeGlobe';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function HomePage() {
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(null);
+  const t = useTranslations('HomePage');
 
   return (
     <div className="min-h-screen bg-game-background-darker text-white flex flex-col">
@@ -24,7 +26,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          Paraísos Fiscales
+          {t('heading')}
         </motion.h1>
         <motion.p 
           className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto"
@@ -32,7 +34,7 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          Un simulador educativo sobre corrupción internacional y lavado de dinero
+          {t('subtitle')}
         </motion.p>
         <motion.div 
           className="pt-4"
@@ -45,7 +47,7 @@ export default function HomePage() {
               size="lg" 
               className="bg-primary-500 hover:bg-primary-600 text-white text-lg px-8 py-6"
             >
-              Jugar
+              {t('playButton')}
             </Button>
           </Link>
         </motion.div>
@@ -74,7 +76,7 @@ export default function HomePage() {
         transition={{ duration: 0.6, delay: 1 }}
       >
         <p className="text-sm text-gray-500">
-          Este es un juego educativo. Todo el contenido está basado en casos reales documentados.
+          {t('footerNote')}
         </p>
       </motion.div>
     </div>

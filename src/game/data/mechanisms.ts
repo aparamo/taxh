@@ -8,7 +8,7 @@ export const mechanisms: Mechanism[] = [
     baseCost: 5000,
     setupTimeDays: 1,
     launderCapacity: 5000000, // $5M per year
-    heatGeneration: 0.5, // +0.5% per $1M laundered
+    heatGeneration: 0.45, // +0.45% per $1M laundered (reduced for balance)
     successRateLow: 0.85, // 85% under low scrutiny
     successRateHigh: 0.40, // 40% under high scrutiny
     requiredIntermediaries: ['lawyer', 'registered_agent'],
@@ -76,7 +76,7 @@ export const mechanisms: Mechanism[] = [
     baseCost: 20000,
     setupTimeDays: 14,
     launderCapacity: 20000000, // $20M per year
-    heatGeneration: 0.8, // +0.8% per $1M (high risk)
+    heatGeneration: 0.7, // +0.7% per $1M (high risk, reduced for balance)
     successRateLow: 0.65, // 65% under low scrutiny
     successRateHigh: 0.30, // 30% under high scrutiny
     requiredIntermediaries: ['trading_company', 'customs_broker'],
@@ -93,7 +93,7 @@ export const mechanisms: Mechanism[] = [
     baseCost: 100000,
     setupTimeDays: 60,
     launderCapacity: 100000000, // $100M per year (very high capacity)
-    heatGeneration: 0.9, // +0.9% per $10M (very high risk)
+    heatGeneration: 0.09, // +0.09% per $1M (0.9% per $10M - very high risk)
     successRateLow: 0.60, // 60% under low scrutiny
     successRateHigh: 0.25, // 25% under high scrutiny
     requiredIntermediaries: ['correspondent_bank', 'local_bank'],

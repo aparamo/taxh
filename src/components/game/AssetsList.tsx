@@ -12,8 +12,13 @@ import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { InfoButton } from './InfoButton';
 import { getAssetContent } from '@/game/data/educationalContent';
+import {useTranslations} from 'next-intl';
+import { AssetNameDisplay, AssetDescriptionDisplay } from '@/game/utils/translations';
+import { translateStoreMessage } from '@/game/utils/translateStoreMessage';
 
 export function AssetsList() {
+  const t = useTranslations('Game.AssetsList');
+  const tStore = useTranslations('Game.Store.messages');
   const assets = useGameStore((state) => state.assets);
   const cleanFunds = useGameStore((state) => state.cleanFunds);
   const totalFunds = useGameStore((state) => state.totalFunds);
@@ -57,7 +62,7 @@ export function AssetsList() {
     if (assetTemplate.isCorruption) {
       countryId = selectedCountryForCorruption[assetTemplate.type] || undefined;
       if (!countryId) {
-        setMessage({ type: 'error', text: 'Por favor selecciona un país primero' });
+        setMessage({ type: 'error', text: t('selectCountryFirst') });
         return;
       }
       assetData = createCorruptionAsset(assetTemplate, countryId);
@@ -68,9 +73,9 @@ export function AssetsList() {
     const result = purchaseAsset(assetData, countryId);
 
     if (result.success) {
-      setMessage({ type: 'success', text: result.message });
+      setMessage({ type: 'success', text: translateStoreMessage(tStore, result.message) });
     } else {
-      setMessage({ type: 'error', text: result.message });
+      setMessage({ type: 'error', text: translateStoreMessage(tStore, result.message) });
     }
 
     setTimeout(() => setMessage(null), 3000);
@@ -81,26 +86,27 @@ export function AssetsList() {
     const amount = parseFloat(amountStr);
     
     if (isNaN(amount) || amount <= 0) {
-      setMessage({ type: 'error', text: 'Ingresa una cantidad válida' });
+      setMessage({ type: 'error', text: t('invalidAmount') });
       return;
     }
     
     const result = storeMoneyInAsset(assetId, amount);
-    setMessage({ type: result.success ? 'success' : 'error', text: result.message });
+    setMessage({ type: result.success ? 'success' : 'error', text: translateStoreMessage(tStore, result.message) });
     setStorageAmounts({ ...storageAmounts, [assetId]: '' });
     setTimeout(() => setMessage(null), 3000);
   };
 
   const handleLiquidate = (assetId: string) => {
     const result = liquidateAsset(assetId);
-    setMessage({ type: result.success ? 'success' : 'error', text: result.message });
+    setMessage({ type: result.success ? 'success' : 'error', text: translateStoreMessage(tStore, result.message) });
     setTimeout(() => setMessage(null), 3000);
   };
 
   const getCurrencyIndicator = (currencyType?: 'clean' | 'dirty' | 'any') => {
-    if (currencyType === 'clean') return '💵 Limpio';
-    if (currencyType === 'dirty') return '💰 Sucio';
-    return '💸 Cualquiera';
+    // Use direct translation keys that exist in Game.AssetsList
+    if (currencyType === 'clean') return `💵 ${t('clean')}`;
+    if (currencyType === 'dirty') return `💰 ${t('dirty')}`;
+    return `💸 ${t('any')}`;
   };
 
   const canAffordAsset = (assetTemplate: typeof luxuryAssets[0] | typeof corruptionAssetTemplates[0] | typeof infrastructureAssets[0]) => {
@@ -136,15 +142,15 @@ export function AssetsList() {
         <Card className="bg-game-background-darker p-3 border-gray-700">
           <div className="text-sm space-y-1">
             <div className="flex justify-between">
-              <span className="text-gray-400">Ingreso pasivo:</span>
+              <span className="text-gray-400">{t('passiveIncome')}</span>
               <span className="text-green-400">+{formatCurrency(passiveIncome)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Mantenimiento:</span>
+              <span className="text-gray-400">{t('maintenanceCost')}</span>
               <span className="text-red-400">-{formatCurrency(maintenanceCosts)}</span>
             </div>
             <div className="flex justify-between border-t border-gray-700 pt-1 mt-1">
-              <span className="text-white font-bold">Flujo neto:</span>
+              <span className="text-white font-bold">{t('netCashFlow')}</span>
               <span className={`font-bold ${netCashFlow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                 {netCashFlow >= 0 ? '+' : ''}{formatCurrency(netCashFlow)}
               </span>
@@ -155,30 +161,30 @@ export function AssetsList() {
 
       {/* Owned Assets */}
       <div>
-        <h3 className="font-bold mb-3 text-white">Activos Poseídos</h3>
+        <h3 className="font-bold mb-3 text-white">{t('ownedAssets')}</h3>
         {assets.length > 0 ? (
           <div className="space-y-2">
             {assets.map((asset) => (
               <Card key={asset.id} className="bg-game-background-darker p-3 border-gray-700">
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
-                    <div className="font-bold text-white">{asset.name}</div>
+                    <AssetNameDisplay assetType={asset.type} fallbackName={asset.name} className="font-bold text-white" />
                     <div className="text-sm text-gray-400">
                       {asset.heatReduction > 0 
-                        ? `Heat -${asset.heatReduction}%` 
-                        : `Heat +${Math.abs(asset.heatReduction)}%`}
-                      {asset.passiveIncome && ` | Ingreso: +${formatCurrency(asset.passiveIncome)}/min`}
-                      {asset.maintenanceCost && ` | Mantenimiento: -${formatCurrency(asset.maintenanceCost)}/min`}
-                      {asset.storedFunds && asset.storedFunds > 0 && ` | Almacenado: ${formatCurrency(asset.storedFunds)}`}
+                        ? `${t('heat')} -${asset.heatReduction}%` 
+                        : `${t('heat')} +${Math.abs(asset.heatReduction)}%`}
+                      {asset.passiveIncome && ` | ${t('income')} +${formatCurrency(asset.passiveIncome)}/min`}
+                      {asset.maintenanceCost && ` | ${t('maintenance')} -${formatCurrency(asset.maintenanceCost)}/min`}
+                      {asset.storedFunds && asset.storedFunds > 0 && ` | ${t('stored')} ${formatCurrency(asset.storedFunds)}`}
                     </div>
                     {asset.betrayalRisk && (
                       <Badge variant="outline" className="text-yellow-400 border-yellow-600 mt-1">
-                        Riesgo traición: {asset.betrayalRisk}%
+                        {t('betrayalRisk')} {asset.betrayalRisk}%
                       </Badge>
                     )}
                     {asset.seizureRisk && (
                       <Badge variant="outline" className="text-orange-400 border-orange-600 mt-1 ml-1">
-                        Riesgo confiscación: {asset.seizureRisk}%
+                        {t('seizureRisk')} {asset.seizureRisk}%
                       </Badge>
                     )}
                   </div>
@@ -187,7 +193,7 @@ export function AssetsList() {
                       <div className="space-y-1">
                         <input
                           type="number"
-                          placeholder="Almacenar $"
+                          placeholder={t('store') + ' $'}
                           className="w-24 px-2 py-1 bg-game-background text-white text-xs rounded border border-gray-600"
                           value={storageAmounts[asset.id] || ''}
                           onChange={(e) => setStorageAmounts({ ...storageAmounts, [asset.id]: e.target.value })}
@@ -197,7 +203,7 @@ export function AssetsList() {
                           onClick={() => handleStoreMoney(asset.id)}
                           className="w-24 h-6 text-xs bg-primary-500 hover:bg-primary-600"
                         >
-                          Almacenar
+                          {t('store')}
                         </Button>
                       </div>
                     )}
@@ -206,7 +212,7 @@ export function AssetsList() {
                       onClick={() => handleLiquidate(asset.id)}
                       className="h-6 text-xs bg-red-500/20 hover:bg-red-500/30 text-red-400"
                     >
-                      Liquidar
+                      {t('liquidate')}
                     </Button>
                   </div>
                 </div>
@@ -214,13 +220,13 @@ export function AssetsList() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-500">No tienes activos aún</p>
+          <p className="text-sm text-gray-500">{t('noAssetsOwned')}</p>
         )}
       </div>
 
       {/* Buy Assets - Luxury */}
       <div className="border-t border-gray-700 pt-4">
-        <h3 className="font-bold mb-3 text-white">Bienes de Lujo</h3>
+        <h3 className="font-bold mb-3 text-white">{t('luxuryAssets')}</h3>
         <div className="space-y-2">
           {filteredLuxuryAssets.map((asset) => {
             const canAfford = canAffordAsset(asset);
@@ -236,7 +242,7 @@ export function AssetsList() {
                 <div className="mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <div className="font-bold text-white">{asset.name}</div>
+                      <AssetNameDisplay assetType={asset.type} fallbackName={asset.name} className="font-bold text-white" />
                       {(() => {
                         const assetContent = getAssetContent(asset.type);
                         return assetContent ? (
@@ -250,16 +256,31 @@ export function AssetsList() {
                     >
                       {formatCurrency(asset.cost)}
                     </Badge>
-                    <div className="text-sm text-gray-400">{asset.description}</div>
-                    <div className="flex gap-2 mt-1">
+                    <AssetDescriptionDisplay assetType={asset.type} fallbackDescription={asset.description} className="text-sm text-gray-400" />
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {asset.heatReduction > 0 && (
+                        <Badge variant="outline" className="text-green-400 border-green-600 text-xs">
+                          {t('heat')} -{asset.heatReduction}%
+                        </Badge>
+                      )}
+                      {asset.heatReduction < 0 && (
+                        <Badge variant="outline" className="text-red-400 border-red-600 text-xs">
+                          {t('heat')} +{Math.abs(asset.heatReduction)}%
+                        </Badge>
+                      )}
                       {asset.passiveIncome && (
                         <Badge variant="outline" className="text-green-400 border-green-600 text-xs">
-                          +{formatCurrency(asset.passiveIncome)}/min
+                          {t('income')} +{formatCurrency(asset.passiveIncome)}/min
+                        </Badge>
+                      )}
+                      {asset.maintenanceCost && (
+                        <Badge variant="outline" className="text-yellow-400 border-yellow-600 text-xs">
+                          {t('maintenance')} -{formatCurrency(asset.maintenanceCost)}/min
                         </Badge>
                       )}
                       {asset.seizureRisk && (
                         <Badge variant="outline" className="text-orange-400 border-orange-600 text-xs">
-                          Confiscación: {asset.seizureRisk}%
+                          {t('confiscation')} {asset.seizureRisk}%
                         </Badge>
                       )}
                       <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
@@ -269,16 +290,16 @@ export function AssetsList() {
                   </div>
                 </div>
                 {alreadyOwned ? (
-                  <p className="text-xs text-gray-500">Ya posees este activo</p>
+                  <p className="text-xs text-gray-500">{t('alreadyOwned')}</p>
                 ) : !canAfford ? (
-                  <p className="text-xs text-red-400">Fondos insuficientes</p>
+                  <p className="text-xs text-red-400">{t('insufficientFunds')}</p>
                 ) : (
                   <Button
                     size="sm"
                     onClick={() => handlePurchase(asset)}
                     className="w-full mt-2 bg-primary-500 hover:bg-primary-600"
                   >
-                    Comprar
+                    {t('purchase')}
                   </Button>
                 )}
               </Card>
@@ -289,7 +310,7 @@ export function AssetsList() {
 
       {/* Buy Assets - Corruption */}
       <div className="border-t border-gray-700 pt-4">
-        <h3 className="font-bold mb-3 text-white">Corrupción</h3>
+        <h3 className="font-bold mb-3 text-white">{t('corruptionAssets')}</h3>
         <div className="space-y-2">
           {filteredCorruptionAssets.map((asset) => {
             const selectedCountry = selectedCountryForCorruption[asset.type];
@@ -306,7 +327,7 @@ export function AssetsList() {
                 <div className="mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <div className="font-bold text-white">{asset.name}</div>
+                      <AssetNameDisplay assetType={asset.type} fallbackName={asset.name} className="font-bold text-white" />
                       {(() => {
                         const assetContent = getAssetContent(asset.type);
                         return assetContent ? (
@@ -320,7 +341,7 @@ export function AssetsList() {
                     >
                       {formatCurrency(asset.cost)}
                     </Badge>
-                    <div className="text-sm text-gray-400">{asset.description}</div>
+                    <AssetDescriptionDisplay assetType={asset.type} fallbackDescription={asset.description} className="text-sm text-gray-400" />
                     <div className="flex gap-2 mt-1">
                       {asset.maintenanceCost && (
                         <Badge variant="outline" className="text-red-400 border-red-600 text-xs">
@@ -329,7 +350,7 @@ export function AssetsList() {
                       )}
                       {asset.betrayalRisk && (
                         <Badge variant="outline" className="text-yellow-400 border-yellow-600 text-xs">
-                          Traición: {asset.betrayalRisk}%
+                          {t('betrayal')} {asset.betrayalRisk}%
                         </Badge>
                       )}
                       <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
@@ -345,7 +366,7 @@ export function AssetsList() {
                     onValueChange={(value) => setSelectedCountryForCorruption({ ...selectedCountryForCorruption, [asset.type]: value })}
                   >
                     <SelectTrigger className="w-full bg-game-background border-gray-600 text-white">
-                      <SelectValue placeholder="Selecciona un país" />
+                      <SelectValue placeholder={t('selectCountry')} />
                     </SelectTrigger>
                     <SelectContent>
                       {availableCountries.map((country) => (
@@ -357,10 +378,10 @@ export function AssetsList() {
                   </Select>
                   
                   {selectedCountry && alreadyOwned && (
-                    <p className="text-xs text-gray-500">Ya tienes este activo en este país</p>
+                    <p className="text-xs text-gray-500">{t('assetAlreadyOwnedInCountry')}</p>
                   )}
                   {selectedCountry && !canAfford && (
-                    <p className="text-xs text-red-400">Fondos insuficientes</p>
+                    <p className="text-xs text-red-400">{t('insufficientFunds')}</p>
                   )}
                   {selectedCountry && canAfford && !alreadyOwned && (
                     <Button
@@ -368,11 +389,11 @@ export function AssetsList() {
                       onClick={() => handlePurchase(asset)}
                       className="w-full bg-primary-500 hover:bg-primary-600"
                     >
-                      Comprar en {availableCountries.find(c => c.id === selectedCountry)?.name}
+                      {t('purchaseIn')} {availableCountries.find(c => c.id === selectedCountry)?.name}
                     </Button>
                   )}
                   {!selectedCountry && (
-                    <p className="text-xs text-gray-500">Selecciona un país para comprar</p>
+                    <p className="text-xs text-gray-500">{t('selectCountryToPurchase')}</p>
                   )}
                 </div>
               </Card>
@@ -383,7 +404,7 @@ export function AssetsList() {
 
       {/* Buy Assets - Infrastructure */}
       <div className="border-t border-gray-700 pt-4">
-        <h3 className="font-bold mb-3 text-white">Infraestructura</h3>
+        <h3 className="font-bold mb-3 text-white">{t('infrastructure')}</h3>
         <div className="space-y-2">
           {filteredInfrastructureAssets.map((asset) => {
             const canAfford = canAffordAsset(asset);
@@ -399,7 +420,7 @@ export function AssetsList() {
                 <div className="mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <div className="font-bold text-white">{asset.name}</div>
+                      <AssetNameDisplay assetType={asset.type} fallbackName={asset.name} className="font-bold text-white" />
                       {(() => {
                         const assetContent = getAssetContent(asset.type);
                         return assetContent ? (
@@ -413,23 +434,23 @@ export function AssetsList() {
                     >
                       {formatCurrency(asset.cost)}
                     </Badge>
-                    <div className="text-sm text-gray-400">{asset.description}</div>
+                    <AssetDescriptionDisplay assetType={asset.type} fallbackDescription={asset.description} className="text-sm text-gray-400" />
                     <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs mt-1">
                       {getCurrencyIndicator(asset.currencyType)}
                     </Badge>
                   </div>
                 </div>
                 {alreadyOwned ? (
-                  <p className="text-xs text-gray-500">Ya posees este activo</p>
+                  <p className="text-xs text-gray-500">{t('alreadyOwned')}</p>
                 ) : !canAfford ? (
-                  <p className="text-xs text-red-400">Fondos insuficientes</p>
+                  <p className="text-xs text-red-400">{t('insufficientFunds')}</p>
                 ) : (
                   <Button
                     size="sm"
                     onClick={() => handlePurchase(asset)}
                     className="w-full mt-2 bg-primary-500 hover:bg-primary-600"
                   >
-                    Comprar
+                    {t('purchase')}
                   </Button>
                 )}
               </Card>

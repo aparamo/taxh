@@ -115,6 +115,65 @@ export const infrastructureAssets: AssetTemplate[] = [
   },
 ];
 
+// Corporate assets for Multinational role
+export const corporateAssets: AssetTemplate[] = [
+  {
+    type: 'corporate_office',
+    name: 'Oficina Corporativa Offshore',
+    cost: 10000000,
+    heatReduction: 2, // Reduces heat (legitimate business structure)
+    description: 'Oficina corporativa en jurisdicción offshore. Reduce heat 2% y genera ingresos pasivos. Estructura legítima para operaciones internacionales.',
+    currencyType: 'clean', // Corporate profits are clean
+    passiveIncome: 100000, // $100k per game tick
+    seizureRisk: 5, // Low risk (legitimate structure)
+    storedFunds: 0,
+  },
+  {
+    type: 'patent_portfolio',
+    name: 'Portafolio de Patentes',
+    cost: 25000000,
+    heatReduction: 3, // Reduces heat (IP holding)
+    description: 'Portafolio de propiedad intelectual en jurisdicción de baja tributación. Reduce heat 3% y permite precios de transferencia agresivos. Estructura común para multinacionales tecnológicas.',
+    currencyType: 'clean',
+    passiveIncome: 150000, // $150k per game tick (royalties)
+    seizureRisk: 2, // Very low risk (IP is intangible)
+    storedFunds: 0,
+  },
+  {
+    type: 'offshore_subsidiary',
+    name: 'Filial Offshore',
+    cost: 50000000,
+    heatReduction: 1, // Reduces heat (tax optimization structure)
+    description: 'Filial corporativa en paraíso fiscal para optimización fiscal. Reduce heat 1% y permite estructuras de precios de transferencia. Base para operaciones internacionales.',
+    currencyType: 'clean',
+    passiveIncome: 200000, // $200k per game tick
+    seizureRisk: 8, // Moderate risk (can be investigated)
+    storedFunds: 0,
+  },
+  {
+    type: 'distribution_network',
+    name: 'Red de Distribución',
+    cost: 30000000,
+    heatReduction: 0, // No heat reduction (facilitates trade-based ML)
+    description: 'Red de distribución internacional para facilitar comercio. Permite lavado basado en comercio y justifica flujos financieros. Estructura común para multinacionales.',
+    currencyType: 'clean',
+    passiveIncome: 120000, // $120k per game tick
+    seizureRisk: 10, // Higher risk (can be used for trade-based ML)
+    storedFunds: 0,
+  },
+  {
+    type: 'data_center',
+    name: 'Centro de Datos',
+    cost: 40000000,
+    heatReduction: 1, // Reduces heat (infrastructure investment)
+    description: 'Centro de datos en jurisdicción favorable. Reduce heat 1% y genera ingresos pasivos. Inversión en infraestructura legítima.',
+    currencyType: 'clean',
+    passiveIncome: 180000, // $180k per game tick
+    seizureRisk: 5, // Low risk (infrastructure)
+    storedFunds: 0,
+  },
+];
+
 // Helper to create country-specific corruption asset
 export function createCorruptionAsset(
   template: AssetTemplate,
@@ -129,7 +188,7 @@ export function createCorruptionAsset(
 
 // Get all available asset templates
 export function getAllAssetTemplates(): AssetTemplate[] {
-  return [...luxuryAssets, ...corruptionAssetTemplates, ...infrastructureAssets];
+  return [...luxuryAssets, ...corruptionAssetTemplates, ...infrastructureAssets, ...corporateAssets];
 }
 
 // Get corruption templates

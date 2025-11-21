@@ -19,7 +19,7 @@ export default async function LocaleLayout({children}: Props) {
   return (
     <html lang={locale}>
       <head>
-        <title>starter</title>
+        <title>💸 TaxH 🚨</title>
       </head>
       <body
         className={clsx(

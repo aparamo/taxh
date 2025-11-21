@@ -47,7 +47,7 @@ export const TransactionSchema = z.object({
 
 export const AssetSchema = z.object({
   id: z.string(),
-  type: z.enum(['yacht', 'mansion', 'art', 'luxury_car', 'rolex', 'politician', 'judge', 'police', 'bank_relationship']),
+  type: z.enum(['yacht', 'mansion', 'art', 'luxury_car', 'rolex', 'politician', 'judge', 'police', 'bank_relationship', 'corporate_office', 'patent_portfolio', 'offshore_subsidiary', 'distribution_network', 'data_center']),
   name: z.string(),
   cost: z.number().positive(),
   heatReduction: z.number().min(0),

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import { X, Lightbulb, History } from 'lucide-react';
 import { AdvisorHint as AdvisorHintType } from '@/game/data/realCases';
+import {useTranslations} from 'next-intl';
 
 interface AdvisorHintProps {
   hint: AdvisorHintType;
@@ -14,6 +15,7 @@ interface AdvisorHintProps {
 }
 
 export function AdvisorHint({ hint, onDismiss }: AdvisorHintProps) {
+  const t = useTranslations('Game.AdvisorHint');
   const [showHistorical, setShowHistorical] = useState(false);
 
   return (
@@ -33,7 +35,7 @@ export function AdvisorHint({ hint, onDismiss }: AdvisorHintProps) {
           <div className="flex-1 space-y-3">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-bold text-yellow-400 mb-1">Consejo del Asesor</h3>
+                <h3 className="font-bold text-yellow-400 mb-1">{t('title')}</h3>
                 <p className="text-sm text-gray-300 leading-relaxed">{hint.hint}</p>
               </div>
               <Button
@@ -55,7 +57,7 @@ export function AdvisorHint({ hint, onDismiss }: AdvisorHintProps) {
                 className="w-full text-xs text-yellow-300 hover:text-yellow-200 hover:bg-yellow-500/10"
               >
                 <History size={12} className="mr-2" />
-                {showHistorical ? 'Ocultar' : 'Ver'} contexto histórico
+                {showHistorical ? t('hideHistorical') : t('showHistorical')}
               </Button>
               
               <AnimatePresence>
@@ -69,7 +71,7 @@ export function AdvisorHint({ hint, onDismiss }: AdvisorHintProps) {
                   >
                     <div className="mt-2 bg-game-background-darker rounded p-3 border border-yellow-500/20">
                       <p className="text-xs text-gray-400 leading-relaxed">
-                        <strong className="text-yellow-400">Lo que realmente pasó:</strong>{' '}
+                        <strong className="text-yellow-400">{t('historicalContext')}</strong>{' '}
                         {hint.historicalContext}
                       </p>
                     </div>

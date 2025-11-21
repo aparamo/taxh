@@ -97,17 +97,23 @@ export function getFilteredAssets(role: GameRole, isTutorial: boolean = false) {
       );
     
     case 'cartel':
-      // Cartels prefer corruption assets for protection
+      // Cartels prefer corruption assets for protection, avoid luxury assets
       return allAssets.filter(a => 
         a.isCorruption || a.type === 'yacht' || a.type === 'luxury_car'
       );
     
     case 'multinational':
-      // Multinationals prefer infrastructure and low-profile assets
+      // Multinationals prefer corporate assets, infrastructure, and avoid luxury assets
       return allAssets.filter(a => 
-        a.type === 'bank_relationship' || 
-        a.type === 'art' || 
-        a.type === 'mansion' ||
+        // Corporate assets
+        a.type === 'corporate_office' ||
+        a.type === 'patent_portfolio' ||
+        a.type === 'offshore_subsidiary' ||
+        a.type === 'distribution_network' ||
+        a.type === 'data_center' ||
+        // Infrastructure
+        a.type === 'bank_relationship' ||
+        // Low-profile corruption only
         (a.isCorruption && a.type === 'politician')
       );
     

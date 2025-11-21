@@ -6,8 +6,10 @@ import { getHeatColor } from '@/game/logic/heat';
 import { motion } from 'motion/react';
 import { InfoButton } from './InfoButton';
 import { getHeatContent } from '@/game/data/educationalContent';
+import {useTranslations} from 'next-intl';
 
 export function HeatMeter() {
+  const t = useTranslations('Game.HeatMeter');
   const heat = useGameStore((state) => state.heat);
 
   return (
@@ -19,7 +21,7 @@ export function HeatMeter() {
         animate={{ scale: 1, color: getHeatColor(heat.total).replace('text-', '#') }}
         transition={{ duration: 0.3 }}
       >
-        <div className="text-sm text-gray-400">Heat Total</div>
+        <div className="text-sm text-gray-400">{t('total')}</div>
         <div className={`text-2xl font-bold ${getHeatColor(heat.total)}`}>
           {heat.total.toFixed(1)}%
         </div>
@@ -29,7 +31,7 @@ export function HeatMeter() {
         <div>
           <div className="flex items-center justify-between text-xs mb-1">
             <div className="flex items-center gap-1">
-              <span className="text-red-400">Legal</span>
+              <span className="text-red-400">{t('legal')}</span>
               {(() => {
                 const heatContent = getHeatContent('legal');
                 return heatContent ? (
@@ -44,7 +46,7 @@ export function HeatMeter() {
         <div>
           <div className="flex items-center justify-between text-xs mb-1">
             <div className="flex items-center gap-1">
-              <span className="text-yellow-400">Medios periodísticos</span>
+              <span className="text-yellow-400">{t('media')}</span>
               {(() => {
                 const heatContent = getHeatContent('media');
                 return heatContent ? (
@@ -59,7 +61,7 @@ export function HeatMeter() {
         <div>
           <div className="flex items-center justify-between text-xs mb-1">
             <div className="flex items-center gap-1">
-              <span className="text-blue-400">Político</span>
+              <span className="text-blue-400">{t('political')}</span>
               {(() => {
                 const heatContent = getHeatContent('political');
                 return heatContent ? (

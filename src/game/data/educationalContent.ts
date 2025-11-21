@@ -564,3 +564,68 @@ export function getAssetContent(assetType: string): EducationalContent | undefin
 export function getHeatContent(heatType: 'legal' | 'media' | 'political'): EducationalContent | undefined {
   return heatContent[`heat-${heatType}`];
 }
+
+// Scenario-specific educational content
+export const scenarioContent: Record<string, EducationalContent> = {
+  'multimillionaire-inheritance': {
+    id: 'scenario-multimillionaire-inheritance',
+    title: 'Herencia No Declarada',
+    shortDescription: 'Escenario basado en casos reales de individuos de alto patrimonio que heredaron fondos no declarados y necesitaron legitimarlos mediante estructuras offshore.',
+    fullDescription: 'Este escenario está basado en miles de casos documentados en Panama Papers (2016) y Paradise Papers (2017), donde individuos de alto patrimonio heredaron o recibieron fondos no declarados que necesitaron legitimar mediante estructuras offshore. Los casos más comunes involucran empresarios que mantuvieron efectivo fuera del sistema bancario para evadir impuestos, y sus herederos enfrentaron el desafío de legitimar estos fondos sin atraer atención de autoridades fiscales.',
+    description: 'Escenario basado en casos reales de herencias no declaradas.',
+    sources: [
+      { name: 'ICIJ Panama Papers', url: 'https://www.icij.org/investigations/panama-papers/', credibility: 'A+' },
+      { name: 'ICIJ Paradise Papers', url: 'https://www.icij.org/investigations/paradise-papers/', credibility: 'A+' },
+    ],
+    realCase: {
+      name: 'Panama Papers / Paradise Papers',
+      year: '2016-2017',
+      amount: 'Miles de millones USD',
+      outcome: 'Revelación masiva, investigaciones fiscales globales',
+    },
+    keyFigures: ['Mossack Fonseca', 'Appleby', 'Offshore service providers'],
+  },
+  'cartel-drug-trafficking': {
+    id: 'scenario-cartel-drug-trafficking',
+    title: 'Lavado de Dinero de Carteles',
+    shortDescription: 'Escenario basado en casos reales de organizaciones criminales que necesitaron lavar grandes volúmenes de efectivo de ventas de drogas ilícitas.',
+    fullDescription: 'Este escenario está basado en casos reales documentados como el Russian Laundromat (2010-2014, $20.8 mil millones lavados) y redes de lavado de dinero de carteles documentadas por Global Financial Integrity y la DEA. Los carteles enfrentan desafíos únicos: necesitan mover grandes volúmenes de efectivo rápidamente, pero generan más atención de autoridades que otros actores. Los mecanismos de alto volumen como banca corresponsal y comercio internacional son esenciales, pero generan heat significativo.',
+    description: 'Escenario basado en casos reales de lavado de dinero de carteles.',
+    sources: [
+      { name: 'OCCRP Russian Laundromat', url: 'https://www.occrp.org/en/laundromat/', credibility: 'A+' },
+      { name: 'Global Financial Integrity', url: 'https://gfintegrity.org/', credibility: 'A+' },
+      { name: 'DEA', url: 'https://www.dea.gov/', credibility: 'A+' },
+    ],
+    realCase: {
+      name: 'Russian Laundromat',
+      year: '2010-2014',
+      amount: '$20.8 mil millones',
+      outcome: 'Descubierto por periodistas, investigaciones internacionales',
+    },
+    keyFigures: ['Moldovan banks', 'BVI structures', 'Russian organized crime'],
+  },
+  'multinational-tax-optimization': {
+    id: 'scenario-multinational-tax-optimization',
+    title: 'Optimización Fiscal Corporativa',
+    shortDescription: 'Escenario basado en casos reales de multinacionales que utilizaron estructuras internacionales para minimizar impuestos corporativos.',
+    fullDescription: 'Este escenario está basado en casos reales documentados como LuxLeaks (2014, estructuras en Luxemburgo), Double Irish (Apple, 1990s-2015), y estructuras corporativas reveladas en Paradise Papers (2017). Las multinacionales utilizan mecanismos legales como precios de transferencia, estructuras de propiedad beneficial, y países conducto para mover beneficios a jurisdicciones de bajo impuesto. Aunque son operaciones legales (no lavado de dinero), las estructuras agresivas pueden cruzar la línea hacia evasión fiscal.',
+    description: 'Escenario basado en casos reales de optimización fiscal corporativa.',
+    sources: [
+      { name: 'ICIJ LuxLeaks', url: 'https://www.icij.org/investigations/luxembourg-leaks/', credibility: 'A+' },
+      { name: 'ICIJ Paradise Papers', url: 'https://www.icij.org/investigations/paradise-papers/', credibility: 'A+' },
+      { name: 'EU Commission', url: 'https://ec.europa.eu/taxation_customs/', credibility: 'A+' },
+    ],
+    realCase: {
+      name: 'LuxLeaks / Double Irish',
+      year: '2014-2015',
+      amount: 'Miles de millones USD',
+      outcome: 'Reformas fiscales, cierre de estructuras agresivas',
+    },
+    keyFigures: ['Apple', 'Amazon', 'Google', 'Luxembourg tax rulings'],
+  },
+};
+
+// Helper to get scenario content
+export function getScenarioContent(scenarioId: string): EducationalContent | undefined {
+  return scenarioContent[scenarioId];
+}

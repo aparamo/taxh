@@ -16,12 +16,17 @@ import { getRealCaseById } from '@/game/data/realCases';
 import { getCountryContent, getMechanismContent } from '@/game/data/educationalContent';
 import { ExternalLink, LayoutDashboard, ArrowLeftRight, Coins, BookOpen } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {useTranslations} from 'next-intl';
+import { CountryNameDisplay, MechanismNameDisplay, RealCaseNameDisplay, AssetNameDisplay } from '@/game/utils/translations';
+import React from 'react';
 
 export function Dashboard() {
+  const t = useTranslations('Game.Dashboard');
   const cleanFunds = useGameStore((state) => state.cleanFunds);
   const assets = useGameStore((state) => state.assets);
   const activeCountries = useGameStore((state) => state.activeCountries);
   const activeMechanisms = useGameStore((state) => state.activeMechanisms);
+  const activeEnhancements = useGameStore((state) => state.activeEnhancements);
   const currentObjective = useGameStore((state) => state.currentObjective);
   const getPassiveIncome = useGameStore((state) => state.getPassiveIncome);
   const getMaintenanceCosts = useGameStore((state) => state.getMaintenanceCosts);
@@ -67,11 +72,11 @@ export function Dashboard() {
               <TooltipTrigger asChild>
                 <TabsTrigger value="overview" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-primary-500/20 !text-[10px] sm:!text-xs md:!text-xs px-1 sm:px-2 md:px-3 xl:px-4 py-2.5 whitespace-nowrap min-w-0 h-auto flex items-center justify-center gap-1.5 md:gap-0 xl:gap-1.5">
                   <LayoutDashboard className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 xl:w-4 xl:h-4 flex-shrink-0" />
-                  <span className="md:hidden xl:inline">Resumen</span>
+                  <span className="md:hidden xl:inline">{t('tabs.overview')}</span>
                 </TabsTrigger>
               </TooltipTrigger>
               <TooltipContent className="bg-game-background-darker border-gray-700">
-                <p className="text-sm font-medium">Resumen</p>
+                <p className="text-sm font-medium">{t('tabs.overview')}</p>
               </TooltipContent>
             </Tooltip>
             
@@ -79,11 +84,11 @@ export function Dashboard() {
               <TooltipTrigger asChild>
                 <TabsTrigger value="transactions" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-primary-500/20 !text-[10px] sm:!text-xs md:!text-xs px-1 sm:px-2 md:px-3 xl:px-4 py-2.5 whitespace-nowrap min-w-0 h-auto flex items-center justify-center gap-1.5 md:gap-0 xl:gap-1.5">
                   <ArrowLeftRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 xl:w-4 xl:h-4 flex-shrink-0" />
-                  <span className="md:hidden xl:inline">Transacciones</span>
+                  <span className="md:hidden xl:inline">{t('tabs.transactions')}</span>
                 </TabsTrigger>
               </TooltipTrigger>
               <TooltipContent className="bg-game-background-darker border-gray-700">
-                <p className="text-sm font-medium">Transacciones</p>
+                <p className="text-sm font-medium">{t('tabs.transactions')}</p>
               </TooltipContent>
             </Tooltip>
             
@@ -95,11 +100,11 @@ export function Dashboard() {
                   data-tutorial-target="assets-tab"
                 >
                   <Coins className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 xl:w-4 xl:h-4 flex-shrink-0" />
-                  <span className="md:hidden xl:inline">Activos</span>
+                  <span className="md:hidden xl:inline">{t('tabs.assets')}</span>
                 </TabsTrigger>
               </TooltipTrigger>
               <TooltipContent className="bg-game-background-darker border-gray-700">
-                <p className="text-sm font-medium">Activos</p>
+                <p className="text-sm font-medium">{t('tabs.assets')}</p>
               </TooltipContent>
             </Tooltip>
             
@@ -107,18 +112,18 @@ export function Dashboard() {
               <TooltipTrigger asChild>
                 <TabsTrigger value="educational" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-primary-500/20 !text-[10px] sm:!text-xs md:!text-xs px-1 sm:px-2 md:px-3 xl:px-4 py-2.5 whitespace-nowrap min-w-0 h-auto flex items-center justify-center gap-1.5 md:gap-0 xl:gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 xl:w-4 xl:h-4 flex-shrink-0" />
-                  <span className="md:hidden xl:inline">Contexto</span>
+                  <span className="md:hidden xl:inline">{t('tabs.educational')}</span>
                 </TabsTrigger>
               </TooltipTrigger>
               <TooltipContent className="bg-game-background-darker border-gray-700">
-                <p className="text-sm font-medium">Contexto</p>
+                <p className="text-sm font-medium">{t('tabs.educational')}</p>
               </TooltipContent>
             </Tooltip>
           </TabsList>
 
         <TabsContent value="overview" className="space-y-4 mt-2">
           <div>
-            <h3 className="text-sm text-gray-400 mb-2">Fondos blanqueados</h3>
+            <h3 className="text-sm text-gray-400 mb-2">{t('overview.launderedFunds')}</h3>
             <p className="text-2xl font-bold text-primary-500">
               {formatCurrency(cleanFunds)}
             </p>
@@ -127,18 +132,18 @@ export function Dashboard() {
           {/* Cash Flow Summary */}
           {(passiveIncome > 0 || maintenanceCosts > 0) && (
             <div className="bg-game-background-darker p-3 rounded-lg border border-gray-700">
-              <h3 className="text-sm font-bold mb-2 text-white">Flujo de caja</h3>
+              <h3 className="text-sm font-bold mb-2 text-white">{t('overview.cashFlow')}</h3>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Ingreso pasivo:</span>
+                  <span className="text-gray-400">{t('overview.passiveIncome')}</span>
                   <span className="text-green-400">+{formatCurrency(passiveIncome)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Mantenimiento:</span>
+                  <span className="text-gray-400">{t('overview.maintenance')}</span>
                   <span className="text-red-400">-{formatCurrency(maintenanceCosts)}</span>
                 </div>
                 <div className="flex justify-between border-t border-gray-700 pt-1 mt-1">
-                  <span className="text-white font-bold">Neto:</span>
+                  <span className="text-white font-bold">{t('overview.net')}</span>
                   <span className={`font-bold ${netCashFlow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {netCashFlow >= 0 ? '+' : ''}{formatCurrency(netCashFlow)}
                   </span>
@@ -150,21 +155,21 @@ export function Dashboard() {
           {/* Asset Summary */}
           {assets.length > 0 && (
             <div className="bg-game-background-darker p-3 rounded-lg border border-gray-700">
-              <h3 className="text-sm font-bold mb-2 text-white">Resumen de activos</h3>
+              <h3 className="text-sm font-bold mb-2 text-white">{t('overview.assetSummary')}</h3>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Total activos:</span>
+                  <span className="text-gray-400">{t('overview.totalAssets')}</span>
                   <span className="text-white">{assets.length}</span>
                 </div>
                 {totalStoredFunds > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Fondos almacenados:</span>
+                    <span className="text-gray-400">{t('overview.storedFunds')}</span>
                     <span className="text-white">{formatCurrency(totalStoredFunds)}</span>
                   </div>
                 )}
                 {totalBetrayalRisk > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Riesgo traición promedio:</span>
+                    <span className="text-gray-400">{t('overview.avgBetrayalRisk')}</span>
                     <Badge variant="outline" className="text-yellow-400 border-yellow-600">
                       {Math.round(totalBetrayalRisk)}%
                     </Badge>
@@ -172,7 +177,7 @@ export function Dashboard() {
                 )}
                 {totalSeizureRisk > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Riesgo confiscación promedio:</span>
+                    <span className="text-gray-400">{t('overview.avgSeizureRisk')}</span>
                     <Badge variant="outline" className="text-orange-400 border-orange-600">
                       {Math.round(totalSeizureRisk)}%
                     </Badge>
@@ -183,7 +188,7 @@ export function Dashboard() {
           )}
 
           <div>
-            <h3 className="text-sm text-gray-400 mb-2">Países activos</h3>
+            <h3 className="text-sm text-gray-400 mb-2">{t('overview.activeCountries')}</h3>
             <div className="space-y-2">
               {activeCountries.length > 0 ? (
                 activeCountries.map((countryId) => {
@@ -193,33 +198,57 @@ export function Dashboard() {
                       key={countryId}
                       className="bg-game-background-darker p-2 rounded text-sm text-gray-300"
                     >
-                      {country?.flagEmoji} {country?.name || countryId}
+                      {country?.flagEmoji}{' '}
+                      <CountryNameDisplay 
+                        countryId={countryId} 
+                        fallbackName={country?.name || countryId}
+                        className="inline"
+                      />
                     </div>
                   );
                 })
               ) : (
-                <p className="text-sm text-gray-500">Ningún país seleccionado</p>
+                <p className="text-sm text-gray-500">{t('overview.noCountrySelected')}</p>
               )}
             </div>
           </div>
 
           <div>
-            <h3 className="text-sm text-gray-400 mb-2">Mecanismos activos</h3>
+            <h3 className="text-sm text-gray-400 mb-2">{t('overview.activeMechanisms')}</h3>
             <div className="space-y-2">
               {activeMechanisms.length > 0 ? (
                 activeMechanisms.map((mechanismId) => {
                   const mechanism = getMechanismById(mechanismId);
+                  const isEnhancement = activeEnhancements.includes(mechanismId);
                   return (
                     <div
                       key={mechanismId}
-                      className="bg-game-background-darker p-2 rounded text-sm text-gray-300"
+                      className={`bg-game-background-darker p-2 rounded text-sm ${
+                        isEnhancement ? 'border border-blue-500/50' : ''
+                      }`}
                     >
-                      {mechanism?.name || mechanismId}
+                      <div className="flex items-center gap-2">
+                        <MechanismNameDisplay 
+                          mechanismId={mechanismId}
+                          fallbackName={mechanism?.name || mechanismId}
+                          className="text-gray-300"
+                        />
+                        {isEnhancement && (
+                          <Badge variant="outline" className="text-xs text-blue-400 border-blue-500/50">
+                            {t('overview.activeEnhancement')}
+                          </Badge>
+                        )}
+                      </div>
+                      {isEnhancement && (
+                        <p className="text-xs text-blue-300/80 mt-1">
+                          {t('overview.enhancementBenefits')}
+                        </p>
+                      )}
                     </div>
                   );
                 })
               ) : (
-                <p className="text-sm text-gray-500">Ningún mecanismo activo</p>
+                <p className="text-sm text-gray-500">{t('overview.noMechanismSelected')}</p>
               )}
             </div>
           </div>
@@ -227,18 +256,32 @@ export function Dashboard() {
           {/* Corruption by Country */}
           {corruptionByCountry.length > 0 && (
             <div>
-              <h3 className="text-sm text-gray-400 mb-2">Corrupción por país</h3>
+              <h3 className="text-sm text-gray-400 mb-2">{t('overview.corruptionByCountry')}</h3>
               <div className="space-y-2">
                 {corruptionByCountry.map(({ country, corruption, count }) => (
                   <div key={country.id} className="bg-game-background-darker p-2 rounded">
                     <div className="text-sm text-white font-bold mb-1">
-                      {country.flagEmoji} {country.name}
+                      {country.flagEmoji}{' '}
+                      <CountryNameDisplay 
+                        countryId={country.id} 
+                        fallbackName={country.name}
+                        className="inline"
+                      />
                     </div>
                     <div className="text-xs text-gray-400">
-                      {corruption.map((asset) => asset.name).join(', ')}
+                      {corruption.map((asset, idx) => (
+                        <React.Fragment key={asset.id}>
+                          {idx > 0 && ', '}
+                          <AssetNameDisplay 
+                            assetType={asset.type} 
+                            fallbackName={asset.name}
+                            className="inline"
+                          />
+                        </React.Fragment>
+                      ))}
                     </div>
                     <Badge variant="outline" className="text-xs mt-1 text-yellow-400 border-yellow-600">
-                      {count} conexión{count !== 1 ? 'es' : ''}
+                      {count} {count !== 1 ? t('overview.connections') : t('overview.connection')}
                     </Badge>
                   </div>
                 ))}
@@ -248,7 +291,7 @@ export function Dashboard() {
 
           {currentObjective && (
             <div className="bg-primary-500/10 border border-primary-500/30 p-4 rounded-lg">
-              <h3 className="text-sm font-bold mb-2 text-white">Objetivo actual</h3>
+              <h3 className="text-sm font-bold mb-2 text-white">{t('overview.currentObjective')}</h3>
               <p className="text-sm text-gray-300">{currentObjective.description}</p>
             </div>
           )}
@@ -275,7 +318,10 @@ export function Dashboard() {
             return (
               <div className="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-lg space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-yellow-400">Caso Real: {realCase.name}</h3>
+                  <h3 className="text-sm font-bold text-yellow-400">
+                    {t('educational.realCase')}{' '}
+                    <RealCaseNameDisplay caseId={realCaseId} fallbackName={realCase.name} className="inline" />
+                  </h3>
                   <Badge variant="outline" className="text-yellow-400 border-yellow-500/50">
                     {realCase.protagonist}
                   </Badge>
@@ -283,23 +329,23 @@ export function Dashboard() {
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Progreso histórico:</span>
+                    <span className="text-gray-400">{t('educational.historicalProgress')}</span>
                     <span className="text-white">{Math.round(historicalProgress)}%</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Monto histórico:</span>
+                    <span className="text-gray-400">{t('educational.historicalAmount')}</span>
                     <span className="text-white">{formatCurrency(historicalTotalAmount)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Tu monto:</span>
+                    <span className="text-gray-400">{t('educational.yourAmount')}</span>
                     <span className={playerTotalAmount > historicalTotalAmount ? 'text-red-400' : 'text-green-400'}>
                       {formatCurrency(playerTotalAmount)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Resultado histórico:</span>
+                    <span className="text-gray-400">{t('educational.historicalResult')}</span>
                     <Badge variant={realCase.finalOutcome.caught ? 'destructive' : 'outline'} className="text-xs">
-                      {realCase.finalOutcome.caught ? 'Descubierto' : 'Controversial'}
+                      {realCase.finalOutcome.caught ? t('educational.caught') : t('educational.controversial')}
                     </Badge>
                   </div>
                 </div>
@@ -309,22 +355,22 @@ export function Dashboard() {
 
           {/* Risk Comparison */}
           <div className="bg-game-background-darker p-4 rounded-lg border border-gray-700 space-y-3">
-            <h3 className="text-sm font-bold text-white">Comparación de Riesgo</h3>
+            <h3 className="text-sm font-bold text-white">{t('educational.riskComparison')}</h3>
             
             <div className="space-y-2 text-sm">
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-gray-400">Tu heat total:</span>
+                  <span className="text-gray-400">{t('educational.yourHeatTotal')}</span>
                   <Badge variant={heat.total > 50 ? 'destructive' : heat.total > 30 ? 'outline' : 'secondary'} className="text-xs">
                     {heat.total.toFixed(1)}%
                   </Badge>
                 </div>
                 <p className="text-xs text-gray-500">
                   {heat.total > 50 
-                    ? '⚠️ Nivel crítico - similar a casos que fueron descubiertos'
+                    ? t('educational.criticalLevel')
                     : heat.total > 30
-                    ? '⚡ Nivel medio - aumenta vigilancia de autoridades'
-                    : '✓ Nivel bajo - relativamente seguro'}
+                    ? t('educational.mediumLevel')
+                    : t('educational.lowLevel')}
                 </p>
               </div>
 
@@ -361,7 +407,14 @@ export function Dashboard() {
                       const countryContent = country ? getCountryContent(country.id) : null;
                       return (
                         <div key={countryId} className="flex items-center gap-1">
-                          <span className="text-white">{country?.flagEmoji} {country?.name}</span>
+                          <span className="text-white">
+                            {country?.flagEmoji}{' '}
+                            <CountryNameDisplay 
+                              countryId={countryId} 
+                              fallbackName={country?.name || countryId}
+                              className="inline"
+                            />
+                          </span>
                           {countryContent && (
                             <InfoButton content={countryContent} size="sm" />
                           )}
@@ -382,13 +435,17 @@ export function Dashboard() {
               {activeMechanisms.length > 0 && (
                 <div>
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className="text-gray-400">Mecanismos:</span>
+                    <span className="text-gray-400">{t('educational.mechanisms')}</span>
                     {activeMechanisms.map((mechanismId) => {
                       const mechanism = getMechanismById(mechanismId);
                       const mechanismContent = mechanism ? getMechanismContent(mechanism.id) : null;
                       return (
                         <div key={mechanismId} className="flex items-center gap-1">
-                          <span className="text-white">{mechanism?.name}</span>
+                          <MechanismNameDisplay 
+                            mechanismId={mechanismId}
+                            fallbackName={mechanism?.name || mechanismId}
+                            className="text-white"
+                          />
                           {mechanismContent && (
                             <InfoButton content={mechanismContent} size="sm" />
                           )}
@@ -402,15 +459,15 @@ export function Dashboard() {
               {assets.length > 0 && (
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-gray-400">Activos de lujo:</span>
+                    <span className="text-gray-400">{t('educational.luxuryAssets')}</span>
                     <Badge variant="outline" className="text-xs">
                       {assets.filter(a => ['yacht', 'mansion', 'art', 'luxury_car', 'rolex'].includes(a.type)).length}
                     </Badge>
                   </div>
                   <p className="text-xs text-gray-500">
                     {assets.some(a => a.type === 'yacht')
-                      ? '⚠️ Activos visibles (yates) aumentan heat pero muestran riqueza'
-                      : '✓ Activos más discretos'}
+                      ? t('educational.visibleAssets')
+                      : t('educational.discreteAssets')}
                   </p>
                 </div>
               )}
@@ -419,7 +476,7 @@ export function Dashboard() {
 
           {/* Learn More Section */}
           <div className="bg-primary-500/10 border border-primary-500/30 p-4 rounded-lg space-y-2">
-            <h3 className="text-sm font-bold text-primary-400">Aprende Más</h3>
+            <h3 className="text-sm font-bold text-primary-400">{t('educational.learnMore')}</h3>
             <div className="space-y-2 text-xs">
               <Button
                 variant="ghost"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useGameStore } from '@/game/store';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,8 +11,11 @@ import { formatCurrency } from '@/game/logic/validation';
 import { getCountryById } from '@/game/data/countries';
 import { getMechanismById } from '@/game/data/mechanisms';
 import { motion, AnimatePresence } from 'motion/react';
+import {useTranslations} from 'next-intl';
+import { RealCaseNameDisplay, CountryNameDisplay, MechanismNameDisplay } from '@/game/utils/translations';
 
 export function CaseProgressTracker() {
+  const t = useTranslations('Game.CaseProgressTracker');
   const realCaseId = useGameStore((state) => state.realCaseId);
   const transactions = useGameStore((state) => state.transactions);
   const assets = useGameStore((state) => state.assets);
@@ -20,8 +23,17 @@ export function CaseProgressTracker() {
   const [isExpanded, setIsExpanded] = useState(realCaseId ? true : false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const trackerRef = useRef<HTMLDivElement>(null);
+  
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // For real cases, always start expanded
   useEffect(() => {
@@ -30,6 +42,50 @@ export function CaseProgressTracker() {
     }
   }, [realCaseId]);
 
+  // Calculate default position (bottom-left)
+  const getDefaultPosition = useCallback((expanded: boolean = isExpanded): { x: number; y: number } => {
+    if (typeof window === 'undefined') return { x: 16, y: 16 };
+    
+    if (isMobile) {
+      // Mobile: bottom left, above tutorial if present
+      return { 
+        x: 16, 
+        y: window.innerHeight - (expanded ? 400 : 80) - 16 
+      };
+    } else {
+      // Desktop: bottom-left
+      return { 
+        x: 16, 
+        y: window.innerHeight - (expanded ? 500 : 80) - 16 
+      };
+    }
+  }, [isMobile, isExpanded]);
+  
+  // Update position on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (position && typeof window !== 'undefined') {
+        // Validate position is still on screen after resize
+        const trackerWidth = isMobile ? window.innerWidth - 32 : 400;
+        const trackerHeight = isExpanded ? (isMobile ? 400 : 500) : 80;
+        const maxX = window.innerWidth - trackerWidth - 16;
+        const maxY = window.innerHeight - trackerHeight - 16;
+        
+        const newX = Math.max(16, Math.min(position.x, maxX));
+        const newY = Math.max(16, Math.min(position.y, maxY));
+        
+        if (newX !== position.x || newY !== position.y) {
+          const newPosition = { x: newX, y: newY };
+          setPosition(newPosition);
+          savePosition(newX, newY);
+        }
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [position, isMobile, isExpanded]);
+
   // Load saved position from localStorage (hooks must be called before early returns)
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -37,11 +93,22 @@ export function CaseProgressTracker() {
       if (savedPosition) {
         try {
           const { x, y } = JSON.parse(savedPosition);
-          setPosition({ x, y });
+          // Validate saved position is still on screen
+          if (x >= 0 && y >= 0 && x < window.innerWidth && y < window.innerHeight) {
+            setPosition({ x, y });
+          } else {
+            // Invalid position, use default
+            setPosition(getDefaultPosition());
+          }
         } catch {
-          // Invalid saved position
+          // Invalid saved position, use default
+          setPosition(getDefaultPosition());
         }
+      } else {
+        // No saved position, use default
+        setPosition(getDefaultPosition());
       }
+      
       // Only load saved state if not in a real case (real cases should always start open)
       if (!realCaseId) {
         const savedExpanded = localStorage.getItem('case-progress-tracker-expanded');
@@ -50,7 +117,22 @@ export function CaseProgressTracker() {
         }
       }
     }
-  }, [realCaseId]);
+  }, [realCaseId, isMobile, getDefaultPosition]);
+  
+  // Update position when expanded state changes (to account for height change)
+  useEffect(() => {
+    if (position && typeof window !== 'undefined') {
+      // If current position would put it off-screen, adjust
+      const trackerHeight = isExpanded ? (isMobile ? 400 : 500) : 80;
+      const maxY = window.innerHeight - trackerHeight - 16;
+      
+      if (position.y > maxY) {
+        const newPosition = { ...position, y: Math.max(16, maxY) };
+        setPosition(newPosition);
+        savePosition(newPosition.x, newPosition.y);
+      }
+    }
+  }, [isExpanded, isMobile, position]);
 
   // Save position to localStorage
   const savePosition = (x: number, y: number) => {
@@ -60,37 +142,66 @@ export function CaseProgressTracker() {
   };
 
   // Handle drag
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a') || target.closest('[data-no-drag]')) {
       return;
     }
 
-    if (trackerRef.current) {
+    if (trackerRef.current && position) {
       const rect = trackerRef.current.getBoundingClientRect();
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      
       setIsDragging(true);
       setDragStart({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: clientX - rect.left,
+        y: clientY - rect.top,
       });
+      
+      // Prevent default for touch to avoid scrolling
+      if ('touches' in e) {
+        e.preventDefault();
+      }
     }
   };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging && trackerRef.current) {
+      if (isDragging && trackerRef.current && position) {
         const newX = e.clientX - dragStart.x;
         const newY = e.clientY - dragStart.y;
         
-        const trackerWidth = trackerRef.current.offsetWidth || 300;
-        const trackerHeight = trackerRef.current.offsetHeight || 400;
-        const maxX = typeof window !== 'undefined' ? window.innerWidth - trackerWidth : 0;
-        const maxY = typeof window !== 'undefined' ? window.innerHeight - trackerHeight : 0;
+        const trackerWidth = trackerRef.current.offsetWidth || (isMobile ? window.innerWidth - 32 : 400);
+        const trackerHeight = trackerRef.current.offsetHeight || (isExpanded ? (isMobile ? 400 : 500) : 80);
+        const maxX = typeof window !== 'undefined' ? window.innerWidth - trackerWidth - 16 : 0;
+        const maxY = typeof window !== 'undefined' ? window.innerHeight - trackerHeight - 16 : 0;
         
-        const constrainedX = Math.max(0, Math.min(newX, maxX));
-        const constrainedY = Math.max(0, Math.min(newY, maxY));
+        const constrainedX = Math.max(16, Math.min(newX, maxX));
+        const constrainedY = Math.max(16, Math.min(newY, maxY));
         
-        setPosition({ x: constrainedX, y: constrainedY });
+        const newPosition = { x: constrainedX, y: constrainedY };
+        setPosition(newPosition);
+        savePosition(constrainedX, constrainedY);
+      }
+    };
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isDragging && trackerRef.current && position && e.touches.length > 0) {
+        const touch = e.touches[0];
+        const newX = touch.clientX - dragStart.x;
+        const newY = touch.clientY - dragStart.y;
+        
+        const trackerWidth = trackerRef.current.offsetWidth || (isMobile ? window.innerWidth - 32 : 400);
+        const trackerHeight = trackerRef.current.offsetHeight || (isExpanded ? (isMobile ? 400 : 500) : 80);
+        const maxX = typeof window !== 'undefined' ? window.innerWidth - trackerWidth - 16 : 0;
+        const maxY = typeof window !== 'undefined' ? window.innerHeight - trackerHeight - 16 : 0;
+        
+        const constrainedX = Math.max(16, Math.min(newX, maxX));
+        const constrainedY = Math.max(16, Math.min(newY, maxY));
+        
+        const newPosition = { x: constrainedX, y: constrainedY };
+        setPosition(newPosition);
         savePosition(constrainedX, constrainedY);
       }
     };
@@ -104,12 +215,16 @@ export function CaseProgressTracker() {
     if (isDragging) {
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('touchend', handleMouseUp);
       return () => {
         window.removeEventListener('mousemove', handleMouseMove);
         window.removeEventListener('mouseup', handleMouseUp);
+        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('touchend', handleMouseUp);
       };
     }
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, position, isMobile, isExpanded]);
 
   const toggleExpand = () => {
     const newExpanded = !isExpanded;
@@ -176,42 +291,52 @@ export function CaseProgressTracker() {
   const currentStepIndex = Math.min(completedSteps, totalSteps - 1);
   const currentStep = realCase.historicalSteps[currentStepIndex];
 
+  // Don't render until position is calculated
+  if (position === null) {
+    return null;
+  }
+
   return (
     <motion.div
       ref={trackerRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} select-none`}
+      className={`${isDragging ? 'cursor-grabbing' : 'cursor-grab'} select-none`}
       style={{
-        position: position.x !== 0 || position.y !== 0 ? 'fixed' : 'relative',
-        left: position.x !== 0 || position.y !== 0 ? `${position.x}px` : 'auto',
-        top: position.x !== 0 || position.y !== 0 ? `${position.y}px` : 'auto',
+        position: 'fixed',
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        width: isMobile ? 'calc(100vw - 32px)' : 'min(400px, calc(100vw - 32px))',
+        maxWidth: isMobile ? 'none' : '400px',
         zIndex: isDragging ? 60 : 50,
       }}
-      onMouseDown={handleMouseDown}
       data-case-progress-tracker="true"
       data-expanded={isExpanded ? 'true' : 'false'}
     >
       <Card className="bg-game-background-dark border-yellow-500/50 border-2 shadow-2xl w-full">
         {/* Header - draggable area */}
-        <div className="flex items-center justify-between p-3 border-b border-yellow-500/30 cursor-grab">
+        <div 
+          className="flex items-center justify-between p-3 border-b border-yellow-500/30 cursor-grab"
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleMouseDown}
+        >
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <GripVertical className="w-4 h-4 text-yellow-400/50 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-bold text-white text-sm">Progreso del Caso</h3>
-                <Badge variant="outline" className="text-yellow-400 border-yellow-500/50 text-xs flex-shrink-0">
-                  {realCase.name}
+              <h3 className="font-bold text-white text-sm mb-1">{t('title')}</h3>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge variant="outline" className="text-yellow-400 border-yellow-500/50 text-xs">
+                  <RealCaseNameDisplay caseId={realCaseId} fallbackName={realCase.name} className="text-xs" />
                 </Badge>
+                <p className="text-xs text-gray-400 truncate">{realCase.protagonist} • {realCase.period}</p>
               </div>
-              <p className="text-xs text-gray-400 truncate">{realCase.protagonist} • {realCase.period}</p>
             </div>
           </div>
           <button
             onClick={toggleExpand}
             className="ml-4 p-2 hover:bg-yellow-500/20 rounded transition-colors border border-yellow-500/30 hover:border-yellow-500/50 flex-shrink-0"
             data-no-drag
-            aria-label={isExpanded ? 'Contraer menú' : 'Expandir menú'}
+            aria-label={isExpanded ? t('collapseMenu') : t('expandMenu')}
           >
             {isExpanded ? (
               <ChevronDown className="w-5 h-5 text-yellow-400" />
@@ -234,8 +359,8 @@ export function CaseProgressTracker() {
               <div className="p-4 space-y-4 max-h-[600px] overflow-y-auto" data-no-drag>
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">Progreso histórico</span>
-                    <span className="text-white">{completedSteps}/{totalSteps} pasos</span>
+                    <span className="text-gray-400">{t('historicalProgress')}</span>
+                    <span className="text-white">{completedSteps}/{totalSteps} {t('steps')}</span>
                   </div>
                   <Progress value={progressPercentage} className="h-2" />
                 </div>
@@ -245,20 +370,20 @@ export function CaseProgressTracker() {
                   <div className="bg-game-background-darker rounded p-3 border border-yellow-500/30">
                     <div className="flex items-center gap-2 mb-2">
                       <Clock className="w-4 h-4 text-yellow-400" />
-                      <span className="text-xs font-semibold text-yellow-400">Paso Actual</span>
+                      <span className="text-xs font-semibold text-yellow-400">{t('currentStep')}</span>
                     </div>
                     <p className="text-xs text-white font-semibold mb-1">{currentStep.action}</p>
                     <div className="text-xs text-gray-400 space-y-1">
-                      <div>Año: <strong className="text-white">{currentStep.year}</strong></div>
-                      <div>Monto histórico: <strong className="text-primary-400">{formatCurrency(currentStep.amount)}</strong></div>
-                      <div>País: <strong className="text-white">{currentStep.country}</strong></div>
+                      <div>{t('year')} <strong className="text-white">{currentStep.year}</strong></div>
+                      <div>{t('historicalAmount')} <strong className="text-primary-400">{formatCurrency(currentStep.amount)}</strong></div>
+                      <div>{t('country')} <strong className="text-white">{currentStep.country}</strong></div>
                     </div>
                   </div>
                 )}
 
                 {/* Historical Steps Timeline */}
                 <div className="space-y-2 max-h-64 overflow-y-auto">
-                  <h4 className="text-xs font-semibold text-gray-400 uppercase">Pasos Históricos</h4>
+                  <h4 className="text-xs font-semibold text-gray-400 uppercase">{t('historicalSteps')}</h4>
                   {realCase.historicalSteps.map((step, index) => {
                     const isCompleted = stepMatches[index] || index < completedSteps;
                     const isCurrent = index === currentStepIndex && !isCompleted;
@@ -290,7 +415,7 @@ export function CaseProgressTracker() {
                               <span className="text-xs font-bold text-white">{step.year}</span>
                               {isCurrent && (
                                 <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-500/50">
-                                  Actual
+                                  {t('current')}
                                 </Badge>
                               )}
                             </div>
@@ -310,7 +435,7 @@ export function CaseProgressTracker() {
                   <div className="flex items-start gap-2">
                     <X className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
                     <div className="text-xs text-red-300">
-                      <strong>Resultado histórico:</strong> {realCase.finalOutcome.caught ? 'Descubierto' : 'Controversial'}
+                      <strong>{t('historicalResult')}</strong> {realCase.finalOutcome.caught ? t('caught') : t('controversial')}
                       <br />
                       <span className="text-red-400/80">{realCase.finalOutcome.consequences}</span>
                     </div>
@@ -321,51 +446,85 @@ export function CaseProgressTracker() {
                 <div className="bg-blue-500/10 border border-blue-500/30 rounded p-3 mt-4">
                   <div className="flex items-start gap-2 mb-3">
                     <div className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0">💡</div>
-                    <h4 className="text-sm font-semibold text-blue-400">¿Qué hacer?</h4>
+                    <h4 className="text-sm font-semibold text-blue-400">{t('whatToDo')}</h4>
                   </div>
                   <div className="text-xs text-blue-200 space-y-2">
                     {currentStep && (
                       <div className="space-y-2">
-                        <p className="font-semibold text-blue-300">Paso actual:</p>
+                        <p className="font-semibold text-blue-300">{t('currentStepLabel')}</p>
                         <ol className="list-decimal list-inside space-y-1 ml-2">
                           <li>
-                            <strong>Selecciona el país:</strong> {
-                              (() => {
-                                const country = getCountryById(currentStep.country);
-                                return country?.name || currentStep.country;
-                              })()
-                            }
-                          </li>
-                          <li>
-                            <strong>Selecciona el mecanismo:</strong> {
-                              (() => {
-                                const mechanism = getMechanismById(currentStep.mechanism);
-                                return mechanism?.name || currentStep.mechanism;
-                              })()
-                            }
-                            {realCase.coreMechanisms.includes(currentStep.mechanism) && (
-                              <span className="text-blue-400 ml-1">(Históricamente usado)</span>
+                            <strong>{t('selectCountry')}</strong>{' '}
+                            <CountryNameDisplay 
+                              countryId={currentStep.country} 
+                              fallbackName={getCountryById(currentStep.country)?.name || currentStep.country}
+                              className="inline"
+                            />
+                            {realCase.coreCountries.includes(currentStep.country) && (
+                              <span className="text-blue-400 ml-1">{t('historicalCountry')}</span>
                             )}
                           </li>
                           <li>
-                            <strong>Ejecuta la transacción:</strong> Intenta una cantidad similar al monto histórico ({formatCurrency(currentStep.amount)})
+                            <strong>{t('selectMechanism')}</strong>{' '}
+                            <MechanismNameDisplay 
+                              mechanismId={currentStep.mechanism}
+                              fallbackName={getMechanismById(currentStep.mechanism)?.name || currentStep.mechanism}
+                              className="inline"
+                            />
+                            {realCase.coreMechanisms.includes(currentStep.mechanism) && (
+                              <span className="text-blue-400 ml-1">{t('historicallyUsed')}</span>
+                            )}
+                            {(() => {
+                              const country = getCountryById(currentStep.country);
+                              const isAvailable = country?.availableMechanisms.includes(currentStep.mechanism);
+                              return !isAvailable ? (
+                                <span className="text-red-400 ml-1 text-xs">{t('notAvailable')}</span>
+                              ) : null;
+                            })()}
+                          </li>
+                          <li>
+                            <strong>{t('executeTransaction')}</strong> {t('trySimilarAmount', {amount: formatCurrency(currentStep.amount)})}
+                            {currentStep.amount === 0 && (
+                              <span className="text-gray-400 ml-1 text-xs">{t('event')}</span>
+                            )}
                           </li>
                         </ol>
                         <p className="text-blue-300/80 mt-2 italic">
-                          💡 Tip: Los mecanismos marcados como &quot;Históricamente usado&quot; fueron realmente utilizados en este caso. Si no puedes usarlos en el país seleccionado, verifica que el país y el mecanismo estén disponibles en el menú.
+                          {t('tip')}
                         </p>
+                        {(() => {
+                          const country = getCountryById(currentStep.country);
+                          const isAvailable = country?.availableMechanisms.includes(currentStep.mechanism);
+                          if (!isAvailable && country) {
+                            const availableMechanisms = country.availableMechanisms
+                              .map(id => getMechanismById(id)?.name || id)
+                              .join(', ');
+                            return (
+                              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-2 mt-2">
+                                <p className="text-xs text-yellow-300">
+                                  <strong>{t('alternative')}</strong> {t('alternativeDescription', {
+                                    mechanism: getMechanismById(currentStep.mechanism)?.name || currentStep.mechanism,
+                                    country: country.name,
+                                    available: availableMechanisms || t('none')
+                                  })}
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
                       </div>
                     )}
                     {!currentStep && (
                       <div>
                         <p className="text-blue-300/80">
-                          Sigue los pasos históricos mostrados arriba. Cada paso indica el país, mecanismo y monto utilizados históricamente.
+                          {t('followSteps')}
                         </p>
                       </div>
                     )}
                     {realCase.advisorHints.length > 0 && (
                       <div className="mt-3 pt-3 border-t border-blue-500/20">
-                        <p className="font-semibold text-blue-300 mb-2">Pistas del asesor:</p>
+                        <p className="font-semibold text-blue-300 mb-2">{t('advisorHints')}</p>
                         <ul className="list-disc list-inside space-y-1 ml-2">
                           {realCase.advisorHints.slice(0, 2).map((hint, index) => (
                             <li key={index} className="text-blue-200/90">

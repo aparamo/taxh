@@ -10,6 +10,8 @@ import { getAllRealCases } from '@/game/data/realCases';
 import { useGameStore } from '@/game/store';
 import { formatCurrency } from '@/game/logic/validation';
 import { AlertTriangle } from 'lucide-react';
+import {useTranslations} from 'next-intl';
+import { RealCaseNameDisplay, RealCaseSummaryDisplay } from '@/game/utils/translations';
 
 interface RealCaseSelectorProps {
   isOpen: boolean;
@@ -17,6 +19,7 @@ interface RealCaseSelectorProps {
 }
 
 export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
+  const t = useTranslations('Game.RealCaseSelector');
   const router = useRouter();
   const loadRealCase = useGameStore((state) => state.loadRealCase);
   const realCases = getAllRealCases();
@@ -43,11 +46,11 @@ export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
   const getRoleLabel = (role: string) => {
     switch (role) {
       case 'multimillionaire':
-        return 'Multimillonario';
+        return t('roleLabels.multimillionaire');
       case 'cartel':
-        return 'Organización Criminal';
+        return t('roleLabels.cartel');
       case 'multinational':
-        return 'Corporación';
+        return t('roleLabels.multinational');
       default:
         return role;
     }
@@ -57,10 +60,9 @@ export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto bg-game-background-darker border-gray-700">
         <DialogHeader>
-          <DialogTitle className="text-white text-2xl">Casos Reales</DialogTitle>
+          <DialogTitle className="text-white text-2xl">{t('title')}</DialogTitle>
           <DialogDescription className="text-gray-400">
-            Selecciona un caso histórico para experimentar cómo funcionaron estos escándalos reales. 
-            Recibirás consejos de un &quot;asesor corrupto&quot; y podrás comparar tus decisiones con lo que realmente sucedió.
+            {t('description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -78,29 +80,29 @@ export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-2">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-xl font-bold text-white">{case_.name}</h3>
+                      <RealCaseNameDisplay caseId={case_.id} fallbackName={case_.name} className="text-xl font-bold text-white" />
                       <Badge variant="outline" className={`${getRoleColor(case_.role)} bg-transparent`}>
                         {getRoleLabel(case_.role)}
                       </Badge>
                     </div>
                     <p className="text-lg font-semibold text-gray-300">{case_.protagonist}</p>
-                    <p className="text-sm text-gray-400">{case_.summary}</p>
+                    <RealCaseSummaryDisplay caseId={case_.id} fallbackSummary={case_.summary} className="text-sm text-gray-400" />
                     
                     <div className="grid grid-cols-3 gap-4 pt-2">
                       <div>
-                        <p className="text-xs text-gray-400">Período</p>
+                        <p className="text-xs text-gray-400">{t('period')}</p>
                         <p className="text-sm font-semibold text-white">{case_.period}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-400">Monto Total</p>
+                        <p className="text-xs text-gray-400">{t('totalAmount')}</p>
                         <p className="text-sm font-semibold text-white">
                           {formatCurrency(case_.totalAmount)}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-400">Resultado</p>
+                        <p className="text-xs text-gray-400">{t('result')}</p>
                         <p className="text-sm font-semibold text-red-400">
-                          {case_.finalOutcome.caught ? 'Descubierto' : 'Legal pero Controversial'}
+                          {case_.finalOutcome.caught ? t('caught') : t('legalControversial')}
                         </p>
                       </div>
                     </div>
@@ -109,10 +111,15 @@ export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
                     <div className="bg-red-500/10 border border-red-500/30 rounded p-3 flex items-start gap-2">
                       <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
                       <div className="text-xs text-red-300">
-                        <strong>Advertencia:</strong> Este caso terminó en{' '}
+                        <strong>{t('warning')}</strong>{' '}
                         {case_.finalOutcome.caught
-                          ? `descubrimiento y pérdida de ${formatCurrency(case_.finalOutcome.amountLost)}. ${case_.finalOutcome.consequences}`
-                          : `${case_.finalOutcome.consequences}`}
+                          ? t('warningCaught', {
+                              amount: formatCurrency(case_.finalOutcome.amountLost),
+                              consequences: case_.finalOutcome.consequences
+                            })
+                          : t('warningControversial', {
+                              consequences: case_.finalOutcome.consequences
+                            })}
                       </div>
                     </div>
                   </div>
@@ -129,7 +136,7 @@ export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
                         : 'bg-blue-500 hover:bg-blue-600'
                     } text-white`}
                   >
-                    Jugar Este Caso
+                    {t('playCase')}
                   </Button>
                 </div>
               </Card>
@@ -139,7 +146,7 @@ export function RealCaseSelector({ isOpen, onClose }: RealCaseSelectorProps) {
 
         {realCases.length === 0 && (
           <div className="text-center py-8 text-gray-400">
-            <p>No hay casos disponibles en este momento</p>
+            <p>{t('noCasesAvailable')}</p>
           </div>
         )}
       </DialogContent>

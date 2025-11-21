@@ -3,6 +3,7 @@
 import { useGameStore } from '@/game/store';
 import { formatCurrency } from '@/game/logic/validation';
 import { getMechanismById } from '@/game/data/mechanisms';
+import { MechanismNameDisplay } from '@/game/utils/translations';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -44,7 +45,12 @@ export function TransactionHistory() {
               </Badge>
             </div>
             <div className="text-sm text-gray-400">
-              {tx.destinationCountry} • {getMechanismById(tx.mechanism)?.name || tx.mechanism}
+              {tx.destinationCountry} •{' '}
+              <MechanismNameDisplay 
+                mechanismId={tx.mechanism}
+                fallbackName={getMechanismById(tx.mechanism)?.name || tx.mechanism}
+                className="inline"
+              />
             </div>
             <div className="text-sm text-gray-500 mt-1">
               Comisiones: {formatCurrency(tx.fees)} • Heat: +{tx.heatGenerated.toFixed(1)}%

@@ -244,7 +244,7 @@ export const realCases: RealCase[] = [
     secondaryCountries: ['luxembourg', 'delaware', 'singapore'],
     coreMechanisms: ['transfer-pricing', 'beneficial-ownership'],
     secondaryMechanisms: ['shell-company', 'trust'],
-    recommendedAssets: ['bank_relationship'], // Will add corporate assets in Phase 4
+    recommendedAssets: ['bank_relationship', 'corporate_office', 'patent_portfolio', 'offshore_subsidiary'],
     
     historicalSteps: [
       {
@@ -596,7 +596,7 @@ export const realCases: RealCase[] = [
     secondaryCountries: ['ireland', 'switzerland', 'uae', 'luxembourg'],
     coreMechanisms: ['shell-company', 'correspondent-banking', 'trade-based-ml'],
     secondaryMechanisms: ['beneficial-ownership'],
-    recommendedAssets: ['bank_relationship'],
+    recommendedAssets: ['bank_relationship', 'corporate_office', 'distribution_network'],
     
     historicalSteps: [
       {
@@ -863,7 +863,7 @@ export const realCases: RealCase[] = [
     secondaryCountries: ['bvi', 'cayman', 'singapore', 'uk'],
     coreMechanisms: ['shell-company', 'correspondent-banking', 'trade-based-ml'],
     secondaryMechanisms: ['beneficial-ownership', 'trust'],
-    recommendedAssets: ['politician', 'judge', 'bank_relationship'],
+    recommendedAssets: ['politician', 'judge', 'bank_relationship', 'corporate_office', 'distribution_network'],
     
     historicalSteps: [
       {

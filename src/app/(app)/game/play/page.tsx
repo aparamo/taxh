@@ -17,8 +17,10 @@ import { checkObjectiveCompletion } from '@/game/logic/validation';
 import { Button } from '@/components/ui/button';
 import { getTutorialSteps } from '@/game/data/tutorialSteps';
 import { AdvisorHint as AdvisorHintType } from '@/game/data/realCases';
+import {useTranslations} from 'next-intl';
 
 export default function PlayPage() {
+  const t = useTranslations('Game.PlayPage');
   const router = useRouter();
   const totalFunds = useGameStore((state) => state.totalFunds);
   const launderedAmount = useGameStore((state) => state.launderedAmount);
@@ -153,11 +155,11 @@ export default function PlayPage() {
     return (
       <div className="min-h-screen bg-game-background-darker text-white flex items-center justify-center">
         <div className="text-center space-y-4 max-w-md">
-          <h1 className="text-5xl font-bold text-red-500">Game Over</h1>
-          <p className="text-xl">El heat alcanzó niveles críticos</p>
-          <p className="text-gray-400">Has sido detectado por las autoridades</p>
+          <h1 className="text-5xl font-bold text-red-500">{t('gameOver.title')}</h1>
+          <p className="text-xl">{t('gameOver.subtitle')}</p>
+          <p className="text-gray-400">{t('gameOver.message')}</p>
           <Button onClick={resetGame} className="bg-primary-500 hover:bg-primary-600 text-white">
-            Reiniciar Juego
+            {t('gameOver.restart')}
           </Button>
         </div>
       </div>
@@ -170,28 +172,28 @@ export default function PlayPage() {
       <div className="min-h-screen bg-game-background-darker text-white flex items-center justify-center">
         <div className="text-center space-y-6 max-w-md p-8">
           <div className="text-6xl mb-4">🎉</div>
-          <h1 className="text-5xl font-bold text-primary-500">¡Felicidades!</h1>
-          <h2 className="text-2xl font-semibold text-white">Has completado el Tutorial</h2>
+          <h1 className="text-5xl font-bold text-primary-500">{t('tutorialComplete.title')}</h1>
+          <h2 className="text-2xl font-semibold text-white">{t('tutorialComplete.subtitle')}</h2>
           <p className="text-lg text-gray-300">
-            Has aprendido los conceptos básicos sobre paraísos fiscales y lavado de dinero
+            {t('tutorialComplete.message')}
           </p>
           <div className="bg-game-background-dark rounded-lg p-4 space-y-2">
-            <p className="text-sm text-gray-400">Tu progreso:</p>
-            <p className="text-white">Dinero lavado: <span className="text-primary-500 font-bold">{formatCurrency(launderedAmount)}</span></p>
+            <p className="text-sm text-gray-400">{t('tutorialComplete.progress')}</p>
+            <p className="text-white">{t('tutorialComplete.laundered')} <span className="text-primary-500 font-bold">{formatCurrency(launderedAmount)}</span></p>
             {currentObjective && (
               <p className="text-white">
-                Objetivo: <span className="text-green-500 font-bold">Completado</span>
+                {t('tutorialComplete.objective')} <span className="text-green-500 font-bold">{t('tutorialComplete.completed')}</span>
               </p>
             )}
           </div>
           <p className="text-sm text-gray-400">
-            Ahora todos los roles están disponibles para explorar
+            {t('tutorialComplete.allRolesAvailable')}
           </p>
           <Button 
             onClick={handleGoToGameLobby} 
             className="bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 text-lg"
           >
-            Volver a Selección de Roles
+            {t('tutorialComplete.backToLobby')}
           </Button>
         </div>
       </div>
@@ -202,23 +204,23 @@ export default function PlayPage() {
     return (
       <div className="min-h-screen bg-game-background-darker text-white flex items-center justify-center">
         <div className="text-center space-y-4 max-w-md">
-          <h1 className="text-5xl font-bold text-primary-500">¡Victoria!</h1>
-          <p className="text-xl">Has completado el objetivo</p>
-          <p className="text-gray-400">Dinero lavado: {formatCurrency(launderedAmount)}</p>
-          <p className="text-sm text-gray-500">Ahora puedes continuar jugando en modo libre</p>
+          <h1 className="text-5xl font-bold text-primary-500">{t('victory.title')}</h1>
+          <p className="text-xl">{t('victory.subtitle')}</p>
+          <p className="text-gray-400">{t('tutorialComplete.laundered')} {formatCurrency(launderedAmount)}</p>
+          <p className="text-sm text-gray-500">{t('victory.note')}</p>
           <div className="flex gap-4 justify-center">
             <Button 
               onClick={() => setGameStatus('playing')} 
               className="bg-primary-500 hover:bg-primary-600 text-white"
             >
-              Continuar Jugando
+              {t('victory.continue')}
             </Button>
             <Button 
               onClick={resetGame} 
               variant="outline"
               className="border-gray-700 text-white hover:bg-gray-800 hover:text-white"
             >
-              Reiniciar
+              {t('victory.restart')}
             </Button>
           </div>
         </div>
@@ -228,29 +230,53 @@ export default function PlayPage() {
 
   return (
     <div className="min-h-screen bg-game-background-darker text-white flex flex-col">
-      {/* Header */}
-      <header className="bg-game-background-dark border-b border-gray-800 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
+      {/* Header - Sticky on mobile */}
+      <header className="bg-game-background-dark border-b border-gray-800 p-2 sm:p-4 sticky top-0 z-40">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+          <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
             <div>
-              <div className="text-sm text-gray-400">Fondos Totales</div>
-              <div className="text-2xl font-bold">{formatCurrency(totalFunds)}</div>
+              <div className="text-xs sm:text-sm text-gray-400">{t('header.totalFunds')}</div>
+              <div className="text-lg sm:text-2xl font-bold">{formatCurrency(totalFunds)}</div>
             </div>
             <div>
-              <div className="text-sm text-gray-400">Lavado</div>
-              <div className="text-2xl font-bold text-primary-500">
+              <div className="text-xs sm:text-sm text-gray-400">{t('header.laundered')}</div>
+              <div className="text-lg sm:text-2xl font-bold text-primary-500">
                 {formatCurrency(launderedAmount)}
               </div>
             </div>
           </div>
-          <HeatMeter />
+          <div className="w-full sm:w-auto">
+            <HeatMeter />
+          </div>
         </div>
       </header>
 
-      {/* Main Game Area */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 p-4">
+      {/* Main Game Area - Responsive Layout */}
+      {/* Mobile: Vertical stack */}
+      <div className="flex-1 flex flex-col lg:hidden gap-4 p-2 sm:p-4">
+        {/* Controls Section */}
+        <div className="space-y-3 sm:space-y-4">
+          <CountrySelector />
+          <MechanismPanel />
+          {/* Case Progress Tracker - Only in real case mode */}
+          {realCaseMode && <CaseProgressTracker />}
+        </div>
+
+        {/* Globe Section - Collapsible on mobile */}
+        <div className="bg-game-background-dark rounded-lg min-h-[300px] sm:min-h-[400px] flex items-center justify-center">
+          <Globe />
+        </div>
+
+        {/* Dashboard Section */}
+        <div>
+          <Dashboard />
+        </div>
+      </div>
+
+      {/* Tablet/Desktop: Grid Layout */}
+      <div className="hidden lg:grid lg:grid-cols-12 gap-4 p-4 flex-1">
         {/* Left Sidebar - Country & Mechanism Selection */}
-        <aside className="md:col-span-4 lg:col-span-4 space-y-4">
+        <aside className="lg:col-span-4 space-y-4">
           <CountrySelector />
           <MechanismPanel />
           {/* Case Progress Tracker - Only in real case mode */}
@@ -258,14 +284,14 @@ export default function PlayPage() {
         </aside>
 
         {/* Center - Globe Visualization */}
-        <main className="md:col-span-4 lg:col-span-4">
+        <main className="lg:col-span-4">
           <div className="bg-game-background-dark rounded-lg h-full min-h-[600px] flex items-center justify-center">
             <Globe />
           </div>
         </main>
 
         {/* Right Sidebar - Dashboard */}
-        <aside className="md:col-span-4 lg:col-span-4">
+        <aside className="lg:col-span-4">
           <Dashboard />
         </aside>
       </div>

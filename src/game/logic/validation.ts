@@ -59,16 +59,21 @@ export function checkObjectiveCompletion(
   const { targets } = objective;
   let completed = true;
   
+  // More flexible validation: allow 95% of target to count as completion
+  // This makes objectives more achievable while still requiring effort
   if (targets.launderAmount !== undefined) {
-    completed = completed && state.launderedAmount >= targets.launderAmount;
+    const threshold = targets.launderAmount * 0.95; // 95% of target
+    completed = completed && state.launderedAmount >= threshold;
   }
   
   if (targets.buyAssets !== undefined) {
     completed = completed && state.assets.length >= targets.buyAssets;
   }
   
+  // Heat threshold: allow slight overage (5% buffer) to account for fluctuations
   if (targets.maxHeat !== undefined) {
-    completed = completed && state.heat.total <= targets.maxHeat;
+    const threshold = targets.maxHeat * 1.05; // 5% buffer
+    completed = completed && state.heat.total <= threshold;
   }
   
   return completed;

@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { getEducationalContent } from '@/game/data/educationalContent';
 import { InfoButton } from './InfoButton';
 import { EducationalContent } from '@/game/data/educationalContent';
+import {useTranslations} from 'next-intl';
+import { translateStoreMessage } from '@/game/utils/translateStoreMessage';
 
 interface EventNotification {
   id: string;
@@ -18,6 +20,8 @@ interface EventNotification {
 }
 
 export function EventNotifications() {
+  const t = useTranslations('Game.EventNotifications');
+  const tStore = useTranslations('Game.Store.messages');
   const [notifications, setNotifications] = useState<EventNotification[]>([]);
 
   // Use useCallback to stabilize addNotification reference
@@ -53,7 +57,7 @@ export function EventNotifications() {
       events.forEach((event) => {
         addNotification({
           type: event.type as 'betrayal' | 'seizure',
-          message: event.message,
+          message: translateStoreMessage(tStore, event.message),
           assetName: event.asset?.name,
         });
       });
@@ -64,7 +68,9 @@ export function EventNotifications() {
       if (passiveIncome > 0) {
         addNotification({
           type: 'passive_income',
-          message: `Recibiste ${passiveIncome.toLocaleString('es-ES', { style: 'currency', currency: 'USD' })} en ingresos pasivos.`,
+          message: t('passiveIncomeReceived', {
+            amount: passiveIncome.toLocaleString('es-ES', { style: 'currency', currency: 'USD' })
+          }),
         });
       }
 
@@ -73,14 +79,14 @@ export function EventNotifications() {
       if (!maintenanceResult.success && maintenanceResult.message) {
         addNotification({
           type: 'maintenance',
-          message: maintenanceResult.message,
+          message: translateStoreMessage(tStore, maintenanceResult.message),
         });
       }
     }, 60000); // 60 seconds
 
     // CRITICAL: Clean up interval on unmount
     return () => clearInterval(interval);
-  }, [addNotification]); // addNotification is now stable via useCallback
+  }, [addNotification, tStore, t]); // addNotification, tStore, and t are stable
 
   const getNotificationColor = (type: EventNotification['type']) => {
     switch (type) {
@@ -123,19 +129,19 @@ export function EventNotifications() {
   const getNotificationTitle = (type: EventNotification['type']) => {
     switch (type) {
       case 'betrayal':
-        return 'Traición';
+        return t('titles.betrayal');
       case 'seizure':
-        return 'Confiscación';
+        return t('titles.seizure');
       case 'rival_interference':
-        return 'Interferencia de Rivales';
+        return t('titles.rivalInterference');
       case 'passive_income':
-        return 'Ingreso Pasivo';
+        return t('titles.passiveIncome');
       case 'maintenance':
-        return 'Mantenimiento';
+        return t('titles.maintenance');
       case 'investigation':
-        return 'Investigación';
+        return t('titles.investigation');
       default:
-        return 'Evento';
+        return t('titles.event');
     }
   };
 
@@ -193,7 +199,10 @@ export function EventNotifications() {
                     <p className="text-sm">{notification.message}</p>
                     {educationalContent && educationalContent.realCase && (
                       <p className="text-xs opacity-75 mt-2 italic">
-                        Similar a: {educationalContent.realCase.name} ({educationalContent.realCase.year})
+                        {t('similarTo', {
+                          name: educationalContent.realCase.name,
+                          year: educationalContent.realCase.year
+                        })}
                       </p>
                     )}
                   </div>

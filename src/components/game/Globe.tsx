@@ -29,11 +29,13 @@ function MoneyFlowArc({
   to,
   progress,
   globeRadius,
+  isMobile = false,
 }: {
   from: THREE.Vector3;
   to: THREE.Vector3;
   progress: number;
   globeRadius: number;
+  isMobile?: boolean;
 }) {
   const curve = useMemo(() => {
     // Create a curved path between two points
@@ -53,19 +55,23 @@ function MoneyFlowArc({
 
   if (progress <= 0 || progress >= 1) return null;
 
+  // Mobile: simpler particles for performance
+  const particleSize = isMobile ? 0.03 : 0.04;
+  const particleSegments = isMobile ? 6 : 8;
+
   return (
     <group>
       {/* Particle moving along the flow */}
       <mesh position={particlePosition}>
-        <sphereGeometry args={[0.04, 8, 8]} />
+        <sphereGeometry args={[particleSize, particleSegments, particleSegments]} />
         <meshStandardMaterial
           color="#10b981"
           emissive="#10b981"
           emissiveIntensity={1}
         />
       </mesh>
-      {/* Trail effect - multiple smaller particles */}
-      {progress > 0.1 && (
+      {/* Trail effect - only on desktop for performance */}
+      {!isMobile && progress > 0.1 && (
         <mesh position={curve.getPoint(Math.max(0, progress - 0.15))}>
           <sphereGeometry args={[0.02, 6, 6]} />
           <meshStandardMaterial
@@ -212,9 +218,18 @@ function CountryMarker({ country, position, isActive, isSelected }: CountryMarke
 
   const color = isSelected ? '#10b981' : isActive ? '#22c55e' : '#3b82f6';
 
+  // Mobile: larger hit area for easier touch interaction
+  const markerSize = 0.05;
+  const markerSegments = 12; // Reduced from 16 for performance
+  
   return (
     <group position={position}>
-      <Sphere args={[0.05, 16, 16]} onClick={handleClick} onPointerOver={() => setHovered(true)} onPointerOut={() => setHovered(false)}>
+      <Sphere 
+        args={[markerSize, markerSegments, markerSegments]} 
+        onClick={handleClick} 
+        onPointerOver={() => setHovered(true)} 
+        onPointerOut={() => setHovered(false)}
+      >
         <meshStandardMaterial
           color={color}
           emissive={color}
@@ -254,7 +269,7 @@ function CountryMarker({ country, position, isActive, isSelected }: CountryMarke
 }
 
 // Component to track and animate money flows
-function MoneyFlows({ globeRadius }: { globeRadius: number }) {
+function MoneyFlows({ globeRadius, isMobile = false }: { globeRadius: number; isMobile?: boolean }) {
   const transactions = useGameStore((state) => state.transactions);
   const [activeFlows, setActiveFlows] = useState<
     Array<{
@@ -340,10 +355,11 @@ function MoneyFlows({ globeRadius }: { globeRadius: number }) {
           to={to}
           progress={progress}
           globeRadius={globeRadius}
+          isMobile={isMobile}
         />
       );
     });
-  }, [activeFlows, progressMap, globeRadius]);
+  }, [activeFlows, progressMap, globeRadius, isMobile]);
 
   return <>{flows.filter(Boolean)}</>;
 }
@@ -368,8 +384,11 @@ function GlobeSphere({ radius }: { radius: number }) {
     }
   });
 
+  // Mobile: lower geometry detail for performance
+  const segments = 32; // Reduced from 64 for better mobile performance
+  
   return (
-    <Sphere ref={meshRef} args={[1.5, 64, 64]}>
+    <Sphere ref={meshRef} args={[1.5, segments, segments]}>
       <meshStandardMaterial
         color="#1e293b"
         roughness={0.8}
@@ -383,17 +402,45 @@ function GlobeSphere({ radius }: { radius: number }) {
 export function Globe() {
   const activeCountries = useGameStore((state) => state.activeCountries);
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(null);
-  const [globeRadius, setGlobeRadius] = useState(0.7); // Start even smaller
-  const [cameraDistance, setCameraDistance] = useState(3.0); // Adjusted for smaller globe
+  
+  // Detect mobile device
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  // Mobile: smaller initial size, Desktop: medium size
+  const [globeRadius, setGlobeRadius] = useState(0.7);
+  const [cameraDistance, setCameraDistance] = useState(3.0);
+  
+  // Update radius/distance when mobile state changes
+  useEffect(() => {
+    const initialRadius = isMobile ? 0.5 : 0.7;
+    const initialDistance = isMobile ? 2.5 : 3.0;
+    setGlobeRadius(initialRadius);
+    setCameraDistance(initialDistance);
+    setZoomLevel(0);
+  }, [isMobile]);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const [webglError, setWebglError] = useState<string | null>(null);
 
-  // Zoom levels: 0 = smallest, 1 = medium, 2 = largest
-  const zoomLevels = [
-    { radius: 0.7, distance: 3.0 }, // Small
-    { radius: 1.0, distance: 3.5 }, // Medium
-    { radius: 1.3, distance: 4.0 }, // Large
-  ];
+  // Zoom levels: Mobile has smaller range, Desktop has full range
+  const zoomLevels = isMobile
+    ? [
+        { radius: 0.5, distance: 2.5 }, // Small (mobile default)
+        { radius: 0.7, distance: 3.0 }, // Medium
+        { radius: 0.9, distance: 3.5 }, // Large
+      ]
+    : [
+        { radius: 0.7, distance: 3.0 }, // Small (desktop default)
+        { radius: 1.0, distance: 3.5 }, // Medium
+        { radius: 1.3, distance: 4.0 }, // Large
+      ];
   const [zoomLevel, setZoomLevel] = useState(0); // Start at smallest
 
   // Update selected country when it changes
@@ -497,16 +544,16 @@ export function Globe() {
   return (
     <div className="w-full h-full relative">
       <Canvas
-        camera={{ position: [0, 0, cameraDistance], fov: 50 }}
+        camera={{ position: [0, 0, cameraDistance], fov: isMobile ? 60 : 50 }}
         style={{ background: 'transparent' }}
         gl={{ 
-          antialias: true, 
+          antialias: !isMobile, // Disable antialiasing on mobile for performance
           alpha: true,
           preserveDrawingBuffer: false,
           powerPreference: 'high-performance',
           failIfMajorPerformanceCaveat: false,
         }}
-        dpr={[1, 2]}
+        dpr={isMobile ? [1, 1.5] : [1, 2]} // Lower DPR on mobile
         onCreated={({ gl, camera }) => {
           cameraRef.current = camera as THREE.PerspectiveCamera;
           
@@ -551,45 +598,53 @@ export function Globe() {
         {markers}
 
         {/* Money Flow Animations */}
-        <MoneyFlows globeRadius={globeRadius} />
+        <MoneyFlows globeRadius={globeRadius} isMobile={isMobile} />
 
-        {/* Controls - Adjusted for zoom level */}
+        {/* Controls - Adjusted for zoom level and mobile */}
         <OrbitControls
           enableZoom={true}
           enablePan={false}
           minDistance={cameraDistance - 0.5}
           maxDistance={cameraDistance + 2}
-          autoRotate={true}
+          autoRotate={!isMobile} // Disable auto-rotate on mobile for better touch control
           autoRotateSpeed={0.5}
+          enableDamping={true}
+          dampingFactor={0.05}
+          touches={{
+            ONE: isMobile ? THREE.TOUCH.ROTATE : THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_PAN,
+          }}
         />
       </Canvas>
       
-      {/* Zoom Controls */}
-      <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
+      {/* Zoom Controls - Larger on mobile for touch */}
+      <div className={`absolute ${isMobile ? 'top-2 right-2' : 'top-4 right-4'} flex flex-col gap-2 z-10`}>
         <Button
           onClick={handleZoomIn}
           disabled={zoomLevel >= zoomLevels.length - 1}
-          size="sm"
-          className="bg-game-background-dark/90 border border-gray-700 hover:bg-game-background-dark text-white"
+          size={isMobile ? 'default' : 'sm'}
+          className={`bg-game-background-dark/90 border border-gray-700 hover:bg-game-background-dark text-white ${isMobile ? 'min-w-[44px] min-h-[44px]' : ''}`}
           aria-label="Acercar"
         >
-          <ZoomIn className="w-4 h-4" />
+          <ZoomIn className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} />
         </Button>
         <Button
           onClick={handleZoomOut}
           disabled={zoomLevel <= 0}
-          size="sm"
-          className="bg-game-background-dark/90 border border-gray-700 hover:bg-game-background-dark text-white"
+          size={isMobile ? 'default' : 'sm'}
+          className={`bg-game-background-dark/90 border border-gray-700 hover:bg-game-background-dark text-white ${isMobile ? 'min-w-[44px] min-h-[44px]' : ''}`}
           aria-label="Alejar"
         >
-          <ZoomOut className="w-4 h-4" />
+          <ZoomOut className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} />
         </Button>
       </div>
       
-      {/* Instructions */}
-      <div className="absolute bottom-4 left-4 text-xs text-gray-500 bg-game-background-dark/80 px-3 py-2 rounded">
-        Haz click en los países para seleccionarlos
-      </div>
+      {/* Instructions - Hidden on mobile to save space */}
+      {!isMobile && (
+        <div className="absolute bottom-4 left-4 text-xs text-gray-500 bg-game-background-dark/80 px-3 py-2 rounded">
+          Haz click en los países para seleccionarlos
+        </div>
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { GameState, Transaction, Asset, GameRole } from './types';
 import { getDefaultScenario } from './data/scenarios';
 import { processTransaction } from './logic/transactions';
 import { getMechanismById } from './data/mechanisms';
+import { getCountryById } from './data/countries';
 import { addHeat, reduceHeat, isGameOver } from './logic/heat';
 import { 
   checkObjectiveCompletion, 
@@ -12,6 +13,7 @@ import {
 import { calculatePassiveIncome, calculateMaintenanceCosts, shouldSeizeAsset, storeMoneyInAsset as storeMoneyInAssetLogic, liquidateAsset as liquidateAssetLogic } from './logic/assets';
 import { checkBetrayalEvents, checkInvestigationTriggers } from './logic/consequences';
 import { getRealCaseById, RealCase } from './data/realCases';
+import type { StoreMessage } from './types/translations';
 
 interface GameStore extends GameState {
   // Actions
@@ -21,8 +23,8 @@ interface GameStore extends GameState {
     amount: number,
     mechanismId: string,
     countryId: string
-  ) => { success: boolean; message: string };
-  purchaseAsset: (asset: Omit<Asset, 'id' | 'purchaseDate'>, countryId?: string) => { success: boolean; message: string };
+  ) => { success: boolean; message: StoreMessage };
+  purchaseAsset: (asset: Omit<Asset, 'id' | 'purchaseDate'>, countryId?: string) => { success: boolean; message: StoreMessage };
   updateHeat: (heatChange: Partial<GameState['heat']>) => void;
   completeObjective: () => void;
   resetGame: () => void;
@@ -30,11 +32,14 @@ interface GameStore extends GameState {
   getCurrentRealCase: () => RealCase | undefined;
   
   // New asset actions
-  payMaintenance: () => { success: boolean; message: string };
+  payMaintenance: () => { success: boolean; message: StoreMessage };
   collectPassiveIncome: () => void;
-  storeMoneyInAsset: (assetId: string, amount: number) => { success: boolean; message: string };
-  liquidateAsset: (assetId: string) => { success: boolean; message: string };
-  checkAssetEvents: () => Array<{ type: string; message: string; asset?: Asset }>;
+  storeMoneyInAsset: (assetId: string, amount: number) => { success: boolean; message: StoreMessage };
+  liquidateAsset: (assetId: string) => { success: boolean; message: StoreMessage };
+  checkAssetEvents: () => Array<{ type: string; message: StoreMessage; asset?: Asset }>;
+  
+  // Enhancement actions
+  activateEnhancement: (mechanismId: string, countryId: string) => { success: boolean; message: StoreMessage };
   
   // Computed values
   getTotalHeat: () => number;
@@ -53,6 +58,7 @@ const initialState: Omit<GameState, 'currentObjective'> = {
   heat: { legal: 10, media: 5, political: 0, total: 5 },
   activeCountries: [],
   activeMechanisms: [],
+  activeEnhancements: [],
   transactions: [],
   assets: [],
   tutorialComplete: false,
@@ -84,6 +90,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       gameStatus: shouldShowTutorial ? 'tutorial' : 'playing',
       activeCountries: [],
       activeMechanisms: [],
+      activeEnhancements: [],
       transactions: [],
       assets: [],
       launderedAmount: 0,
@@ -122,6 +129,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       gameStatus: 'playing',
       activeCountries: [],
       activeMechanisms: [],
+      activeEnhancements: [],
       transactions: [],
       assets: [],
       launderedAmount: 0,
@@ -141,17 +149,70 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   
   // Execute a transaction
-  executeTransaction: (amount, mechanismId, countryId) => {
+  executeTransaction: (amount, mechanismId, countryId): { success: boolean; message: StoreMessage } => {
     const state = get();
+    
+    // Validate mechanism exists
+    const mechanism = getMechanismById(mechanismId);
+    if (!mechanism) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.invalidMechanism',
+          params: {}
+        } as StoreMessage
+      };
+    }
+    
+    // Validate country exists and mechanism is available
+    const country = getCountryById(countryId);
+    if (!country) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.invalidCountry',
+          params: {}
+        } as StoreMessage
+      };
+    }
+    
+    // In real case mode, allow mechanisms that are part of the real case's core/secondary mechanisms
+    // even if they're not normally available in that country
+    let isMechanismAllowed = country.availableMechanisms.includes(mechanismId);
+    if (!isMechanismAllowed && state.realCaseMode && state.realCaseId) {
+      const realCase = getRealCaseById(state.realCaseId);
+      if (realCase) {
+        const allRealCaseMechanisms = [...realCase.coreMechanisms, ...realCase.secondaryMechanisms];
+        isMechanismAllowed = allRealCaseMechanisms.includes(mechanismId);
+      }
+    }
+    
+    if (!isMechanismAllowed) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.mechanismNotAvailableInCountry',
+          params: {
+            mechanismId,
+            countryId: countryId
+          }
+        } as StoreMessage
+      };
+    }
     
     // Validate affordability
     const affordCheck = validateCanAfford(amount, mechanismId, state.totalFunds);
     if (!affordCheck.canAfford) {
-      return { success: false, message: affordCheck.reason || 'No puedes permitirte esta transacción' };
+      return { 
+        success: false, 
+        message: { 
+          key: 'Game.Store.messages.cannotAffordTransaction',
+          params: {}
+        } as StoreMessage
+      };
     }
     
     // Apply role-specific capacity check (this is handled in processTransaction, but we can validate here too)
-    const mechanism = getMechanismById(mechanismId);
     if (mechanism) {
       let effectiveCapacity = mechanism.launderCapacity;
       if (state.role === 'cartel') {
@@ -160,7 +221,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (amount > effectiveCapacity) {
         return { 
           success: false, 
-          message: `El monto excede la capacidad efectiva de ${effectiveCapacity.toLocaleString()} (${state.role === 'cartel' ? '+30% capacidad por rol' : ''})` 
+          message: {
+            key: 'Game.Store.messages.exceedsEffectiveCapacity',
+            params: {
+              capacity: effectiveCapacity,
+              roleBonus: state.role === 'cartel' ? '+30% capacidad por rol' : ''
+            }
+          }
         };
       }
     }
@@ -172,7 +239,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         mechanismId,
         countryId,
         state.heat.total,
-        state.role
+        state.role,
+        state.activeEnhancements
       );
       
       // Create transaction record
@@ -211,16 +279,36 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Check if game over
         if (isGameOver(newHeat)) {
           set({ gameStatus: 'lost' });
-          return { success: true, message: 'Transacción completada, pero el heat ha alcanzado niveles críticos. Game Over.' };
+          return { 
+            success: true, 
+            message: {
+              key: 'Game.Store.messages.transactionCompletedGameOver',
+              params: {}
+            }
+          };
         }
         
         // Check objective completion
         const updatedState = get();
         if (checkObjectiveCompletion(updatedState.currentObjective, updatedState)) {
-          return { success: true, message: 'Transacción completada. ¡Objetivo del tutorial completado!' };
+          return { 
+            success: true, 
+            message: {
+              key: 'Game.Store.messages.transactionCompletedObjectiveComplete',
+              params: {}
+            }
+          };
         }
         
-        return { success: true, message: `Transacción exitosa. Lavaste $${result.launderedAmount.toLocaleString()}` };
+        return { 
+          success: true, 
+          message: {
+            key: 'Game.Store.messages.transactionSuccessful',
+            params: {
+              amount: result.launderedAmount
+            }
+          }
+        };
       } else {
         // Transaction failed but still costs fees
         set({
@@ -228,12 +316,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
           transactions: [...state.transactions, transaction],
         });
         
-        return { success: false, message: 'Transacción fallida. Pagaste las comisiones pero el dinero no se lavó.' };
+        return { 
+          success: false, 
+          message: {
+            key: 'Game.Store.messages.transactionFailed',
+            params: {}
+          }
+        };
       }
     } catch (error) {
       return {
         success: false,
-        message: error instanceof Error ? error.message : 'Error desconocido en la transacción',
+        message: {
+          key: 'Game.Store.messages.transactionUnknownError',
+          params: {
+            error: error instanceof Error ? error.message : 'Unknown error'
+          }
+        },
       };
     }
   },
@@ -256,7 +355,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     
     const purchaseCheck = validateCanPurchase(assetData.cost, availableFunds);
     if (!purchaseCheck.canPurchase) {
-      return { success: false, message: purchaseCheck.reason || 'No puedes permitirte este activo' };
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.cannotAffordAsset',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
     }
     
     // For corruption assets, check if already owned in this country
@@ -265,7 +370,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         (a) => a.type === assetData.type && a.countryId === countryId
       );
       if (alreadyOwned) {
-        return { success: false, message: `Ya tienes ${assetData.name} en este país` };
+        return { 
+          success: false, 
+          message: {
+            key: 'Game.Store.messages.assetAlreadyOwnedInCountry',
+            params: {
+              assetType: assetData.type
+            } as Record<string, string | number | boolean>
+          }
+        };
       }
     } else {
       // For non-corruption assets, check if already owned (regardless of country)
@@ -273,7 +386,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         (a) => a.type === assetData.type && !a.countryId
       );
       if (alreadyOwned) {
-        return { success: false, message: `Ya posees ${assetData.name}` };
+        return { 
+          success: false, 
+          message: {
+            key: 'Game.Store.messages.assetAlreadyOwned',
+            params: {
+              assetType: assetData.type
+            } as Record<string, string | number | boolean>
+          }
+        };
       }
     }
     
@@ -331,18 +452,199 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Check game over
       if (isGameOver(triggerHeat)) {
         set({ gameStatus: 'lost' });
-        return { success: true, message: `${assetData.name} comprado. ${firstTrigger.message} Game Over.` };
+        return { 
+          success: true, 
+          message: {
+            key: 'Game.Store.messages.assetPurchasedGameOver',
+            params: {
+              assetType: assetData.type,
+              triggerMessage: String(firstTrigger.message)
+            } as Record<string, string | number | boolean>
+          }
+        };
       }
       
-      return { success: true, message: `${assetData.name} comprado. ${firstTrigger.message}` };
+      return { 
+        success: true, 
+        message: {
+          key: 'Game.Store.messages.assetPurchasedWithTrigger',
+          params: {
+            assetType: assetData.type,
+            triggerMessage: String(firstTrigger.message)
+          } as Record<string, string | number | boolean>
+        }
+      };
     }
     
     // Check objective completion
     if (checkObjectiveCompletion(updatedState.currentObjective, updatedState)) {
-      return { success: true, message: 'Activo comprado. ¡Objetivo del tutorial completado!' };
+      return { 
+        success: true, 
+        message: {
+          key: 'Game.Store.messages.assetPurchasedObjectiveComplete',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
     }
     
-    return { success: true, message: `${assetData.name} comprado exitosamente` };
+    return { 
+      success: true, 
+      message: {
+        key: 'Game.Store.messages.assetPurchasedSuccessfully',
+        params: {
+          assetType: assetData.type
+        } as Record<string, string | number | boolean>
+      }
+    };
+  },
+  
+  // Activate an enhancement mechanism (like Nominee Director)
+  activateEnhancement: (mechanismId, countryId) => {
+    const state = get();
+    const mechanism = getMechanismById(mechanismId);
+    
+    if (!mechanism) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.invalidMechanism',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    // Check if mechanism can be activated (has 0 capacity)
+    if (mechanism.launderCapacity > 0) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.notSupportMechanism',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    // Check if already active
+    if (state.activeEnhancements.includes(mechanismId)) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.enhancementAlreadyActive',
+          params: {
+            mechanismId
+          } as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    // Check if mechanism is available in country
+    const country = getCountryById(countryId);
+    if (!country) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.invalidCountry',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    // In real case mode, allow mechanisms that are part of the real case's core/secondary mechanisms
+    // even if they're not normally available in that country
+    let isMechanismAllowed = country.availableMechanisms.includes(mechanismId);
+    if (!isMechanismAllowed && state.realCaseMode && state.realCaseId) {
+      const realCase = getRealCaseById(state.realCaseId);
+      if (realCase) {
+        const allRealCaseMechanisms = [...realCase.coreMechanisms, ...realCase.secondaryMechanisms];
+        isMechanismAllowed = allRealCaseMechanisms.includes(mechanismId);
+      }
+    }
+    
+    if (!isMechanismAllowed) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.mechanismNotAvailableInCountry',
+          params: {
+            mechanismId,
+            countryId: countryId
+          } as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    // Check if can afford setup fee
+    const setupFee = mechanism.fees.setup;
+    if (state.totalFunds < setupFee) {
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.insufficientFundsToActivate',
+          params: {
+            mechanismId,
+            setupFee
+          } as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    // Deduct setup fee
+    const newTotalFunds = state.totalFunds - setupFee;
+    const newCleanFunds = Math.max(0, state.cleanFunds - setupFee);
+    
+    // Generate heat (0.7% as per mechanism definition, but as a flat amount since no amount is laundered)
+    const heatGenerated = mechanism.heatGeneration; // This is per $1M, but for setup we'll use it as a flat percentage
+    const heatIncrease = {
+      legal: heatGenerated * 0.7, // 70% legal heat
+      media: heatGenerated * 0.2, // 20% media heat
+      political: heatGenerated * 0.1, // 10% political heat
+    };
+    
+    const newHeat = addHeat(state.heat, heatIncrease);
+    
+    // Add to active enhancements and active mechanisms
+    const newActiveEnhancements = [...state.activeEnhancements, mechanismId];
+    const newActiveMechanisms = state.activeMechanisms.includes(mechanismId) 
+      ? state.activeMechanisms 
+      : [...state.activeMechanisms, mechanismId];
+    
+    // Add country if not already active
+    const newActiveCountries = state.activeCountries.includes(countryId)
+      ? state.activeCountries
+      : [...state.activeCountries, countryId];
+    
+    set({
+      totalFunds: newTotalFunds,
+      cleanFunds: newCleanFunds,
+      heat: newHeat,
+      activeEnhancements: newActiveEnhancements,
+      activeMechanisms: newActiveMechanisms,
+      activeCountries: newActiveCountries,
+    });
+    
+    // Check game over
+    if (isGameOver(newHeat)) {
+      set({ gameStatus: 'lost' });
+      return { 
+        success: true, 
+        message: {
+          key: 'Game.Store.messages.enhancementActivatedGameOver',
+          params: {
+            mechanismId
+          } as Record<string, string | number | boolean>
+        }
+      };
+    }
+    
+    return { 
+      success: true, 
+      message: {
+        key: 'Game.Store.messages.enhancementActivatedSuccessfully',
+        params: {
+          mechanismId
+        } as Record<string, string | number | boolean>
+      }
+    };
   },
   
   // Update heat manually (for special events)
@@ -388,7 +690,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const maintenanceCosts = calculateMaintenanceCosts(state.assets);
     
     if (maintenanceCosts === 0) {
-      return { success: true, message: 'No hay costos de mantenimiento' };
+      return { 
+        success: true, 
+        message: {
+          key: 'Game.Store.messages.noMaintenanceCosts',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
     }
     
     if (state.totalFunds < maintenanceCosts) {
@@ -398,13 +706,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       
       if (betrayals.length > 0) {
         const totalHeatSpike = { legal: 0, media: 0, political: 0 };
-        const messages: string[] = [];
         
         betrayals.forEach(({ asset, betrayalResult }) => {
           totalHeatSpike.legal += betrayalResult.heatSpike.legal;
           totalHeatSpike.media += betrayalResult.heatSpike.media;
           totalHeatSpike.political += betrayalResult.heatSpike.political;
-          messages.push(betrayalResult.message);
           
           // Remove betrayed asset
           set({ assets: state.assets.filter((a) => a.id !== asset.id) });
@@ -415,18 +721,50 @@ export const useGameStore = create<GameStore>((set, get) => ({
         
         if (isGameOver(newHeat)) {
           set({ gameStatus: 'lost' });
-          return { success: false, message: `No puedes pagar mantenimiento. ${messages.join(' ')} Game Over.` };
+          return { 
+            success: false, 
+            message: {
+              key: 'Game.Store.messages.cannotPayMaintenanceGameOver',
+              params: {
+                betrayalCount: betrayals.length
+              } as Record<string, string | number | boolean>
+            }
+          };
         }
         
-        return { success: false, message: `No puedes pagar mantenimiento. ${messages.join(' ')}` };
+        return { 
+          success: false, 
+          message: {
+            key: 'Game.Store.messages.cannotPayMaintenance',
+            params: {
+              betrayalCount: betrayals.length
+            } as Record<string, string | number | boolean>
+          }
+        };
       }
       
-      return { success: false, message: `No puedes pagar los costos de mantenimiento ($${maintenanceCosts.toLocaleString()})` };
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.cannotPayMaintenanceCosts',
+          params: {
+            amount: maintenanceCosts
+          } as Record<string, string | number | boolean>
+        }
+      };
     }
     
     // Pay maintenance
     set({ totalFunds: state.totalFunds - maintenanceCosts });
-    return { success: true, message: `Pagaste $${maintenanceCosts.toLocaleString()} en mantenimiento` };
+    return { 
+      success: true, 
+      message: {
+        key: 'Game.Store.messages.maintenancePaid',
+        params: {
+          amount: maintenanceCosts
+        } as Record<string, string | number | boolean>
+      }
+    };
   },
   
   // Collect passive income from luxury assets
@@ -448,11 +786,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const asset = state.assets.find((a) => a.id === assetId);
     
     if (!asset) {
-      return { success: false, message: 'Activo no encontrado' };
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.assetNotFound',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
     }
     
     if (state.cleanFunds < amount) {
-      return { success: false, message: 'Fondos limpios insuficientes' };
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.insufficientCleanFunds',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
     }
     
     const result = storeMoneyInAssetLogic(asset, amount);
@@ -467,9 +817,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cleanFunds: state.cleanFunds - amount,
         totalFunds: state.totalFunds - amount,
       });
+      
+      return {
+        success: true,
+        message: {
+          key: 'Game.Store.messages.moneyStoredInAsset',
+          params: {
+            amount,
+            assetName: asset.name
+          } as Record<string, string | number | boolean>
+        }
+      };
     }
     
-    return { success: result.success, message: result.message };
+    // Convert string message to StoreMessage
+    return {
+      success: false,
+      message: {
+        key: 'Game.Store.messages.cannotStoreMoneyInAsset',
+        params: {
+          reason: result.message
+        } as Record<string, string | number | boolean>
+      }
+    };
   },
   
   // Liquidate an asset
@@ -478,7 +848,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const asset = state.assets.find((a) => a.id === assetId);
     
     if (!asset) {
-      return { success: false, message: 'Activo no encontrado' };
+      return { 
+        success: false, 
+        message: {
+          key: 'Game.Store.messages.assetNotFound',
+          params: {} as Record<string, string | number | boolean>
+        }
+      };
     }
     
     const result = liquidateAssetLogic(asset);
@@ -499,13 +875,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cleanFunds: newCleanFunds,
     });
     
-    return { success: true, message: result.message };
+    return {
+      success: true,
+      message: {
+        key: 'Game.Store.messages.assetLiquidated',
+        params: {
+          assetName: asset.name,
+          refundAmount: result.refundAmount,
+          lostStoredFunds: result.loseStoredFunds ? 1 : 0
+        } as Record<string, string | number | boolean>
+      }
+    };
   },
   
   // Check for asset events (betrayals, seizures, etc.)
   checkAssetEvents: () => {
     const state = get();
-    const events: Array<{ type: string; message: string; asset?: Asset }> = [];
+    const events: Array<{ type: string; message: StoreMessage; asset?: Asset }> = [];
     
     // PERFORMANCE: Collect all changes first, then apply in a single state update
     let updatedHeat = state.heat;
@@ -517,7 +903,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     betrayals.forEach(({ asset, betrayalResult }) => {
       events.push({
         type: 'betrayal',
-        message: betrayalResult.message,
+        message: {
+          key: 'Game.Store.messages.assetBetrayed',
+          params: {
+            assetType: asset.type,
+            countryId: asset.countryId || ''
+          } as Record<string, string | number | boolean>
+        },
         asset,
       });
       
@@ -539,7 +931,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (shouldSeizeAsset(asset, updatedHeat.total)) {
         events.push({
           type: 'seizure',
-          message: `Las autoridades confiscaron tu ${asset.name}. Perdiste $${((asset.cost || 0) + (asset.storedFunds || 0)).toLocaleString()}.`,
+          message: {
+            key: 'Game.Store.messages.assetSeized',
+            params: {
+              assetType: asset.type,
+              totalLost: (asset.cost || 0) + (asset.storedFunds || 0)
+            }
+          },
           asset,
         });
         

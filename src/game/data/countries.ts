@@ -7,7 +7,7 @@ export const countries: Country[] = [
     secrecyScore: 61, // TJN FSI 2023
     riskLevel: 7,
     opacityBonus: 0.35,
-    availableMechanisms: ['shell-company', 'trust', 'nominee-director', 'correspondent-banking', 'trade-based-ml'],
+    availableMechanisms: ['shell-company', 'trust', 'nominee-director', 'correspondent-banking', 'trade-based-ml', 'beneficial-ownership'],
     description: 'Paraíso fiscal caribeño con alta confidencialidad y registro rápido. Territorio británico de ultramar con autonomía fiscal.',
     flagEmoji: '🇻🇬',
     coordinates: { lat: 18.4207, lng: -64.6399 },
@@ -18,7 +18,7 @@ export const countries: Country[] = [
     secrecyScore: 58, // TJN FSI 2023
     riskLevel: 7,
     opacityBonus: 0.30,
-    availableMechanisms: ['shell-company', 'nominee-director', 'trade-based-ml'],
+    availableMechanisms: ['shell-company', 'nominee-director', 'trade-based-ml', 'beneficial-ownership', 'trust'],
     description: 'Hub corporativo con historial de casos mediáticos (Panama Papers). Centro logístico global con zona libre de Colón.',
     flagEmoji: '🇵🇦',
     coordinates: { lat: 8.9824, lng: -79.5199 },
@@ -29,7 +29,7 @@ export const countries: Country[] = [
     secrecyScore: 52, // TJN FSI 2023
     riskLevel: 6,
     opacityBonus: 0.30,
-    availableMechanisms: ['trust', 'shell-company', 'correspondent-banking'],
+    availableMechanisms: ['trust', 'shell-company', 'correspondent-banking', 'beneficial-ownership'],
     description: 'Banca privada tradicional con mayor cooperación internacional (AEOI/CRS). Estabilidad política y marco legal sofisticado.',
     flagEmoji: '🇨🇭',
     coordinates: { lat: 46.8182, lng: 8.2275 },

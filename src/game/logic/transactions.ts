@@ -17,7 +17,8 @@ export function calculateHeatGeneration(
   mechanism: Mechanism,
   country: Country,
   scrutinyLevel: ScrutinyLevel,
-  role?: GameRole
+  role?: GameRole,
+  activeEnhancements?: string[]
 ): { legal: number; media: number; political: number; total: number } {
   // Base heat per $1M laundered
   const baseHeat = mechanism.heatGeneration * (amount / 1000000);
@@ -28,16 +29,22 @@ export function calculateHeatGeneration(
   // Scrutiny modifier
   const scrutinyModifier = scrutinyLevel === 'high' ? 1.5 : 1;
   
-  // Role modifier
+  // Role modifier - rebalanced for better gameplay
   let roleModifier = 1;
   if (role === 'cartel') {
-    roleModifier = 1.25; // Cartel generates 25% more heat
+    roleModifier = 1.20; // Cartel generates 20% more heat (reduced from 25%)
   } else if (role === 'multinational') {
-    roleModifier = 0.7; // Multinational generates 30% less heat (legitimate business)
+    roleModifier = 0.75; // Multinational generates 25% less heat (reduced from 30% for balance)
+  }
+  
+  // Enhancement modifier - Nominee Director reduces heat by 12%
+  let enhancementModifier = 1;
+  if (activeEnhancements && activeEnhancements.includes('nominee-director')) {
+    enhancementModifier = 0.88; // 12% reduction
   }
   
   // Total base heat
-  const totalBaseHeat = baseHeat * countryModifier * scrutinyModifier * roleModifier;
+  const totalBaseHeat = baseHeat * countryModifier * scrutinyModifier * roleModifier * enhancementModifier;
   
   // Distribute heat across factors
   // Legal transactions primarily generate legal heat
@@ -62,11 +69,17 @@ export function calculateHeatGeneration(
 
 export function determineTransactionSuccess(
   mechanism: Mechanism,
-  scrutinyLevel: ScrutinyLevel
+  scrutinyLevel: ScrutinyLevel,
+  activeEnhancements?: string[]
 ): boolean {
-  const successRate = scrutinyLevel === 'low' 
+  let successRate = scrutinyLevel === 'low' 
     ? mechanism.successRateLow 
     : mechanism.successRateHigh;
+  
+  // Enhancement bonus - Nominee Director improves success rate by 5%
+  if (activeEnhancements && activeEnhancements.includes('nominee-director')) {
+    successRate = Math.min(0.95, successRate + 0.05); // Cap at 95%
+  }
   
   return Math.random() < successRate;
 }
@@ -88,7 +101,8 @@ export function processTransaction(
   mechanismId: string,
   countryId: string,
   currentHeat: number,
-  role?: GameRole
+  role?: GameRole,
+  activeEnhancements?: string[]
 ): {
   success: boolean;
   fees: number;
@@ -122,8 +136,8 @@ export function processTransaction(
   
   const scrutinyLevel = determineScrutinyLevel(currentHeat, country.riskLevel);
   const fees = calculateTransactionFees(amount, mechanism);
-  const heatGenerated = calculateHeatGeneration(amount, mechanism, country, scrutinyLevel, role);
-  const success = determineTransactionSuccess(mechanism, scrutinyLevel);
+  const heatGenerated = calculateHeatGeneration(amount, mechanism, country, scrutinyLevel, role, activeEnhancements);
+  const success = determineTransactionSuccess(mechanism, scrutinyLevel, activeEnhancements);
   
   return {
     success,
