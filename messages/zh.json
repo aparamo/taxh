@@ -1,0 +1,887 @@
+{
+  "AppLayout": {
+    "home": "首页",
+    "logout": "登出",
+    "profile": "个人资料"
+  },
+  "HomePage": {
+    "title": "首页",
+    "heading": "避税天堂",
+    "subtitle": "关于国际腐败和洗钱的教育模拟器",
+    "playButton": "开始游戏",
+    "footerNote": "这是一个教育游戏。所有内容都基于有记录的真实案例。"
+  },
+  "LocaleSwitcher": {
+    "es": "西班牙语",
+    "en": "英语",
+    "fr": "法语",
+    "pt": "葡萄牙语",
+    "de": "德语",
+    "zh": "中文",
+    "label": "语言"
+  },
+  "LoginPage": {
+    "credentials": "凭据: jane@doe.com / next-intl",
+    "description": "请输入您的详细信息。",
+    "email": "电子邮件",
+    "invalidCredentials": "请检查您的凭据。",
+    "invalidEmail": "请输入有效的电子邮件地址。",
+    "invalidPassword": "请输入密码。",
+    "login": "登录",
+    "password": "密码",
+    "title": "欢迎回来"
+  },
+  "ProfilePage": {
+    "title": "个人资料"
+  },
+  "Navigation": {
+    "home": "首页",
+    "about": "关于"
+  },
+  "Logo": {
+    "tagline": "面向有抱负的帮派分子、企业和腐败政客的教育游戏"
+  },
+  "MobileNav": {
+    "closeMenu": "关闭菜单",
+    "home": "首页",
+    "about": "关于"
+  },
+  "GameLobby": {
+    "title": "选择您的角色",
+    "subtitle": "选择您在这个不透明金融世界中的身份",
+    "roles": {
+      "multimillionaire": {
+        "title": "千万富翁",
+        "description": "您继承了500万美元现金，需要将其合法化。选择离岸结构来保护您的资产。",
+        "availableForTutorial": "可用于教程",
+        "stats": {
+          "startingFunds": "起始资金：500万美元",
+          "initialHeat": "初始热度：低",
+          "mechanisms": "机制：基础到高级"
+        },
+        "select": "选择"
+      },
+      "cartel": {
+        "title": "贩运组织",
+        "description": "快速清洗大量非法资金。高风险、大容量的机制。",
+        "locked": "完成教程以解锁",
+        "stats": {
+          "startingFunds": "起始资金：1000万美元",
+          "initialHeat": "初始热度：高",
+          "advantage": "优势：+30%容量",
+          "disadvantage": "劣势：+25%生成的热度"
+        },
+        "select": "选择",
+        "lockedButton": "已锁定"
+      },
+      "multinational": {
+        "title": "跨国公司",
+        "description": "激进的税务优化。使用转移定价和复杂结构来最小化税收。",
+        "locked": "完成教程以解锁",
+        "stats": {
+          "startingFunds": "起始资金：5000万美元",
+          "initialHeat": "初始热度：极低",
+          "advantage": "优势：高级结构",
+          "disadvantage": "劣势：税务审查"
+        },
+        "select": "选择",
+        "lockedButton": "已锁定"
+      }
+    },
+    "realCases": {
+      "title": "真实案例",
+      "subtitle": "玩基于真实事件的著名历史案例",
+      "badge": "基于真实事件",
+      "description": "体验真实的腐败和逃税丑闻。遵循历史步骤或创建自己的路径。从\"腐败顾问\"那里获得建议，并将您的决定与实际发生的情况进行比较。",
+      "viewCases": "查看可用案例"
+    }
+  },
+  "Game": {
+    "PlayPage": {
+      "header": {
+        "totalFunds": "总资金",
+        "laundered": "已清洗",
+        "heatTotal": "总热度"
+      },
+      "victory": {
+        "title": "胜利！",
+        "subtitle": "您已完成目标",
+        "continue": "继续游戏",
+        "restart": "重新开始",
+        "note": "您现在可以在自由模式下继续游戏"
+      },
+      "gameOver": {
+        "title": "游戏结束",
+        "subtitle": "热度达到临界水平",
+        "message": "您已被当局发现",
+        "restart": "重新开始游戏"
+      },
+      "tutorialComplete": {
+        "title": "恭喜！",
+        "subtitle": "您已完成教程",
+        "message": "您已了解避税天堂和洗钱的基础知识",
+        "progress": "您的进度：",
+        "laundered": "已清洗资金：",
+        "objective": "目标：",
+        "completed": "已完成",
+        "allRolesAvailable": "现在所有角色都可供探索",
+        "backToLobby": "返回角色选择"
+      }
+    },
+    "Dashboard": {
+      "tabs": {
+        "overview": "概览",
+        "transactions": "交易",
+        "assets": "资产",
+        "educational": "背景"
+      },
+      "overview": {
+        "launderedFunds": "已清洗资金",
+        "cashFlow": "现金流",
+        "passiveIncome": "被动收入：",
+        "maintenance": "维护：",
+        "net": "净额：",
+        "assetSummary": "资产摘要",
+        "totalAssets": "总资产：",
+        "storedFunds": "存储资金：",
+        "avgBetrayalRisk": "平均背叛风险：",
+        "avgSeizureRisk": "平均没收风险：",
+        "activeCountries": "活跃国家",
+        "noCountrySelected": "未选择国家",
+        "activeMechanisms": "活跃机制",
+        "noMechanismSelected": "未选择机制",
+        "activeEnhancement": "活跃增强",
+        "enhancementBenefits": "减少热度12%并提高成功率5%",
+        "currentObjective": "当前目标",
+        "corruptionByCountry": "按国家划分的腐败",
+        "connections": "连接",
+        "connection": "连接"
+      },
+      "transactions": {
+        "title": "交易历史"
+      },
+      "assets": {
+        "title": "资产管理"
+      },
+      "educational": {
+        "title": "教育内容",
+        "realCase": "真实案例：",
+        "historicalProgress": "历史进度：",
+        "historicalAmount": "历史金额：",
+        "yourAmount": "您的金额：",
+        "historicalResult": "历史结果：",
+        "caught": "被发现",
+        "controversial": "有争议",
+        "riskComparison": "风险比较",
+        "yourHeatTotal": "您的总热度：",
+        "criticalLevel": "⚠️ 临界水平 - 类似于被发现的案例",
+        "mediumLevel": "⚡ 中等水平 - 增加当局的警惕性",
+        "lowLevel": "✓ 低水平 - 相对安全",
+        "learnMore": "了解更多",
+        "luxuryAssets": "奢侈品资产：",
+        "visibleAssets": "⚠️ 可见资产（游艇）增加热度但显示财富",
+        "discreteAssets": "✓ 更谨慎的资产",
+        "mechanisms": "机制："
+      }
+    },
+    "CountrySelector": {
+      "title": "选择国家",
+      "noCountrySelected": "未选择国家",
+      "select": "选择国家",
+      "change": "更改国家",
+      "dialog": {
+        "title": "选择国家",
+        "description": "选择一个国家进行交易。保密性更高的国家提供更多保护，但可能风险更高。",
+        "showAll": "显示全部",
+        "filterByRole": "按角色筛选",
+        "historicallyUsed": "历史上使用过",
+        "active": "活跃",
+        "secrecy": "保密性：",
+        "risk": "风险：",
+        "mechanisms": "机制："
+      },
+      "badges": {
+        "active": "活跃",
+        "secrecy": "保密性：",
+        "risk": "风险："
+      }
+    },
+    "MechanismPanel": {
+      "title": "机制",
+      "noMechanismSelected": "未选择机制",
+      "select": "选择机制",
+      "change": "更改机制",
+      "dialog": {
+        "title": "选择机制",
+        "description": "选择洗钱机制。每个机制都有不同的成本、容量和风险水平。",
+        "historicallyUsed": "历史上使用过",
+        "setup": "设置：",
+        "success": "%成功率",
+        "heat": "热度：",
+        "capacity": "容量：",
+        "lowScrutiny": "（低审查）",
+        "perMillion": "每100万美元",
+        "noDirectLaundering": "不直接洗钱 - 改善其他机制"
+      },
+      "badges": {
+        "setup": "设置：",
+        "success": "%成功率",
+        "heat": "热度：",
+        "capacity": "容量："
+      }
+    },
+    "TransactionPanel": {
+      "executeTransaction": "执行交易",
+      "activateMechanism": "激活机制",
+      "errors": {
+        "selectCountryFirst": "请先选择国家",
+        "invalidAmount": "输入有效金额",
+        "invalidMechanism": "无效机制",
+        "exceedsCapacity": "金额超过机制容量（{capacity}）",
+        "unknownError": "未知错误"
+      },
+      "enhancement": {
+        "active": "{name}已激活",
+        "activeDescription": "此机制改善其他活跃机制，将生成的热度减少12%并提高成功率。",
+        "supportMechanism": "💡 支持机制",
+        "supportDescription": "{name}是一个支持机制，可改善其他机制。激活后，它将其他机制生成的热度减少12%并提高其成功率。",
+        "activationCost": "激活成本：",
+        "heatGenerated": "生成的热度：",
+        "cannotProcess": "{name}无法直接处理交易。它是一个支持机制，可改善其他机制。",
+        "warning": "⚠️ 请先选择国家"
+      },
+      "amount": "金额（美元）",
+      "maxCapacity": "最大容量：",
+      "quickAmounts": {
+        "25": "25%",
+        "50": "50%",
+        "75": "75%",
+        "100": "100%"
+      },
+      "costBreakdown": {
+        "title": "成本明细",
+        "amount": "金额：",
+        "fees": "费用：",
+        "total": "总成本：",
+        "estimatedHeat": "估计热度：",
+        "legal": "法律：",
+        "media": "媒体：",
+        "political": "政治：",
+        "totalHeat": "总计：",
+        "successProbability": "成功概率：",
+        "level": "审查水平：",
+        "low": "低",
+        "medium": "中",
+        "high": "高"
+      },
+      "execute": "执行",
+      "activate": "激活",
+      "insufficientFunds": "资金不足",
+      "processing": "处理中..."
+    },
+    "AssetsList": {
+      "ownedAssets": "拥有的资产",
+      "availableAssets": "可用资产",
+      "purchase": "购买",
+      "purchaseIn": "在...购买",
+      "store": "存储",
+      "liquidate": "清算",
+      "selectCountryFirst": "请先选择国家",
+      "selectCountryToPurchase": "选择购买国家",
+      "selectCountry": "选择国家",
+      "invalidAmount": "输入有效金额",
+      "country": "国家：",
+      "cost": "成本：",
+      "heatReduction": "热度减少：",
+      "passiveIncome": "被动收入：",
+      "maintenanceCost": "维护成本：",
+      "seizureRisk": "没收风险：",
+      "betrayalRisk": "背叛风险：",
+      "storedFunds": "存储资金：",
+      "noAssets": "无可用资产",
+      "noAssetsOwned": "您还没有拥有任何资产",
+      "clean": "干净",
+      "dirty": "脏",
+      "any": "任何",
+      "luxuryAssets": "奢侈品资产",
+      "corruptionAssets": "腐败资产",
+      "infrastructure": "基础设施",
+      "heat": "热度",
+      "income": "收入",
+      "maintenance": "维护",
+      "stored": "已存储",
+      "confiscation": "没收",
+      "betrayal": "背叛",
+      "alreadyOwned": "您已拥有此资产",
+      "assetAlreadyOwnedInCountry": "您已在此国家拥有此资产",
+      "insufficientFunds": "资金不足",
+      "netCashFlow": "净现金流"
+    },
+    "HeatMeter": {
+      "total": "总热度",
+      "legal": "法律",
+      "media": "媒体",
+      "political": "政治"
+    },
+    "CaseProgressTracker": {
+      "title": "案例进度",
+      "expandMenu": "展开菜单",
+      "collapseMenu": "折叠菜单",
+      "historicalProgress": "历史进度",
+      "steps": "步骤",
+      "currentStep": "当前步骤",
+      "year": "年份：",
+      "historicalAmount": "历史金额：",
+      "country": "国家：",
+      "historicalSteps": "历史步骤",
+      "current": "当前",
+      "historicalResult": "历史结果：",
+      "caught": "被发现",
+      "controversial": "有争议",
+      "whatToDo": "该做什么？",
+      "currentStepLabel": "当前步骤：",
+      "selectCountry": "选择国家：",
+      "historicalCountry": "（历史国家）",
+      "selectMechanism": "选择机制：",
+      "historicallyUsed": "（历史上使用过）",
+      "notAvailable": "⚠ 此国家不可用",
+      "executeTransaction": "执行交易：",
+      "trySimilarAmount": "尝试与历史金额相似的金额（{amount}）",
+      "event": "（事件，不需要交易）",
+      "tip": "💡 提示：标记为\"历史上使用过\"的机制实际上在此案例中使用过。如果机制在历史国家不可用，您可以使用次要列表中的替代国家或类似机制。",
+      "alternative": "替代方案：",
+      "alternativeDescription": "机制\"{mechanism}\"在{country}不可用。可用机制：{available}",
+      "none": "无",
+      "followSteps": "遵循上面显示的历史步骤。每个步骤指示历史上使用的国家、机制和金额。",
+      "advisorHints": "顾问提示："
+    },
+    "TutorialOverlay": {
+      "skip": "跳过教程",
+      "next": "下一步",
+      "startGame": "开始游戏",
+      "complete": "完成",
+      "prev": "上一步",
+      "close": "关闭",
+      "clickHighlighted": "点击突出显示的元素以继续",
+      "completeAction": "完成操作以继续",
+      "perfectContinue": "✓ 完美！您可以继续下一步。",
+      "mobile": {
+        "expand": "展开",
+        "collapse": "折叠",
+        "step": "步骤 {current}/{total}"
+      }
+    },
+    "EventNotifications": {
+      "titles": {
+        "betrayal": "背叛",
+        "seizure": "没收",
+        "rivalInterference": "竞争对手干扰",
+        "passiveIncome": "被动收入",
+        "maintenance": "维护",
+        "investigation": "调查",
+        "event": "事件"
+      },
+      "passiveIncomeReceived": "您收到了{amount}的被动收入。",
+      "similarTo": "类似于：{name}（{year}）"
+    },
+    "AdvisorHint": {
+      "title": "顾问提示",
+      "showHistorical": "显示历史背景",
+      "hideHistorical": "隐藏历史背景",
+      "hide": "隐藏",
+      "historicalContext": "真正发生的事情："
+    },
+    "RealCaseSelector": {
+      "title": "真实案例",
+      "description": "选择一个历史案例来体验这些真实丑闻是如何运作的。您将从\"腐败顾问\"那里获得建议，并可以将您的决定与实际发生的情况进行比较。",
+      "period": "时期",
+      "totalAmount": "总金额",
+      "result": "结果",
+      "caught": "被发现",
+      "legalControversial": "合法但有争议",
+      "warning": "警告：",
+      "warningCaught": "此案例以被发现和损失{amount}告终。{consequences}",
+      "warningControversial": "{consequences}",
+      "playCase": "玩此案例",
+      "noCasesAvailable": "目前没有可用案例",
+      "roleLabels": {
+        "multimillionaire": "千万富翁",
+        "cartel": "犯罪组织",
+        "multinational": "公司"
+      }
+    },
+    "TutorialPage": {
+      "title": "教程",
+      "skip": "跳过教程",
+      "next": "下一步",
+      "start": "开始",
+      "steps": {
+        "welcome": {
+          "title": "欢迎",
+          "yourObjective": "您的目标："
+        },
+        "selectCountry": {
+          "title": "选择国家",
+          "description": "选择一个避税天堂国家，您将在那里建立您的结构。每个国家都有不同的保密性和风险水平。",
+          "highSecrecy": "高保密性",
+          "highRisk": "高风险",
+          "privateBanking": "私人银行"
+        },
+        "firstTransaction": {
+          "title": "您的第一笔交易",
+          "description": "使用机制来洗钱。每个机制都有不同的成本、容量和风险。",
+          "setup": "设置",
+          "success": "%成功率"
+        },
+        "monitorHeat": {
+          "title": "监控热度",
+          "description": "\"热度\"（风险）随着每笔交易而增加。观察以下水平：",
+          "legal": "法律",
+          "media": "媒体",
+          "political": "政治",
+          "gameOverWarning": "如果总热度达到100%，您就输了。"
+        },
+        "readyToPlay": {
+          "title": "准备开始游戏！",
+          "description": "您已了解基础知识。完成教程后，您就可以自由游戏了。",
+          "objectiveCompleted": "目标完成！您可以在自由模式下继续游戏。",
+          "remember": "记住：",
+          "educationalNote": "这是一个教育游戏。一切都基于新闻调查的真实案例。"
+        }
+      }
+    },
+    "Store": {
+      "messages": {
+        "cannotAffordTransaction": "您无法负担此交易",
+        "exceedsEffectiveCapacity": "金额超过有效容量{capacity}（{roleBonus}）",
+        "transactionCompletedGameOver": "交易完成，但热度已达到临界水平。游戏结束。",
+        "transactionCompletedObjectiveComplete": "交易完成。教程目标完成！",
+        "transactionSuccessful": "交易成功。您清洗了${amount}",
+        "transactionFailed": "交易失败。您支付了费用，但资金未被清洗。",
+        "transactionUnknownError": "未知交易错误：{error}",
+        "cannotAffordAsset": "您无法负担此资产",
+        "assetAlreadyOwnedInCountry": "您已在此国家拥有此资产",
+        "assetAlreadyOwned": "您已拥有此资产",
+        "assetPurchasedGameOver": "已购买{assetType}。{triggerMessage}游戏结束。",
+        "assetPurchasedWithTrigger": "已购买{assetType}。{triggerMessage}",
+        "assetPurchasedObjectiveComplete": "已购买资产。教程目标完成！",
+        "assetPurchasedSuccessfully": "成功购买{assetType}",
+        "invalidMechanism": "无效机制",
+        "notSupportMechanism": "此机制不是支持机制。请改用\"执行交易\"。",
+        "enhancementAlreadyActive": "{mechanismId}已激活",
+        "invalidCountry": "无效国家",
+        "mechanismNotAvailableInCountry": "{mechanismId}在{countryId}不可用",
+        "insufficientFundsToActivate": "资金不足。您需要${setupFee}美元来激活{mechanismId}",
+        "enhancementActivatedGameOver": "已激活{mechanismId}。热度过高。游戏结束。",
+        "enhancementActivatedSuccessfully": "成功激活{mechanismId}。现在改善其他机制（减少热度12%）",
+        "noMaintenanceCosts": "无维护成本",
+        "cannotPayMaintenanceGameOver": "您无法支付维护费用。{betrayalCount}个资产背叛了您。游戏结束。",
+        "cannotPayMaintenance": "您无法支付维护费用。{betrayalCount}个资产背叛了您。",
+        "cannotPayMaintenanceCosts": "您无法支付维护成本（${amount}）",
+        "maintenancePaid": "您支付了${amount}的维护费用",
+        "assetNotFound": "未找到资产",
+        "insufficientCleanFunds": "干净资金不足",
+        "assetSeized": "当局没收了您的{assetType}。您损失了${totalLost}。"
+      }
+    }
+  },
+  "GameData": {
+    "Countries": {
+      "bvi": {
+        "name": "英属维尔京群岛",
+        "description": "加勒比避税天堂，保密性高，注册快速。英国海外领土，财政自治。"
+      },
+      "panama": {
+        "name": "巴拿马",
+        "description": "企业中心，有媒体案例历史（巴拿马文件）。全球物流中心，拥有科隆自由区。"
+      },
+      "switzerland": {
+        "name": "瑞士",
+        "description": "传统私人银行，国际合作更广泛（AEOI/CRS）。政治稳定，法律框架完善。"
+      },
+      "singapore": {
+        "name": "新加坡",
+        "description": "全球金融中心，银行保密性适中，监管框架完善。亚洲企业结构的热门选择。"
+      },
+      "uae": {
+        "name": "阿拉伯联合酋长国",
+        "description": "金融保密性高，拥有自由区和宽松的管制。中东不透明结构的热门选择。"
+      },
+      "cayman": {
+        "name": "开曼群岛",
+        "description": "离岸银行中心，保密性高。投资基金和大容量结构的热门选择。"
+      },
+      "luxembourg": {
+        "name": "卢森堡",
+        "description": "欧洲金融中心，以有利的税务裁决而闻名（卢森堡泄漏）。跨国公司结构的热门选择。"
+      },
+      "delaware": {
+        "name": "美国特拉华州",
+        "description": "美国州，企业注册热门。成本低，流程快，但保密性低于离岸管辖区。"
+      },
+      "ireland": {
+        "name": "爱尔兰",
+        "description": "科技公司热门（双重爱尔兰）。提供知识盒和激进的转移定价结构。"
+      },
+      "netherlands": {
+        "name": "荷兰",
+        "description": "税务结构的导管国家（荷兰三明治）。预扣税豁免和有利的税务条约。"
+      },
+      "malta": {
+        "name": "马耳他",
+        "description": "欧盟小岛国，银行保密，可进入欧洲市场。作为中介的热门选择。"
+      },
+      "uk": {
+        "name": "英国",
+        "description": "豪华房地产投资的热门目的地。伦敦是全球金融中心，透明度适中。"
+      },
+      "angola": {
+        "name": "安哥拉",
+        "description": "国家腐败案例的起源国。使用离岸结构隐藏公共资金。"
+      },
+      "malaysia": {
+        "name": "马来西亚",
+        "description": "1MDB丑闻的起源国。区域金融中心，银行保密性适中。"
+      },
+      "usa": {
+        "name": "美国",
+        "description": "高调投资的目的地。纽约和其他州提供类似于避税天堂的企业不透明性。金融机构可使用代理银行。"
+      },
+      "jersey": {
+        "name": "泽西岛",
+        "description": "英国皇家属地，银行保密性高。信托和欧洲企业结构的热门选择。"
+      },
+      "hong-kong": {
+        "name": "香港",
+        "description": "亚洲全球金融中心，低税收，企业结构完善。通往中国和亚洲的门户。"
+      },
+      "bermuda": {
+        "name": "百慕大",
+        "description": "离岸保险中心，保密性高。再保险结构和信托的热门选择。"
+      },
+      "isle-of-man": {
+        "name": "马恩岛",
+        "description": "英国皇家属地，低税收，银行保密。信托和企业结构的热门选择。"
+      },
+      "monaco": {
+        "name": "摩纳哥",
+        "description": "无个人所得税的公国，银行保密。奢侈品资产和高价值财富的热门选择。"
+      },
+      "mauritius": {
+        "name": "毛里求斯",
+        "description": "通往非洲的门户，有利的税务条约。非洲大陆投资和贸易的热门选择。"
+      },
+      "seychelles": {
+        "name": "塞舌尔",
+        "description": "金融保密性高，企业注册快速且成本低。离岸公司和不透明结构的热门选择。"
+      },
+      "gibraltar": {
+        "name": "直布罗陀",
+        "description": "英国海外领土，可进入欧盟。企业结构和离岸银行的热门选择。"
+      }
+    },
+    "Mechanisms": {
+      "shell-company": {
+        "name": "空壳公司",
+        "description": "没有实际业务的法律实体，用于隐藏所有权和资金来源。最常见和可访问的机制。"
+      },
+      "trust": {
+        "name": "信托",
+        "description": "保护资产和隐藏最终受益人的法律结构。安全性更高但成本更高。"
+      },
+      "nominee-director": {
+        "name": "名义董事",
+        "description": "代表实体签署文件以隐藏实际控制的稻草人。高风险但初始成本低。"
+      },
+      "transfer-pricing": {
+        "name": "转移定价",
+        "description": "跨国公司为集团内交易设定价格。通过在低税管辖区定位知识产权，向高税国家的子公司收取特许权使用费。"
+      },
+      "trade-based-ml": {
+        "name": "基于贸易的洗钱",
+        "description": "通过高/低开票、多重发票和三角贸易操纵对外贸易。通过伪造的海关文件证明资金流动的合理性。"
+      },
+      "correspondent-banking": {
+        "name": "代理银行",
+        "description": "本地银行在外国银行维护账户以处理国际支付。金融犯罪利用管制宽松的小银行来访问美元/欧元系统。"
+      },
+      "beneficial-ownership": {
+        "name": "不透明的受益所有权",
+        "description": "通过实体、信托和名义董事的层级隐藏实际所有权的法律结构。使追踪最终受益人变得困难。"
+      }
+    },
+    "Assets": {
+      "yacht": {
+        "name": "豪华游艇",
+        "description": "增加总热度8%。向所有人展示您的炫耀性财富。让您感觉像个\"赢家\"，寻求金钱的人蜂拥而至。易于运输但非常显眼。"
+      },
+      "mansion": {
+        "name": "豪宅",
+        "description": "增加总热度5%。您的成功象征无法隐藏。价值储存但吸引税务当局的怀疑目光。独家派对增加您的\"声望\"。"
+      },
+      "art": {
+        "name": "艺术收藏",
+        "description": "增加总热度3%。您的\"好品味\"在国际拍卖会上引起关注。易于运输但难以解释这些作品的资金来源。艺术评论家钦佩（或嫉妒）您。"
+      },
+      "luxury_car": {
+        "name": "豪华汽车",
+        "description": "增加总热度2%。您在街上的豪华车辆引起嫉妒和怀疑。易于清算但难以向当局隐藏。"
+      },
+      "rolex": {
+        "name": "劳力士",
+        "description": "增加总热度1%。您的豪华手表在社交聚会上引起关注。易于运输和隐藏，但显示您拥有的钱比您申报的更多。"
+      },
+      "politician": {
+        "name": "收买政客",
+        "description": "在一个国家减少政治热度10%。保护免受调查。"
+      },
+      "judge": {
+        "name": "收买法官",
+        "description": "减少法律热度15%。保护免受法律程序。"
+      },
+      "police": {
+        "name": "收买警察",
+        "description": "减少法律热度5%。调查的早期警告。"
+      },
+      "bank_relationship": {
+        "name": "改善银行关系",
+        "description": "减少费用10%并解锁高级私人银行访问。"
+      },
+      "corporate_office": {
+        "name": "离岸企业办公室",
+        "description": "离岸管辖区内的企业办公室。减少热度2%并产生被动收入。国际业务的合法结构。"
+      },
+      "patent_portfolio": {
+        "name": "专利组合",
+        "description": "低税管辖区内的知识产权组合。减少热度3%并允许激进的转移定价。科技跨国公司的常见结构。"
+      },
+      "offshore_subsidiary": {
+        "name": "离岸子公司",
+        "description": "避税天堂中的企业子公司，用于税务优化。减少热度1%并允许转移定价结构。国际业务的基础。"
+      },
+      "distribution_network": {
+        "name": "分销网络",
+        "description": "促进贸易的国际分销网络。实现基于贸易的洗钱并证明资金流动的合理性。跨国公司的常见结构。"
+      },
+      "data_center": {
+        "name": "数据中心",
+        "description": "有利管辖区内的数据中心。减少热度1%并产生被动收入。对合法基础设施的投资。"
+      }
+    },
+    "Scenarios": {
+      "multimillionaire-inheritance": {
+        "title": "未申报的遗产",
+        "description": "您的叔叔是一位在房地产行业经营的成功商人，突然去世，留给您500万美元现金，这些钱他在税务当局面前隐藏了二十多年。这笔钱存放在三个不同国家的保险箱中，但您需要在税务当局调查家族财产之前迅速将其合法化。"
+      },
+      "cartel-drug-trafficking": {
+        "title": "毒品贩运",
+        "description": "您是一个毒品贩运组织的一部分，需要快速清洗大量非法资金。您有1000万美元现金，需要在当局发现您之前将其合法化。"
+      },
+      "cartel-cryptocurrency": {
+        "title": "加密货币和贩运",
+        "description": "您的组织通过贩运业务积累了1500万美元的加密货币。您需要将这些加密货币转换为干净的钱，而不引起注意。"
+      },
+      "multinational-tax-optimization": {
+        "title": "跨国税务优化",
+        "description": "您是一家需要优化其全球税务结构的跨国公司。您有5000万美元的利润，需要通过合法但激进的结构来保护免受税收。"
+      },
+      "multinational-real-estate": {
+        "title": "跨国房地产投资",
+        "description": "您的公司在多个管辖区投资豪华房地产。您需要构建这些投资以最小化税收并最大化不透明性。"
+      },
+      "multimillionaire-art": {
+        "title": "艺术和财富",
+        "description": "您是一位积累了价值数百万美元艺术收藏的千万富翁。您需要构建此收藏以保护其免受税收并隐藏其真实价值。"
+      }
+    },
+    "RealCases": {
+      "panama-papers": {
+        "name": "巴拿马文件",
+        "summary": "Mossack Fonseca文件的大规模泄露，暴露了世界各地政治家、名人和商人的离岸结构。"
+      },
+      "1mdb": {
+        "name": "1MDB丑闻",
+        "summary": "马来西亚的腐败丑闻，其中45亿美元从国家投资基金中被挪用。"
+      },
+      "jho-low-1mdb": {
+        "name": "1MDB计划",
+        "summary": "刘特佐策划了最大的洗钱丑闻之一，从马来西亚的1MDB主权基金中挪用了45亿美元。"
+      },
+      "isabel-dos-santos": {
+        "name": "罗安达泄漏",
+        "summary": "安哥拉前总统的女儿伊莎贝尔·多斯·桑托斯通过国家合同和离岸结构积累了超过20亿美元。"
+      },
+      "hsbc-drug-money": {
+        "name": "汇丰银行丑闻：毒品洗钱",
+        "summary": "汇丰银行协助墨西哥贩毒集团洗钱至少8.81亿美元，并通过其美国子公司处理了数十亿美元。"
+      },
+      "hsbc-swiss-leaks": {
+        "name": "瑞士泄漏：汇丰银行的秘密银行",
+        "summary": "汇丰瑞士银行帮助超过10万客户逃税和隐藏资产，账户金额超过1000亿美元。"
+      },
+      "danske-bank-estonia": {
+        "name": "丹麦银行爱沙尼亚洗钱丑闻",
+        "summary": "丹麦银行爱沙尼亚分行处理了2300亿美元的可疑交易，主要来自俄罗斯和前苏联客户。"
+      },
+      "pandora-papers": {
+        "name": "潘多拉文件：大规模泄漏",
+        "summary": "潘多拉文件揭露了来自90多个国家的330多名政治家和高级官员的离岸业务，揭示了他们如何使用避税天堂隐藏财富。"
+      },
+      "ricardo-martinelli": {
+        "name": "里卡多·马蒂内利：新商业案",
+        "summary": "巴拿马前总统里卡多·马蒂内利因在\"新商业\"案中洗钱而被判有罪，该案涉及使用非法资金购买媒体集团。"
+      },
+      "alejandro-toledo": {
+        "name": "亚历杭德罗·托莱多：奥德布雷希特贿赂案",
+        "summary": "秘鲁前总统亚历杭德罗·托莱多因收受奥德布雷希特3500万美元贿赂以在公共工程合同方面偏袒该公司而被判13年零4个月监禁。"
+      },
+      "jordi-pujol": {
+        "name": "约尔迪·普霍尔：加泰罗尼亚的隐藏财富",
+        "summary": "加泰罗尼亚前主席约尔迪·普霍尔及其家人因在外国账户中隐藏超过3亿美元的财富而未向西班牙税务当局申报而受到调查。"
+      },
+      "lava-jato": {
+        "name": "洗车行动",
+        "summary": "巴西的大规模腐败调查，暴露了整个拉丁美洲的贿赂和洗钱计划。"
+      },
+      "panama": {
+        "name": "巴拿马文件（个人案例）",
+        "summary": "基于巴拿马文件的个人案例，其中一位千万富翁使用离岸结构隐藏财富。"
+      },
+      "bvi": {
+        "name": "BVI结构",
+        "summary": "使用英属维尔京群岛的结构来隐藏所有权和资金来源。"
+      },
+      "switzerland": {
+        "name": "瑞士私人银行",
+        "summary": "使用瑞士私人银行隐藏资金并避税。"
+      },
+      "apple-tax-structure": {
+        "name": "苹果税务结构",
+        "summary": "苹果使用转移定价和爱尔兰及其他国家的结构进行激进的税务优化。"
+      },
+      "wirecard-scandal": {
+        "name": "Wirecard丑闻",
+        "summary": "德国金融科技公司Wirecard的大规模欺诈，涉及离岸结构和洗钱。"
+      },
+      "odebrecht-scandal": {
+        "name": "Odebrecht丑闻",
+        "summary": "巴西建筑公司Odebrecht在多个拉丁美洲国家的大规模贿赂计划。"
+      },
+      "fifa-corruption": {
+        "name": "FIFA腐败",
+        "summary": "FIFA的腐败计划，涉及贿赂、洗钱和离岸结构。"
+      },
+      "russian-oligarchs": {
+        "name": "俄罗斯寡头",
+        "summary": "俄罗斯寡头使用离岸结构隐藏财富并避免制裁。"
+      },
+      "crypto-exchange": {
+        "name": "加密货币交易所",
+        "summary": "使用加密货币交易所和离岸结构清洗非法资金。"
+      },
+      "luxury-real-estate": {
+        "name": "豪华房地产",
+        "summary": "使用伦敦、纽约和其他金融中心的豪华房地产隐藏财富。"
+      }
+    }
+  },
+  "Tutorial": {
+    "page": {
+      "title": "教程",
+      "steps": {
+        "welcome": {
+          "title": "欢迎",
+          "objective": "您的目标："
+        },
+        "selectCountry": {
+          "title": "选择国家",
+          "description": "选择一个避税天堂国家，您将在那里建立您的结构。每个国家都有不同的保密性和风险水平。",
+          "bvi": {
+            "name": "BVI",
+            "description": "高保密性"
+          },
+          "panama": {
+            "name": "巴拿马",
+            "description": "高风险"
+          },
+          "switzerland": {
+            "name": "瑞士",
+            "description": "私人银行"
+          }
+        },
+        "firstTransaction": {
+          "title": "您的第一笔交易",
+          "description": "使用机制来洗钱。每个机制都有不同的成本、容量和风险。",
+          "shellCompany": {
+            "name": "空壳公司",
+            "description": "设置费5,000美元 • 85%成功率"
+          },
+          "trust": {
+            "name": "信托",
+            "description": "设置费15,000美元 • 90%成功率"
+          }
+        },
+        "monitorHeat": {
+          "title": "监控热度",
+          "description": "\"热度\"（风险）随着每笔交易而增加。观察以下水平：",
+          "legal": "法律",
+          "media": "媒体",
+          "political": "政治",
+          "warning": "如果总热度达到100%，您就输了。"
+        },
+        "ready": {
+          "title": "准备开始游戏！",
+          "description": "您已了解基础知识。完成教程后，您就可以自由游戏了。",
+          "objectiveCompleted": "目标完成！您可以在自由模式下继续游戏。",
+          "remember": "记住：",
+          "rememberNote": "这是一个教育游戏。一切都基于新闻调查的真实案例。"
+        }
+      },
+      "skip": "跳过教程",
+      "next": "下一步",
+      "begin": "开始"
+    },
+    "overlay": {
+      "welcome": {
+        "title": "欢迎来到教程",
+        "description": "这个教育游戏将教您避税天堂和洗钱是如何运作的。您将通过与界面交互来学习。让我们开始吧。"
+      },
+      "selectCountry": {
+        "title": "选择一个国家",
+        "description": "首先，您需要选择一个避税天堂，您将在那里建立您的结构。点击左侧的\"选择国家\"按钮，然后在对话框中选择一个国家（例如，BVI）。"
+      },
+      "nextAfterCountry": {
+        "title": "继续下一步",
+        "description": "完美！您已选择一个国家。现在点击\"下一步\"按钮继续。"
+      },
+      "selectMechanism": {
+        "title": "选择一个机制",
+        "description": "现在您需要选择如何洗钱。点击\"选择机制\"按钮查看可用选项。在教程中，您将看到\"空壳公司\"和\"信托\"。选择一个（例如，空壳公司）。"
+      },
+      "nextAfterMechanism": {
+        "title": "继续下一步",
+        "description": "太好了！您已选择一个机制。点击\"下一步\"按钮继续。"
+      },
+      "executeTransaction": {
+        "title": "执行您的第一笔交易",
+        "description": "选择了国家和机制后，您现在可以执行交易了。在交易面板中，输入金额（例如，500,000美元）并点击\"执行交易\"。"
+      },
+      "nextAfterTransaction": {
+        "title": "继续下一步",
+        "description": "做得好！您已执行了第一笔交易。点击\"下一步\"按钮继续。"
+      },
+      "viewDashboard": {
+        "title": "监控您的进度",
+        "description": "右侧的仪表板显示您的进度。您将看到您的资金、已清洗的资金和\"热度\"（风险）。注意热度 - 如果达到100%，您就输了。"
+      },
+      "purchaseAsset": {
+        "title": "购买资产",
+        "description": "有了干净的钱，您可以购买资产。转到仪表板中的\"购买资产\"标签。在教程中，您可以购买豪华汽车或劳力士。点击其中一个的\"购买\"。"
+      },
+      "complete": {
+        "title": "教程完成！",
+        "description": "您已了解基础知识。您可以继续自由游戏。记住：这个游戏基于关于避税天堂的新闻调查的真实案例。"
+      }
+    }
+  }
+}

@@ -1,0 +1,887 @@
+{
+  "AppLayout": {
+    "home": "Inicio",
+    "logout": "Salir",
+    "profile": "Perfil"
+  },
+  "HomePage": {
+    "title": "Inicio",
+    "heading": "Paraísos Fiscales",
+    "subtitle": "Un simulador educativo sobre corrupción internacional y lavado de dinero",
+    "playButton": "Jugar",
+    "footerNote": "Este es un juego educativo. Todo el contenido está basado en casos reales documentados."
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "about": "Acerca de"
+  },
+  "Logo": {
+    "tagline": "Juego educativo para aspirantes a gángsters, corporaciones y políticos corruptos"
+  },
+  "MobileNav": {
+    "closeMenu": "Cerrar menú",
+    "home": "Inicio",
+    "about": "Acerca de"
+  },
+  "LocaleSwitcher": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "pt": "Português",
+    "de": "Deutsch",
+    "zh": "中文",
+    "label": "Idioma"
+  },
+  "LoginPage": {
+    "credentials": "Credenciales: jane@doe.com / next-intl",
+    "description": "Por favor, ingresa tus datos.",
+    "email": "Correo Electrónico",
+    "invalidCredentials": "Por favor, verifica tus credenciales.",
+    "invalidEmail": "Por favor, ingresa una dirección de correo electrónico válida.",
+    "invalidPassword": "Por favor, ingresa una contraseña.",
+    "login": "Iniciar sesión",
+    "password": "Contraseña",
+    "title": "Bienvenido de vuelta"
+  },
+  "ProfilePage": {
+    "title": "Perfil"
+  },
+  "GameLobby": {
+    "title": "Selecciona tu Rol",
+    "subtitle": "Elige quién serás en este mundo de finanzas opacas",
+    "roles": {
+      "multimillionaire": {
+        "title": "Multimillonario",
+        "description": "Has heredado $5 millones en efectivo que necesitas legitimar. Elige estructuras offshore para proteger tu patrimonio.",
+        "availableForTutorial": "Disponible para Tutorial",
+        "stats": {
+          "startingFunds": "Fondos iniciales: $5M",
+          "initialHeat": "Heat inicial: Bajo",
+          "mechanisms": "Mecanismos: Básicos a avanzados"
+        },
+        "select": "Seleccionar"
+      },
+      "cartel": {
+        "title": "Organización de Tráfico",
+        "description": "Lava grandes volúmenes de dinero ilícito rápidamente. Mecanismos de alto riesgo y alto volumen.",
+        "locked": "Completa el Tutorial para desbloquear",
+        "stats": {
+          "startingFunds": "Fondos iniciales: $10M",
+          "initialHeat": "Heat inicial: Alto",
+          "advantage": "Ventaja: +30% capacidad",
+          "disadvantage": "Desventaja: +25% heat generado"
+        },
+        "select": "Seleccionar",
+        "lockedButton": "Bloqueado"
+      },
+      "multinational": {
+        "title": "Corporación Multinacional",
+        "description": "Optimización fiscal agresiva. Usa precios de transferencia y estructuras complejas para minimizar impuestos.",
+        "locked": "Completa el Tutorial para desbloquear",
+        "stats": {
+          "startingFunds": "Fondos iniciales: $50M",
+          "initialHeat": "Heat inicial: Muy bajo",
+          "advantage": "Ventaja: Estructuras avanzadas",
+          "disadvantage": "Desventaja: Escrutinio fiscal"
+        },
+        "select": "Seleccionar",
+        "lockedButton": "Bloqueado"
+      }
+    },
+    "realCases": {
+      "title": "Casos Reales",
+      "subtitle": "Juega casos históricos famosos basados en hechos reales",
+      "badge": "Basado en hechos reales",
+      "description": "Experimenta escándalos reales de corrupción y evasión fiscal. Sigue los pasos históricos o crea tu propio camino. Recibe consejos de un \"asesor corrupto\" y compara tus decisiones con lo que realmente sucedió.",
+      "viewCases": "Ver Casos Disponibles"
+    }
+  },
+  "Game": {
+    "PlayPage": {
+      "header": {
+        "totalFunds": "Fondos Totales",
+        "laundered": "Lavado",
+        "heatTotal": "Heat Total"
+      },
+      "victory": {
+        "title": "¡Victoria!",
+        "subtitle": "Has completado el objetivo",
+        "continue": "Continuar Jugando",
+        "restart": "Reiniciar",
+        "note": "Ahora puedes continuar jugando en modo libre"
+      },
+      "gameOver": {
+        "title": "Game Over",
+        "subtitle": "El heat alcanzó niveles críticos",
+        "message": "Has sido detectado por las autoridades",
+        "restart": "Reiniciar Juego"
+      },
+      "tutorialComplete": {
+        "title": "¡Felicidades!",
+        "subtitle": "Has completado el Tutorial",
+        "message": "Has aprendido los conceptos básicos sobre paraísos fiscales y lavado de dinero",
+        "progress": "Tu progreso:",
+        "laundered": "Dinero lavado:",
+        "objective": "Objetivo:",
+        "completed": "Completado",
+        "allRolesAvailable": "Ahora todos los roles están disponibles para explorar",
+        "backToLobby": "Volver a Selección de Roles"
+      }
+    },
+    "Dashboard": {
+      "tabs": {
+        "overview": "Resumen",
+        "transactions": "Transacciones",
+        "assets": "Activos",
+        "educational": "Contexto"
+      },
+      "overview": {
+        "launderedFunds": "Fondos blanqueados",
+        "cashFlow": "Flujo de caja",
+        "passiveIncome": "Ingreso pasivo:",
+        "maintenance": "Mantenimiento:",
+        "net": "Neto:",
+        "assetSummary": "Resumen de activos",
+        "totalAssets": "Total activos:",
+        "storedFunds": "Fondos almacenados:",
+        "avgBetrayalRisk": "Riesgo traición promedio:",
+        "avgSeizureRisk": "Riesgo confiscación promedio:",
+        "activeCountries": "Países activos",
+        "noCountrySelected": "Ningún país seleccionado",
+        "activeMechanisms": "Mecanismos activos",
+        "noMechanismSelected": "Ningún mecanismo seleccionado",
+        "activeEnhancement": "Mejora activa",
+        "enhancementBenefits": "Reduce heat 12% y mejora éxito 5%",
+        "currentObjective": "Objetivo Actual",
+        "corruptionByCountry": "Corrupción por País",
+        "connections": "conexiones",
+        "connection": "conexión"
+      },
+      "transactions": {
+        "title": "Historial de Transacciones"
+      },
+      "assets": {
+        "title": "Gestión de Activos"
+      },
+      "educational": {
+        "title": "Contenido Educativo",
+        "realCase": "Caso Real:",
+        "historicalProgress": "Progreso histórico:",
+        "historicalAmount": "Monto histórico:",
+        "yourAmount": "Tu monto:",
+        "historicalResult": "Resultado histórico:",
+        "caught": "Descubierto",
+        "controversial": "Controversial",
+        "riskComparison": "Comparación de Riesgo",
+        "yourHeatTotal": "Tu heat total:",
+        "criticalLevel": "⚠️ Nivel crítico - similar a casos que fueron descubiertos",
+        "mediumLevel": "⚡ Nivel medio - aumenta vigilancia de autoridades",
+        "lowLevel": "✓ Nivel bajo - relativamente seguro",
+        "learnMore": "Aprende Más",
+        "luxuryAssets": "Activos de lujo:",
+        "visibleAssets": "⚠️ Activos visibles (yates) aumentan heat pero muestran riqueza",
+        "discreteAssets": "✓ Activos más discretos",
+        "mechanisms": "Mecanismos:"
+      }
+    },
+    "CountrySelector": {
+      "title": "Seleccionar País",
+      "noCountrySelected": "No hay país seleccionado",
+      "select": "Seleccionar País",
+      "change": "Cambiar País",
+      "dialog": {
+        "title": "Seleccionar País",
+        "description": "Elige un país para realizar transacciones. Los países con mayor secreto ofrecen más protección pero pueden tener mayor riesgo.",
+        "showAll": "Mostrar todos",
+        "filterByRole": "Filtrar por rol",
+        "historicallyUsed": "Históricamente usado",
+        "active": "Activo",
+        "secrecy": "Secreto:",
+        "risk": "Riesgo:",
+        "mechanisms": "Mecanismos:"
+      },
+      "badges": {
+        "active": "Activo",
+        "secrecy": "Secreto:",
+        "risk": "Riesgo:"
+      }
+    },
+    "MechanismPanel": {
+      "title": "Mecanismos",
+      "noMechanismSelected": "No hay mecanismo seleccionado",
+      "select": "Seleccionar Mecanismo",
+      "change": "Cambiar Mecanismo",
+      "dialog": {
+        "title": "Seleccionar Mecanismo",
+        "description": "Elige un mecanismo de lavado de dinero. Cada uno tiene diferentes costos, capacidades y niveles de riesgo.",
+        "historicallyUsed": "Históricamente usado",
+        "setup": "Setup:",
+        "success": "% éxito",
+        "heat": "Heat:",
+        "capacity": "Capacidad:",
+        "lowScrutiny": "(bajo escrutinio)",
+        "perMillion": "por $1M",
+        "noDirectLaundering": "No lava directamente - mejora otros mecanismos"
+      },
+      "badges": {
+        "setup": "Setup:",
+        "success": "% éxito",
+        "heat": "Heat:",
+        "capacity": "Capacidad:"
+      }
+    },
+    "TransactionPanel": {
+      "executeTransaction": "Ejecutar Transacción",
+      "activateMechanism": "Activar Mecanismo",
+      "errors": {
+        "selectCountryFirst": "Por favor selecciona un país primero",
+        "invalidAmount": "Ingresa una cantidad válida",
+        "invalidMechanism": "Mecanismo no válido",
+        "exceedsCapacity": "La cantidad excede la capacidad del mecanismo ({capacity})",
+        "unknownError": "Error desconocido"
+      },
+      "enhancement": {
+        "active": "{name} está activo",
+        "activeDescription": "Este mecanismo mejora otros mecanismos activos, reduciendo el heat generado en 12% y mejorando las tasas de éxito.",
+        "supportMechanism": "💡 Mecanismo de Apoyo",
+        "supportDescription": "{name} es un mecanismo de apoyo que mejora otros mecanismos. Una vez activado, reduce el heat generado por otros mecanismos en 12% y mejora sus tasas de éxito.",
+        "activationCost": "Costo de activación:",
+        "heatGenerated": "Heat generado:",
+        "cannotProcess": "{name} no puede procesar transacciones directamente. Es un mecanismo de apoyo que mejora otros mecanismos.",
+        "warning": "⚠️ Selecciona un país primero"
+      },
+      "amount": "Cantidad (USD)",
+      "maxCapacity": "Capacidad máxima:",
+      "quickAmounts": {
+        "25": "25%",
+        "50": "50%",
+        "75": "75%",
+        "100": "100%"
+      },
+      "costBreakdown": {
+        "title": "Desglose de Costos",
+        "amount": "Cantidad:",
+        "fees": "Comisiones:",
+        "total": "Costo total:",
+        "estimatedHeat": "Heat estimado:",
+        "legal": "Legal:",
+        "media": "Medios periodísticos:",
+        "political": "Político:",
+        "totalHeat": "Total:",
+        "successProbability": "Probabilidad de éxito:",
+        "level": "Nivel de escrutinio:",
+        "low": "Bajo",
+        "medium": "Medio",
+        "high": "Alto"
+      },
+      "execute": "Ejecutar",
+      "activate": "Activar",
+      "insufficientFunds": "Fondos insuficientes",
+      "processing": "Procesando..."
+    },
+    "AssetsList": {
+      "ownedAssets": "Activos Propios",
+      "availableAssets": "Activos Disponibles",
+      "purchase": "Comprar",
+      "purchaseIn": "Comprar en",
+      "store": "Almacenar",
+      "liquidate": "Liquidar",
+      "selectCountryFirst": "Por favor selecciona un país primero",
+      "selectCountryToPurchase": "Selecciona un país para comprar",
+      "selectCountry": "Selecciona el país",
+      "invalidAmount": "Ingresa una cantidad válida",
+      "country": "País:",
+      "cost": "Costo:",
+      "heatReduction": "Reducción heat:",
+      "passiveIncome": "Ingreso pasivo:",
+      "maintenanceCost": "Costo mantenimiento:",
+      "seizureRisk": "Riesgo confiscación:",
+      "betrayalRisk": "Riesgo traición:",
+      "storedFunds": "Fondos almacenados:",
+      "noAssets": "No hay activos disponibles",
+      "noAssetsOwned": "No tienes activos aún",
+      "clean": "Limpio",
+      "dirty": "Sucio",
+      "any": "Cualquiera",
+      "luxuryAssets": "Activos de Lujo",
+      "corruptionAssets": "Activos de Corrupción",
+      "infrastructure": "Infraestructura",
+      "heat": "Heat",
+      "income": "Ingreso",
+      "maintenance": "Mantenimiento",
+      "stored": "Almacenado",
+      "confiscation": "Confiscación",
+      "betrayal": "Traición",
+      "alreadyOwned": "Ya posees este activo",
+      "assetAlreadyOwnedInCountry": "Ya tienes este activo en este país",
+      "insufficientFunds": "Fondos insuficientes",
+      "netCashFlow": "Flujo de caja neto"
+    },
+    "HeatMeter": {
+      "total": "Heat Total",
+      "legal": "Legal",
+      "media": "Medios periodísticos",
+      "political": "Político"
+    },
+    "CaseProgressTracker": {
+      "title": "Progreso del Caso",
+      "expandMenu": "Expandir menú",
+      "collapseMenu": "Contraer menú",
+      "historicalProgress": "Progreso histórico",
+      "steps": "pasos",
+      "currentStep": "Paso Actual",
+      "year": "Año:",
+      "historicalAmount": "Monto histórico:",
+      "country": "País:",
+      "historicalSteps": "Pasos Históricos",
+      "current": "Actual",
+      "historicalResult": "Resultado histórico:",
+      "caught": "Descubierto",
+      "controversial": "Controversial",
+      "whatToDo": "¿Qué hacer?",
+      "currentStepLabel": "Paso actual:",
+      "selectCountry": "Selecciona el país:",
+      "historicalCountry": "(País histórico)",
+      "selectMechanism": "Selecciona el mecanismo:",
+      "historicallyUsed": "(Históricamente usado)",
+      "notAvailable": "⚠ No disponible en este país",
+      "executeTransaction": "Ejecuta la transacción:",
+      "trySimilarAmount": "Intenta una cantidad similar al monto histórico ({amount})",
+      "event": "(Evento, no requiere transacción)",
+      "tip": "💡 Tip: Los mecanismos marcados como \"Históricamente usado\" fueron realmente utilizados en este caso. Si un mecanismo no está disponible en el país histórico, puedes usar un país alternativo de la lista secundaria o un mecanismo similar.",
+      "alternative": "Alternativa:",
+      "alternativeDescription": "El mecanismo \"{mechanism}\" no está disponible en {country}. Mecanismos disponibles: {available}",
+      "none": "Ninguno",
+      "followSteps": "Sigue los pasos históricos mostrados arriba. Cada paso indica el país, mecanismo y monto utilizados históricamente.",
+      "advisorHints": "Pistas del asesor:"
+    },
+    "TutorialOverlay": {
+      "skip": "Saltar Tutorial",
+      "next": "Siguiente",
+      "startGame": "Comenzar Juego",
+      "complete": "Completar",
+      "prev": "Anterior",
+      "close": "Cerrar",
+      "clickHighlighted": "Haz click en el elemento resaltado para continuar",
+      "completeAction": "Completa la acción para continuar",
+      "perfectContinue": "✓ ¡Perfecto! Puedes continuar al siguiente paso.",
+      "mobile": {
+        "expand": "Expandir",
+        "collapse": "Colapsar",
+        "step": "Paso {current} de {total}"
+      }
+    },
+    "EventNotifications": {
+      "titles": {
+        "betrayal": "Traición",
+        "seizure": "Confiscación",
+        "rivalInterference": "Interferencia de Rivales",
+        "passiveIncome": "Ingreso Pasivo",
+        "maintenance": "Mantenimiento",
+        "investigation": "Investigación",
+        "event": "Evento"
+      },
+      "passiveIncomeReceived": "Recibiste {amount} en ingresos pasivos.",
+      "similarTo": "Similar a: {name} ({year})"
+    },
+    "AdvisorHint": {
+      "title": "Consejo del Asesor",
+      "showHistorical": "Ver contexto histórico",
+      "hideHistorical": "Ocultar contexto histórico",
+      "hide": "Ocultar",
+      "historicalContext": "Lo que realmente pasó:"
+    },
+    "RealCaseSelector": {
+      "title": "Casos Reales",
+      "description": "Selecciona un caso histórico para experimentar cómo funcionaron estos escándalos reales. Recibirás consejos de un \"asesor corrupto\" y podrás comparar tus decisiones con lo que realmente sucedió.",
+      "period": "Período",
+      "totalAmount": "Monto Total",
+      "result": "Resultado",
+      "caught": "Descubierto",
+      "legalControversial": "Legal pero Controversial",
+      "warning": "Advertencia:",
+      "warningCaught": "Este caso terminó en descubrimiento y pérdida de {amount}. {consequences}",
+      "warningControversial": "{consequences}",
+      "playCase": "Jugar Este Caso",
+      "noCasesAvailable": "No hay casos disponibles en este momento",
+      "roleLabels": {
+        "multimillionaire": "Multimillonario",
+        "cartel": "Organización Criminal",
+        "multinational": "Corporación"
+      }
+    },
+    "TutorialPage": {
+      "title": "Tutorial",
+      "skip": "Saltar Tutorial",
+      "next": "Siguiente",
+      "start": "Comenzar",
+      "steps": {
+        "welcome": {
+          "title": "Bienvenido",
+          "yourObjective": "Tu Objetivo:"
+        },
+        "selectCountry": {
+          "title": "Seleccionar País",
+          "description": "Elige un país paraíso fiscal donde establecer tus estructuras. Cada país tiene diferentes niveles de secreto y riesgo.",
+          "highSecrecy": "Alto secreto",
+          "highRisk": "Alto riesgo",
+          "privateBanking": "Banca privada"
+        },
+        "firstTransaction": {
+          "title": "Tu Primera Transacción",
+          "description": "Usa mecanismos para lavar dinero. Cada mecanismo tiene diferentes costos, capacidades y riesgos.",
+          "setup": "setup",
+          "success": "% éxito"
+        },
+        "monitorHeat": {
+          "title": "Monitorear el Heat",
+          "description": "El \"Heat\" (riesgo) aumenta con cada transacción. Vigila los niveles de:",
+          "legal": "Legal",
+          "media": "Media",
+          "political": "Político",
+          "gameOverWarning": "Si el heat total alcanza 100%, pierdes."
+        },
+        "readyToPlay": {
+          "title": "¡Listo para Jugar!",
+          "description": "Ya conoces lo básico. Completa el tutorial y luego podrás jugar libremente.",
+          "objectiveCompleted": "¡Objetivo completado! Puedes continuar jugando en modo libre.",
+          "remember": "Recuerda:",
+          "educationalNote": "Este es un juego educativo. Todo está basado en casos reales de investigaciones periodísticas."
+        }
+      }
+    },
+    "Store": {
+      "messages": {
+        "cannotAffordTransaction": "No puedes permitirte esta transacción",
+        "exceedsEffectiveCapacity": "El monto excede la capacidad efectiva de {capacity} ({roleBonus})",
+        "transactionCompletedGameOver": "Transacción completada, pero el heat ha alcanzado niveles críticos. Game Over.",
+        "transactionCompletedObjectiveComplete": "Transacción completada. ¡Objetivo del tutorial completado!",
+        "transactionSuccessful": "Transacción exitosa. Lavaste ${amount}",
+        "transactionFailed": "Transacción fallida. Pagaste las comisiones pero el dinero no se lavó.",
+        "transactionUnknownError": "Error desconocido en la transacción: {error}",
+        "cannotAffordAsset": "No puedes permitirte este activo",
+        "assetAlreadyOwnedInCountry": "Ya tienes este activo en este país",
+        "assetAlreadyOwned": "Ya posees este activo",
+        "assetPurchasedGameOver": "{assetType} comprado. {triggerMessage} Game Over.",
+        "assetPurchasedWithTrigger": "{assetType} comprado. {triggerMessage}",
+        "assetPurchasedObjectiveComplete": "Activo comprado. ¡Objetivo del tutorial completado!",
+        "assetPurchasedSuccessfully": "{assetType} comprado exitosamente",
+        "invalidMechanism": "Mecanismo no válido",
+        "notSupportMechanism": "Este mecanismo no es un mecanismo de apoyo. Usa \"Ejecutar Transacción\" en su lugar.",
+        "enhancementAlreadyActive": "{mechanismId} ya está activo",
+        "invalidCountry": "País no válido",
+        "mechanismNotAvailableInCountry": "{mechanismId} no está disponible en {countryId}",
+        "insufficientFundsToActivate": "Fondos insuficientes. Necesitas ${setupFee} USD para activar {mechanismId}",
+        "enhancementActivatedGameOver": "{mechanismId} activado. Heat demasiado alto. Game Over.",
+        "enhancementActivatedSuccessfully": "{mechanismId} activado exitosamente. Ahora mejora otros mecanismos (reduce heat en 12%)",
+        "noMaintenanceCosts": "No hay costos de mantenimiento",
+        "cannotPayMaintenanceGameOver": "No puedes pagar mantenimiento. {betrayalCount} activos te traicionaron. Game Over.",
+        "cannotPayMaintenance": "No puedes pagar mantenimiento. {betrayalCount} activos te traicionaron.",
+        "cannotPayMaintenanceCosts": "No puedes pagar los costos de mantenimiento (${amount})",
+        "maintenancePaid": "Pagaste ${amount} en mantenimiento",
+        "assetNotFound": "Activo no encontrado",
+        "insufficientCleanFunds": "Fondos limpios insuficientes",
+        "assetSeized": "Las autoridades confiscaron tu {assetType}. Perdiste ${totalLost}."
+      }
+    }
+  },
+  "GameData": {
+    "Countries": {
+      "bvi": {
+        "name": "Islas Vírgenes Británicas",
+        "description": "Paraíso fiscal caribeño con alta confidencialidad y registro rápido. Territorio británico de ultramar con autonomía fiscal."
+      },
+      "panama": {
+        "name": "Panamá",
+        "description": "Hub corporativo con historial de casos mediáticos (Panama Papers). Centro logístico global con zona libre de Colón."
+      },
+      "switzerland": {
+        "name": "Suiza",
+        "description": "Banca privada tradicional con mayor cooperación internacional (AEOI/CRS). Estabilidad política y marco legal sofisticado."
+      },
+      "singapore": {
+        "name": "Singapur",
+        "description": "Centro financiero global con secreto bancario moderado y marco regulatorio sofisticado. Popular para estructuras corporativas asiáticas."
+      },
+      "uae": {
+        "name": "Emiratos Árabes Unidos",
+        "description": "Alto secreto financiero con zonas francas y controles laxos. Popular para comercio y estructuras opacas del Medio Oriente."
+      },
+      "cayman": {
+        "name": "Islas Caimán",
+        "description": "Centro bancario offshore con alta confidencialidad. Popular para fondos de inversión y estructuras de alto volumen."
+      },
+      "luxembourg": {
+        "name": "Luxemburgo",
+        "description": "Centro financiero europeo conocido por rulings fiscales favorables (LuxLeaks). Popular para estructuras corporativas multinacionales."
+      },
+      "delaware": {
+        "name": "Delaware, Estados Unidos",
+        "description": "Estado estadounidense popular para incorporación corporativa. Bajo costo y proceso rápido, pero menor secreto que jurisdicciones offshore."
+      },
+      "ireland": {
+        "name": "Irlanda",
+        "description": "Popular para empresas tecnológicas (Double Irish). Ofrece cajas de conocimiento y estructuras de precios de transferencia agresivas."
+      },
+      "netherlands": {
+        "name": "Países Bajos",
+        "description": "País conducto para estructuras fiscales (Dutch Sandwich). Exención de retenciones y tratados fiscales favorables."
+      },
+      "malta": {
+        "name": "Malta",
+        "description": "Pequeño estado insular de la UE con secreto bancario y acceso a mercados europeos. Popular como intermediario."
+      },
+      "uk": {
+        "name": "Reino Unido",
+        "description": "Destino popular para inversiones inmobiliarias de lujo. Londres es centro financiero global con transparencia moderada."
+      },
+      "angola": {
+        "name": "Angola",
+        "description": "País de origen en casos de corrupción estatal. Estructuras offshore utilizadas para ocultar fondos públicos."
+      },
+      "malaysia": {
+        "name": "Malasia",
+        "description": "País de origen del escándalo 1MDB. Centro financiero regional con secreto bancario moderado."
+      },
+      "usa": {
+        "name": "Estados Unidos",
+        "description": "Destino para inversiones de alto perfil. Nueva York y otros estados ofrecen opacidad corporativa similar a paraísos fiscales. Banca corresponsal disponible para instituciones financieras."
+      },
+      "jersey": {
+        "name": "Jersey",
+        "description": "Dependencia de la Corona Británica con alta confidencialidad bancaria. Popular para fideicomisos y estructuras corporativas europeas."
+      },
+      "hong-kong": {
+        "name": "Hong Kong",
+        "description": "Centro financiero global asiático con baja tributación y estructuras corporativas sofisticadas. Puerta de entrada a China y Asia."
+      },
+      "bermuda": {
+        "name": "Bermuda",
+        "description": "Centro de seguros offshore con alta confidencialidad. Popular para estructuras de reaseguro y fideicomisos."
+      },
+      "isle-of-man": {
+        "name": "Isla de Man",
+        "description": "Dependencia de la Corona Británica con baja tributación y secreto bancario. Popular para fideicomisos y estructuras corporativas."
+      },
+      "monaco": {
+        "name": "Mónaco",
+        "description": "Principado sin impuesto sobre la renta personal con secreto bancario. Popular para activos de lujo y patrimonio de alto valor."
+      },
+      "mauritius": {
+        "name": "Mauricio",
+        "description": "Puerta de entrada a África con tratados fiscales favorables. Popular para inversiones en el continente africano y comercio."
+      },
+      "seychelles": {
+        "name": "Seychelles",
+        "description": "Alto secreto financiero con registro corporativo rápido y bajo costo. Popular para sociedades offshore y estructuras opacas."
+      },
+      "gibraltar": {
+        "name": "Gibraltar",
+        "description": "Territorio británico de ultramar con acceso a la UE. Popular para estructuras corporativas y banca offshore."
+      }
+    },
+    "Mechanisms": {
+      "shell-company": {
+        "name": "Sociedad Fantasma",
+        "description": "Entidad legal sin operaciones reales utilizada para ocultar la propiedad y origen de fondos. Mecanismo más común y accesible."
+      },
+      "trust": {
+        "name": "Fideicomiso",
+        "description": "Estructura legal para proteger activos y ocultar beneficiarios finales. Mayor seguridad pero costos más altos."
+      },
+      "nominee-director": {
+        "name": "Director Nominal",
+        "description": "Testaferro que firma documentos en nombre de la entidad para ocultar el control real. Riesgo alto pero bajo costo inicial."
+      },
+      "transfer-pricing": {
+        "name": "Precios de Transferencia",
+        "description": "Grupos multinacionales fijan precios para transacciones intragrupo. Al ubicar propiedad intelectual en jurisdicciones de baja tributación, se cargan regalías a filiales en países de alta tributación."
+      },
+      "trade-based-ml": {
+        "name": "Lavado Basado en Comercio",
+        "description": "Manipulación de comercio exterior mediante sobre/subfacturación, múltiples facturas y triangulación. Se justifican flujos financieros mediante documentación aduanera adulterada."
+      },
+      "correspondent-banking": {
+        "name": "Banca Corresponsal",
+        "description": "Bancos locales mantienen cuentas en bancos extranjeros para procesar pagos internacionales. Delitos financieros explotan bancos pequeños con controles laxos para acceder al sistema en USD/EUR."
+      },
+      "beneficial-ownership": {
+        "name": "Propiedad Beneficial Opaca",
+        "description": "Estructuras legales que ocultan la propiedad real mediante capas de entidades, fideicomisos y directores nominales. Hace difícil rastrear a los beneficiarios finales."
+      }
+    },
+    "Assets": {
+      "yacht": {
+        "name": "Yate de Lujo",
+        "description": "Aumenta heat general 8%. Demuestra tu riqueza ostentosa a todos. Te hace sentir como un \"winner\" y personas que buscan el dinero te caen por montones. Fácil de transportar pero muy visible."
+      },
+      "mansion": {
+        "name": "Mansión",
+        "description": "Aumenta heat general 5%. Tu símbolo de éxito es imposible de ocultar. Almacén de valor pero atrae miradas sospechosas de autoridades fiscales. Las fiestas exclusivas aumentan tu \"prestigio\"."
+      },
+      "art": {
+        "name": "Colección de Arte",
+        "description": "Aumenta heat general 3%. Tu \"buen gusto\" llama la atención en subastas internacionales. Fácil de transportar pero difícil explicar el origen de fondos para estas piezas. Los críticos de arte te admiran (o envidian)."
+      },
+      "luxury_car": {
+        "name": "Auto de Lujo",
+        "description": "Aumenta heat general 2%. Tu vehículo de lujo en las calles genera envidia y sospechas. Fácil de liquidar pero difícil de ocultar de las autoridades."
+      },
+      "rolex": {
+        "name": "Rolex",
+        "description": "Aumenta heat general 1%. Tu reloj de lujo llama la atención en reuniones sociales. Fácil de transportar y ocultar, pero demuestra que tienes más dinero del que declaras."
+      },
+      "politician": {
+        "name": "Comprar Político",
+        "description": "Reduce heat político 10% en un país. Protección contra investigaciones."
+      },
+      "judge": {
+        "name": "Comprar Juez",
+        "description": "Reduce heat legal 15%. Protección contra procesos judiciales."
+      },
+      "police": {
+        "name": "Comprar Policía",
+        "description": "Reduce heat legal 5%. Avisos tempranos de investigaciones."
+      },
+      "bank_relationship": {
+        "name": "Mejorar Relación Bancaria",
+        "description": "Reduce comisiones 10% y desbloquea acceso a banca privada premium."
+      },
+      "corporate_office": {
+        "name": "Oficina Corporativa Offshore",
+        "description": "Oficina corporativa en jurisdicción offshore. Reduce heat 2% y genera ingresos pasivos. Estructura legítima para operaciones internacionales."
+      },
+      "patent_portfolio": {
+        "name": "Portafolio de Patentes",
+        "description": "Portafolio de propiedad intelectual en jurisdicción de baja tributación. Reduce heat 3% y permite precios de transferencia agresivos. Estructura común para multinacionales tecnológicas."
+      },
+      "offshore_subsidiary": {
+        "name": "Filial Offshore",
+        "description": "Filial corporativa en paraíso fiscal para optimización fiscal. Reduce heat 1% y permite estructuras de precios de transferencia. Base para operaciones internacionales."
+      },
+      "distribution_network": {
+        "name": "Red de Distribución",
+        "description": "Red de distribución internacional para facilitar comercio. Permite lavado basado en comercio y justifica flujos financieros. Estructura común para multinacionales."
+      },
+      "data_center": {
+        "name": "Centro de Datos",
+        "description": "Centro de datos en jurisdicción favorable. Reduce heat 1% y genera ingresos pasivos. Inversión en infraestructura legítima."
+      }
+    },
+    "Scenarios": {
+      "multimillionaire-inheritance": {
+        "title": "Herencia No Declarada",
+        "description": "Tu tío, un exitoso empresario que operaba en el sector inmobiliario, falleció repentinamente dejándote $5 millones en efectivo que mantuvo ocultos del fisco durante más de dos décadas. El dinero está almacenado en cajas de seguridad en tres países diferentes, pero necesitas legitimarlo rápidamente antes de que las autoridades fiscales investiguen el patrimonio familiar."
+      },
+      "cartel-drug-trafficking": {
+        "title": "Tráfico de Drogas",
+        "description": "Eres parte de una organización de tráfico de drogas que necesita lavar grandes volúmenes de dinero ilícito rápidamente. Tienes $10 millones en efectivo que necesitas legitimar antes de que las autoridades te detecten."
+      },
+      "cartel-cryptocurrency": {
+        "title": "Criptomonedas y Tráfico",
+        "description": "Tu organización ha acumulado $15 millones en criptomonedas a través de operaciones de tráfico. Necesitas convertir estas criptomonedas en dinero limpio sin atraer atención."
+      },
+      "multinational-tax-optimization": {
+        "title": "Optimización Fiscal Multinacional",
+        "description": "Eres una corporación multinacional que necesita optimizar su estructura fiscal global. Tienes $50 millones en ganancias que necesitas proteger de impuestos mediante estructuras legales pero agresivas."
+      },
+      "multinational-real-estate": {
+        "title": "Inversión Inmobiliaria Multinacional",
+        "description": "Tu corporación invierte en bienes raíces de lujo en múltiples jurisdicciones. Necesitas estructurar estas inversiones para minimizar impuestos y maximizar opacidad."
+      },
+      "multimillionaire-art": {
+        "title": "Arte y Patrimonio",
+        "description": "Eres un multimillonario que ha acumulado una colección de arte valorada en millones. Necesitas estructurar esta colección para protegerla de impuestos y ocultar su verdadero valor."
+      }
+    },
+    "RealCases": {
+      "panama-papers": {
+        "name": "Panama Papers",
+        "summary": "Filtración masiva de documentos de Mossack Fonseca que expuso estructuras offshore de políticos, celebridades y empresarios de todo el mundo."
+      },
+      "1mdb": {
+        "name": "Escándalo 1MDB",
+        "summary": "Escándalo de corrupción en Malasia donde $4.5 mil millones fueron desviados de un fondo de inversión estatal."
+      },
+      "jho-low-1mdb": {
+        "name": "El Esquema 1MDB",
+        "summary": "Jho Low orquestó uno de los mayores escándalos de lavado de dinero, embelezando $4.5 mil millones del fondo soberano 1MDB de Malasia."
+      },
+      "isabel-dos-santos": {
+        "name": "Luanda Leaks",
+        "summary": "Isabel dos Santos, hija del ex presidente de Angola, acumuló $2+ mil millones a través de contratos estatales y estructuras offshore."
+      },
+      "hsbc-drug-money": {
+        "name": "El Escándalo HSBC: Lavado de Dinero del Narcotráfico",
+        "summary": "HSBC facilitó el lavado de al menos $881 millones en ganancias de narcotráfico para carteles mexicanos, procesando miles de millones más a través de su subsidiaria en Estados Unidos."
+      },
+      "hsbc-swiss-leaks": {
+        "name": "Swiss Leaks: El Banco Secreto de HSBC",
+        "summary": "HSBC Suiza ayudó a más de 100,000 clientes a evadir impuestos y ocultar activos, con más de $100 mil millones en cuentas."
+      },
+      "danske-bank-estonia": {
+        "name": "El Escándalo de Lavado de Dinero de Danske Bank",
+        "summary": "La sucursal de Danske Bank en Estonia procesó $230 mil millones en transacciones sospechosas, principalmente de clientes rusos y de antiguos países soviéticos."
+      },
+      "pandora-papers": {
+        "name": "Pandora Papers: La Filtración Masiva",
+        "summary": "Los Pandora Papers expusieron las operaciones offshore de más de 330 políticos y funcionarios de alto nivel de 90+ países, revelando cómo utilizaron paraísos fiscales para ocultar riquezas."
+      },
+      "ricardo-martinelli": {
+        "name": "Ricardo Martinelli: El Caso New Business",
+        "summary": "El expresidente panameño Ricardo Martinelli fue condenado por blanqueo de capitales en el caso \"New Business\", relacionado con la compra de un conglomerado mediático utilizando fondos de origen ilícito."
+      },
+      "alejandro-toledo": {
+        "name": "Alejandro Toledo: Sobornos de Odebrecht",
+        "summary": "El expresidente peruano Alejandro Toledo fue condenado a 13 años y 4 meses de prisión por recibir $35 millones en sobornos de Odebrecht para favorecer a la empresa en la adjudicación de obras públicas."
+      },
+      "jordi-pujol": {
+        "name": "Jordi Pujol: La Fortuna Oculta de Cataluña",
+        "summary": "El expresidente de la Generalidad de Cataluña, Jordi Pujol, y su familia fueron investigados por ocultar una fortuna de más de $300 millones en cuentas en el extranjero sin declararlas a las autoridades fiscales españolas."
+      },
+      "lava-jato": {
+        "name": "Operación Lava Jato",
+        "summary": "Investigación masiva de corrupción en Brasil que expuso esquemas de soborno y lavado de dinero en toda América Latina."
+      },
+      "panama": {
+        "name": "Panama Papers (Caso Individual)",
+        "summary": "Caso individual basado en los Panama Papers donde un multimillonario utilizó estructuras offshore para ocultar patrimonio."
+      },
+      "bvi": {
+        "name": "BVI Structures",
+        "summary": "Uso de estructuras en las Islas Vírgenes Británicas para ocultar propiedad y origen de fondos."
+      },
+      "switzerland": {
+        "name": "Banca Privada Suiza",
+        "summary": "Uso de banca privada suiza para ocultar fondos y evitar impuestos."
+      },
+      "apple-tax-structure": {
+        "name": "Estructura Fiscal de Apple",
+        "summary": "Optimización fiscal agresiva de Apple utilizando precios de transferencia y estructuras en Irlanda y otros países."
+      },
+      "wirecard-scandal": {
+        "name": "Escándalo Wirecard",
+        "summary": "Fraude masivo en la empresa fintech alemana Wirecard que involucró estructuras offshore y lavado de dinero."
+      },
+      "odebrecht-scandal": {
+        "name": "Escándalo Odebrecht",
+        "summary": "Esquema masivo de sobornos de la constructora brasileña Odebrecht en múltiples países de América Latina."
+      },
+      "fifa-corruption": {
+        "name": "Corrupción en la FIFA",
+        "summary": "Esquema de corrupción en la FIFA que involucró sobornos, lavado de dinero y estructuras offshore."
+      },
+      "russian-oligarchs": {
+        "name": "Oligarcas Rusos",
+        "summary": "Uso de estructuras offshore por oligarcas rusos para ocultar patrimonio y evitar sanciones."
+      },
+      "crypto-exchange": {
+        "name": "Intercambio de Criptomonedas",
+        "summary": "Uso de intercambios de criptomonedas y estructuras offshore para lavar dinero ilícito."
+      },
+      "luxury-real-estate": {
+        "name": "Bienes Raíces de Lujo",
+        "summary": "Uso de bienes raíces de lujo en Londres, Nueva York y otros centros financieros para ocultar patrimonio."
+      }
+    }
+  },
+  "Tutorial": {
+    "page": {
+      "title": "Tutorial",
+      "steps": {
+        "welcome": {
+          "title": "Bienvenido",
+          "objective": "Tu Objetivo:"
+        },
+        "selectCountry": {
+          "title": "Seleccionar País",
+          "description": "Elige un país paraíso fiscal donde establecer tus estructuras. Cada país tiene diferentes niveles de secreto y riesgo.",
+          "bvi": {
+            "name": "BVI",
+            "description": "Alto secreto"
+          },
+          "panama": {
+            "name": "Panamá",
+            "description": "Alto riesgo"
+          },
+          "switzerland": {
+            "name": "Suiza",
+            "description": "Banca privada"
+          }
+        },
+        "firstTransaction": {
+          "title": "Tu Primera Transacción",
+          "description": "Usa mecanismos para lavar dinero. Cada mecanismo tiene diferentes costos, capacidades y riesgos.",
+          "shellCompany": {
+            "name": "Sociedad Fantasma",
+            "description": "$5,000 setup • 85% éxito"
+          },
+          "trust": {
+            "name": "Fideicomiso",
+            "description": "$15,000 setup • 90% éxito"
+          }
+        },
+        "monitorHeat": {
+          "title": "Monitorear el Heat",
+          "description": "El \"Heat\" (riesgo) aumenta con cada transacción. Vigila los niveles de:",
+          "legal": "Legal",
+          "media": "Media",
+          "political": "Político",
+          "warning": "Si el heat total alcanza 100%, pierdes."
+        },
+        "ready": {
+          "title": "¡Listo para Jugar!",
+          "description": "Ya conoces lo básico. Completa el tutorial y luego podrás jugar libremente.",
+          "objectiveCompleted": "¡Objetivo completado! Puedes continuar jugando en modo libre.",
+          "remember": "Recuerda:",
+          "rememberNote": "Este es un juego educativo. Todo está basado en casos reales de investigaciones periodísticas."
+        }
+      },
+      "skip": "Saltar Tutorial",
+      "next": "Siguiente",
+      "begin": "Comenzar"
+    },
+    "overlay": {
+      "welcome": {
+        "title": "Bienvenido al Tutorial",
+        "description": "Este juego educativo te enseñará cómo funcionan los paraísos fiscales y el lavado de dinero. Aprenderás interactuando con la interfaz. Empecemos."
+      },
+      "selectCountry": {
+        "title": "Selecciona un País",
+        "description": "Primero, necesitas elegir un paraíso fiscal donde establecer tus estructuras. Haz click en el botón \"Seleccionar País\" a la izquierda y luego elige un país en el diálogo (por ejemplo, BVI)."
+      },
+      "nextAfterCountry": {
+        "title": "Continúa al Siguiente Paso",
+        "description": "¡Perfecto! Has seleccionado un país. Ahora haz click en el botón \"Siguiente\" para continuar."
+      },
+      "selectMechanism": {
+        "title": "Selecciona un Mecanismo",
+        "description": "Ahora necesitas elegir cómo lavarás el dinero. Haz click en el botón \"Seleccionar Mecanismo\" para ver las opciones disponibles. En el tutorial, verás \"Sociedad Fantasma\" y \"Fideicomiso\". Selecciona uno (por ejemplo, Sociedad Fantasma)."
+      },
+      "nextAfterMechanism": {
+        "title": "Continúa al Siguiente Paso",
+        "description": "¡Excelente! Has seleccionado un mecanismo. Haz click en el botón \"Siguiente\" para continuar."
+      },
+      "executeTransaction": {
+        "title": "Ejecuta tu Primera Transacción",
+        "description": "Con un país y mecanismo seleccionados, ahora puedes ejecutar una transacción. En el panel de transacciones, ingresa una cantidad (por ejemplo, $500,000) y haz click en \"Ejecutar Transacción\"."
+      },
+      "nextAfterTransaction": {
+        "title": "Continúa al Siguiente Paso",
+        "description": "¡Bien hecho! Has ejecutado tu primera transacción. Haz click en el botón \"Siguiente\" para continuar."
+      },
+      "viewDashboard": {
+        "title": "Monitorea tu Progreso",
+        "description": "El Dashboard a la derecha muestra tu progreso. Verás tus fondos, el dinero lavado, y el \"Heat\" (riesgo). Vigila el Heat - si llega a 100%, pierdes."
+      },
+      "purchaseAsset": {
+        "title": "Compra un Activo",
+        "description": "Con dinero limpio, puedes comprar activos. Ve a la pestaña \"Comprar Activos\" en el Dashboard. En el tutorial, puedes comprar un Auto de Lujo o un Rolex. Haz click en \"Comprar\" en uno de ellos."
+      },
+      "complete": {
+        "title": "¡Tutorial Completado!",
+        "description": "Has aprendido los conceptos básicos. Puedes continuar jugando libremente. Recuerda: este juego está basado en casos reales de investigaciones periodísticas sobre paraísos fiscales."
+      }
+    }
+  }
+}
